@@ -1,7 +1,8 @@
+import { siteConfig, siteUrl } from '../config/siteConfig'
+
 export const site = {
-  url: 'https://johrei.ca',
-  email: 'canada@johrei.ca',
-  phone: '+1 (416) 900-5638',
-  interacEmail: 'canada@johrei.ca',
-  paypalUrl: '',
+  url: siteUrl,
+  email: siteConfig.hq.email,
+  phone: siteConfig.hq.phone,
+  paypalUrl: siteConfig.donate.externalFallbackUrl,
 }

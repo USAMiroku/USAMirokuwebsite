@@ -29,7 +29,7 @@ export default function Testimonials() {
               </Link>
             }
           >
-            {test.summary[language]}
+            {test.summary[language] ?? test.summary.en}
           </Card>
         ))}
       </div>

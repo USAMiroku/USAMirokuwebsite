@@ -9,8 +9,8 @@ export default function EventDetail() {
   const event = events.find((e) => e.id === id)
 
   usePageMeta({
-    title: event ? `${event.title[language]} | ${t.brand}` : `${t.notFound} | ${t.brand}`,
-    description: event ? event.description[language].slice(0, 160) : t.notFound,
+    title: event ? `${event.title[language] ?? event.title.en} | ${t.brand}` : `${t.notFound} | ${t.brand}`,
+    description: event ? (event.description[language] ?? event.description.en).slice(0, 160) : t.notFound,
   })
 
   if (!event) {
@@ -21,7 +21,7 @@ export default function EventDetail() {
     <div className="space-y-12">
       <section className="rounded-[32px] bg-gradient-to-br from-sky-50 via-white to-emerald-50 px-6 py-10 sm:px-10">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">{event.date}</p>
-        <h1 className="mt-2 text-3xl font-semibold text-slate-900 sm:text-4xl">{event.title[language]}</h1>
+        <h1 className="mt-2 text-3xl font-semibold text-slate-900 sm:text-4xl">{event.title[language] ?? event.title.en}</h1>
         {event.location && <p className="mt-2 text-sm text-slate-600">{event.location}</p>}
         <div className="mt-4">
           <Link to="/events" className="text-sm font-semibold text-emerald-700 hover:text-emerald-800">
@@ -31,7 +31,7 @@ export default function EventDetail() {
       </section>
 
       <section className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
-        <p className="text-sm text-slate-700 whitespace-pre-line">{event.description[language]}</p>
+        <p className="text-sm text-slate-700 whitespace-pre-line">{event.description[language] ?? event.description.en}</p>
       </section>
     </div>
   )

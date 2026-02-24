@@ -1,4 +1,4 @@
-export type Language = 'en' | 'fr'
+export type Language = 'en' | 'es' | 'pt'
 
 export type TranslationContent = {
   brand: string
@@ -15,8 +15,8 @@ export type TranslationContent = {
     resources: string
     testimonials: string
     contact: string
-    canadaUnits: string
-    canadaContact: string
+    usaUnits: string
+    usaContact: string
     donate: string
     guidelines: string
   },
@@ -135,7 +135,7 @@ export type TranslationContent = {
     intro: string
     options: { general: string; visit: string; learn: string }
   }
-  canada: {
+  usa: {
     units: {
       title: string
       intro: string
@@ -205,9 +205,9 @@ export type TranslationContent = {
   notFound: string
 }
 
-export const translations: Record<Language, TranslationContent> = {
+export const translations: Record<string, TranslationContent> = {
   en: {
-    brand: 'World Messianic Church of Canada',
+    brand: 'World Messianic Church of America / Miroku Association USA',
     tagline: 'Discover Johrei and a path of gratitude',
     nav: {
       home: 'Home',
@@ -221,8 +221,8 @@ export const translations: Record<Language, TranslationContent> = {
       resources: 'Resources',
       testimonials: 'Testimonials',
       contact: 'Contact',
-      canadaUnits: 'Canada Units',
-      canadaContact: 'Canada Contact',
+      usaUnits: 'USA Units',
+      usaContact: 'USA Contact',
       donate: 'Donate',
       guidelines: 'Guidelines 2026',
     },
@@ -239,11 +239,11 @@ export const translations: Record<Language, TranslationContent> = {
     home: {
       heroTitle: 'Welcome to',
       heroIntro: 'Creating a World of Health, Prosperity, and Peace Through the Power of Johrei.',
-      heroKicker: 'World Messianic Church of Canada',
-      heroSubtitle: 'World Messianic Church of Canada',
-      heroButtons: { findCenter: 'Visit a Center', firstVisit: 'Explore Canada Units' },
+      heroKicker: 'World Messianic Church of America / Miroku Association USA',
+      heroSubtitle: 'World Messianic Church of America / Miroku Association USA',
+      heroButtons: { findCenter: 'Visit a Center', firstVisit: 'Explore USA Units' },
       stats: [
-        { label: 'Locations', value: 'Canada-wide' },
+        { label: 'Locations', value: 'USA-wide' },
         { label: 'Always free', value: 'Open to All' },
         { label: 'Experience', value: 'Grounded' },
         { label: 'Duration', value: '20–30m' },
@@ -317,14 +317,14 @@ export const translations: Record<Language, TranslationContent> = {
       contactTitle: 'Get in touch',
       contactBody: 'We are happy to answer questions or help you plan a visit.',
       centers: {
-        title: 'Canada Units',
+        title: 'USA Units',
         body: 'Toronto, Montreal, Ottawa, and Vancouver: clear paths to local centers and groups.',
-        link: 'View units in Canada',
+        link: 'View units in USA',
       },
       resources: {
-        title: 'Canada Contact',
+        title: 'USA Contact',
         body: 'Reach the national office and access bilingual support for visits, prayer requests, and activities.',
-        link: 'Go to Canada contact',
+        link: 'Go to USA contact',
       },
       guideline: {
         title: '2026 Guideline',
@@ -333,12 +333,12 @@ export const translations: Record<Language, TranslationContent> = {
       },
       ready: {
         title: 'You are welcome to visit and experience Johrei.',
-        body: 'Find your nearest unit in Canada or contact the association directly.',
+        body: 'Find your nearest unit in USA or contact the association directly.',
       },
     },
     about: {
       title: 'About the World Messianic Church',
-      body: 'World Messianic Church of Canada is dedicated to the establishment of Paradise on Earth through spiritual purification, service, and beauty.',
+      body: 'World Messianic Church of America / Miroku Association USA is dedicated to the establishment of Paradise on Earth through spiritual purification, service, and beauty.',
       kicker: 'About',
       mission: {
         title: 'Mission',
@@ -552,15 +552,15 @@ export const translations: Record<Language, TranslationContent> = {
       title: 'Contact',
       intro: 'We are happy to answer questions, help you plan a visit, or connect you with a local group.',
       options: {
-        general: 'General inquiries: canada@johrei.ca',
-        visit: 'Schedule or first visit questions: +1 (416) 900-5638',
+        general: 'General inquiries: info@miroku.us',
+        visit: 'Schedule or first visit questions: +1 (305) 308-8830',
         learn: 'Learn more about Johrei: see Resources or email us.',
       },
     },
-    canada: {
+    usa: {
       units: {
-        title: 'Units in Canada',
-        intro: 'Find local Johrei centers and groups across Canada. Contact the national office for schedules and meeting locations.',
+        title: 'Units in USA',
+        intro: 'Find local Johrei centers and groups across USA. Contact the national office for schedules and meeting locations.',
         cardCta: 'Contact the association',
         contactAssociation: 'Contact the association',
         labels: {
@@ -573,33 +573,33 @@ export const translations: Record<Language, TranslationContent> = {
           {
             name: 'Toronto Center',
             address: '3416 Dundas Street West, Suite 209, Toronto, ON M6S 2S1',
-            phone: '+1 (416) 900-5638',
+            phone: '+1 (305) 308-8830',
             leaders: 'Rev. Guilherme de Souza; Rev. Ana De Sousa',
-            email: 'canada@johrei.ca',
+            email: 'info@miroku.us',
           },
           {
             name: 'Ottawa Group',
-            phone: '+1 (416) 900-5638',
+            phone: '+1 (305) 308-8830',
             contact: 'Rev. Guilherme de Souza',
-            email: 'canada@johrei.ca',
+            email: 'info@miroku.us',
             note: 'No public street address listed - contact for meeting locations and schedules.',
           },
           {
             name: 'Montreal Group',
-            phone: '+1 (416) 900-5638',
+            phone: '+1 (305) 308-8830',
             contact: 'Rev. Guilherme de Souza',
-            email: 'canada@johrei.ca',
+            email: 'info@miroku.us',
           },
           {
             name: 'Vancouver Group',
-            phone: '+1 (647) 800-8258',
+            phone: '+1 (305) 308-8830',
             contact: 'Rev. Guilherme de Souza',
-            email: 'canada@johrei.ca',
+            email: 'info@miroku.us',
           },
         ],
       },
       contact: {
-        title: 'Contact World Messianic Church of Canada',
+        title: 'Contact World Messianic Church of America / Miroku Association USA',
         intro: 'Reach the national office or local centres using the details below.',
         labels: {
           email: 'Email',
@@ -615,11 +615,11 @@ export const translations: Record<Language, TranslationContent> = {
     },
     donate: {
       title: 'Support Our Mission',
-      intro: 'Your contribution supports our activities and the sharing of Johrei across Canada. We appreciate your participation.',
+      intro: 'Your contribution supports our activities and the sharing of Johrei across USA. We appreciate your participation.',
       placeholder: 'We are currently setting up secure online giving. Please contact our Toronto center for participation inquiries.',
       stripeTitle: 'Donate by Card / Wallet (Stripe)',
       interacTitle: 'Donate by Interac e-Transfer',
-      interacStep1: 'Send Interac e-Transfer to: canada@johrei.ca',
+      interacStep1: 'Send Interac e-Transfer to: info@miroku.us',
       interacStep2: 'Fill out the "Interac Donation Confirmation" form to record your donation',
       formTitle: 'Donation Confirmation',
       formIntro: 'Thank you for your support. Please record the details of your e-Transfer to help us with our monthly participation reporting.',
@@ -669,8 +669,8 @@ export const translations: Record<Language, TranslationContent> = {
     },
     notFound: 'Content not found.',
   },
-  fr: {
-    brand: 'Église Messianique Mondiale du Canada',
+  es: {
+    brand: 'World Messianic Church of America / Miroku Association USA',
     tagline: 'Découvrez le Johrei et un chemin de gratitude',
     nav: {
       home: 'Accueil',
@@ -684,8 +684,8 @@ export const translations: Record<Language, TranslationContent> = {
       resources: 'Ressources',
       testimonials: 'Témoignages',
       contact: 'Contact',
-      canadaUnits: 'Unités Canada',
-      canadaContact: 'Contact Canada',
+      usaUnits: 'Unités USA',
+      usaContact: 'Contact USA',
       donate: 'Don',
       guidelines: 'Directives 2026',
     },
@@ -702,9 +702,9 @@ export const translations: Record<Language, TranslationContent> = {
     home: {
       heroTitle: 'Bienvenue à',
       heroIntro: 'Créer un monde de santé, de prospérité et de paix grâce au pouvoir du Johrei.',
-      heroKicker: 'Église Messianique Mondiale du Canada',
-      heroSubtitle: 'Église Messianique Mondiale du Canada',
-      heroButtons: { findCenter: 'Visiter un centre', firstVisit: 'Explorer les unités du Canada' },
+      heroKicker: 'World Messianic Church of America / Miroku Association USA',
+      heroSubtitle: 'World Messianic Church of America / Miroku Association USA',
+      heroButtons: { findCenter: 'Visiter un centre', firstVisit: 'Explorer les unités du USA' },
       stats: [
         { label: 'Lieux', value: '11' },
         { label: 'Toujours gratuit', value: 'Gratuit' },
@@ -780,14 +780,14 @@ export const translations: Record<Language, TranslationContent> = {
       contactTitle: 'Nous joindre',
       contactBody: 'Nous répondons avec plaisir aux questions et aidons à planifier une visite.',
       centers: {
-        title: 'Unités du Canada',
+        title: 'Unités du USA',
         body: 'Toronto, Montréal, Ottawa et Vancouver : des accès clairs aux centres et groupes locaux.',
-        link: 'Voir les unités au Canada',
+        link: 'Voir les unités au USA',
       },
       resources: {
-        title: 'Contact Canada',
+        title: 'Contact USA',
         body: 'Joignez le bureau national et obtenez un accompagnement bilingue pour les visites, demandes de prière et activités.',
-        link: 'Aller au contact Canada',
+        link: 'Aller au contact USA',
       },
       guideline: {
         title: 'Directive 2026',
@@ -796,12 +796,12 @@ export const translations: Record<Language, TranslationContent> = {
       },
       ready: {
         title: 'Vous êtes les bienvenus pour visiter et vivre le Johrei.',
-        body: 'Trouvez l’unité la plus proche au Canada ou contactez directement l’association.',
+        body: 'Trouvez l’unité la plus proche au USA ou contactez directement l’association.',
       },
     },
     about: {
-      title: 'À propos de l’Église Messianique Mondiale du Canada',
-      body: 'L’Église Messianique Mondiale du Canada se consacre à l’établissement du Paradis sur Terre par la purification spirituelle, le service et la beauté.',
+      title: 'À propos de l’World Messianic Church of America / Miroku Association USA',
+      body: 'L’World Messianic Church of America / Miroku Association USA se consacre à l’établissement du Paradis sur Terre par la purification spirituelle, le service et la beauté.',
       kicker: 'À propos',
       mission: {
         title: 'Mission',
@@ -829,7 +829,7 @@ export const translations: Record<Language, TranslationContent> = {
       },
       leadership: {
         title: 'Intendance',
-        body: 'En tant qu’organisme de bienfaisance enregistré au Canada, nous servons avec transparence, responsabilité et dévouement.',
+        body: 'En tant qu’organisme de bienfaisance enregistré au USA, nous servons avec transparence, responsabilité et dévouement.',
       },
     },
     johrei: {
@@ -1027,15 +1027,15 @@ export const translations: Record<Language, TranslationContent> = {
       intro:
         'Nous répondons avec plaisir à vos questions, pour préparer une visite ou vous relier à un groupe local.',
       options: {
-        general: 'Questions générales : canada@johrei.ca',
-        visit: 'Planifier ou premières questions : +1 (416) 900-5638',
+        general: 'Questions générales : info@miroku.us',
+        visit: 'Planifier ou premières questions : +1 (305) 308-8830',
         learn: 'En savoir plus sur le Johrei : voyez Ressources ou écrivez-nous.',
       },
     },
-    canada: {
+    usa: {
       units: {
-        title: 'Unités au Canada',
-        intro: 'Trouvez les centres et groupes de Johrei au Canada. Contactez le bureau national pour les horaires et lieux de rencontre.',
+        title: 'Unités au USA',
+        intro: 'Trouvez les centres et groupes de Johrei au USA. Contactez le bureau national pour les horaires et lieux de rencontre.',
         cardCta: 'Contacter l’association',
         contactAssociation: 'Contacter l’association',
         labels: {
@@ -1048,33 +1048,33 @@ export const translations: Record<Language, TranslationContent> = {
           {
             name: 'Centre de Toronto',
             address: '3416 Dundas Street West, Suite 209, Toronto, ON M6S 2S1',
-            phone: '+1 (416) 900-5638',
+            phone: '+1 (305) 308-8830',
             leaders: 'Rev. Guilherme de Souza; Rev. Ana De Sousa',
-            email: 'canada@johrei.ca',
+            email: 'info@miroku.us',
           },
           {
             name: 'Groupe d’Ottawa',
-            phone: '+1 (416) 900-5638',
+            phone: '+1 (305) 308-8830',
             contact: 'Rev. Guilherme de Souza',
-            email: 'canada@johrei.ca',
+            email: 'info@miroku.us',
             note: 'Aucune adresse publique - contactez-nous pour les lieux de rencontre et les horaires.',
           },
           {
             name: 'Groupe de Montréal',
-            phone: '+1 (416) 900-5638',
+            phone: '+1 (305) 308-8830',
             contact: 'Rev. Guilherme de Souza',
-            email: 'canada@johrei.ca',
+            email: 'info@miroku.us',
           },
           {
             name: 'Groupe de Vancouver',
-            phone: '+1 (647) 800-8258',
+            phone: '+1 (305) 308-8830',
             contact: 'Rev. Guilherme de Souza',
-            email: 'canada@johrei.ca',
+            email: 'info@miroku.us',
           },
         ],
       },
       contact: {
-        title: 'Contacter l’Église Messianique Mondiale du Canada',
+        title: 'Contacter l’World Messianic Church of America / Miroku Association USA',
         intro: 'Joignez le bureau national ou les centres locaux à l’aide des coordonnées ci-dessous.',
         labels: {
           email: 'Courriel',
@@ -1090,11 +1090,11 @@ export const translations: Record<Language, TranslationContent> = {
     },
     donate: {
       title: 'Soutenez Notre Mission',
-      intro: 'Votre contribution soutient nos activités et le partage du Johrei à travers le Canada. Nous apprécions votre intendance.',
+      intro: 'Votre contribution soutient nos activités et le partage du Johrei à travers le USA. Nous apprécions votre intendance.',
       placeholder: 'Nous mettons actuellement en place des dons en ligne sécurisés. Veuillez contacter notre centre de Toronto pour toute demande d’intendance.',
       stripeTitle: 'Donate by Card / Wallet (Stripe)',
       interacTitle: 'Donner par Virement Interac',
-      interacStep1: 'Envoyez un virement Interac à : canada@johrei.ca',
+      interacStep1: 'Envoyez un virement Interac à : info@miroku.us',
       interacStep2: 'Remplissez le formulaire de "Confirmation de don Interac" pour enregistrer votre don',
       formTitle: 'Confirmation de Don',
       formIntro: 'Merci pour votre soutien. Veuillez enregistrer les détails de votre virement pour nous aider dans nos rapports mensuels d’intendance.',
@@ -1145,3 +1145,81 @@ export const translations: Record<Language, TranslationContent> = {
     notFound: 'Contenu introuvable.',
   },
 }
+
+if (translations.es) {
+  translations.es.nav = {
+    ...translations.es.nav,
+    home: 'Inicio',
+    about: 'Nosotros',
+    locations: 'Centros',
+    events: 'Eventos',
+    resources: 'Recursos',
+    testimonials: 'Testimonios',
+    contact: 'Contacto',
+    donate: 'Donar',
+    guidelines: 'Directrices 2026',
+  }
+
+  translations.es.actions = {
+    ...translations.es.actions,
+    donate: 'Donar',
+    learnMore: 'Saber mas',
+    findCenter: 'Centros',
+    firstVisit: 'Primera visita',
+    contact: 'Contactar',
+    viewAll: 'Ver todo',
+    back: 'Volver',
+    recordDonation: 'Registrar mi donacion',
+  }
+
+  translations.es.donate.fields = {
+    ...translations.es.donate.fields,
+    name: 'Nombre completo',
+    email: 'Correo electronico',
+    amount: 'Monto',
+    date: 'Fecha',
+    fund: 'Tipo de donacion',
+    group: 'Centro',
+    note: 'Mensaje',
+  }
+}
+
+const ptTranslation = JSON.parse(JSON.stringify(translations.en)) as TranslationContent
+
+ptTranslation.nav = {
+  ...ptTranslation.nav,
+  home: 'Inicio',
+  about: 'Sobre',
+  locations: 'Centros',
+  events: 'Eventos',
+  resources: 'Recursos',
+  testimonials: 'Testemunhos',
+  contact: 'Contato',
+  donate: 'Doar',
+  guidelines: 'Diretrizes 2026',
+}
+
+ptTranslation.actions = {
+  ...ptTranslation.actions,
+  donate: 'Doar',
+  learnMore: 'Saiba mais',
+  findCenter: 'Centros',
+  firstVisit: 'Primeira visita',
+  contact: 'Contato',
+  viewAll: 'Ver todos',
+  back: 'Voltar',
+  recordDonation: 'Registrar minha doacao',
+}
+
+ptTranslation.donate.fields = {
+  ...ptTranslation.donate.fields,
+  name: 'Nome completo',
+  email: 'Email',
+  amount: 'Valor',
+  date: 'Data',
+  fund: 'Tipo de doacao',
+  group: 'Centro',
+  note: 'Mensagem',
+}
+
+translations.pt = ptTranslation

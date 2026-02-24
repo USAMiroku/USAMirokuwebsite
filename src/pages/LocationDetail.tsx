@@ -76,7 +76,9 @@ export default function LocationDetail() {
                 ? t.locations.types.comingSoon
                 : language === 'en'
                   ? 'Schedule shared upon request; contact us to plan your visit.'
-                  : 'Horaire communiqué sur demande; contactez-nous pour organiser votre visite.')}
+                  : language === 'es'
+                    ? 'Horario compartido bajo solicitud; contactenos para planificar su visita.'
+                    : 'Agenda compartilhada sob solicitacao; entre em contato para planejar sua visita.')}
           </p>
         </div>
       </section>

@@ -1,4 +1,4 @@
-export type Language = 'en' | 'fr'
+export type Language = 'en' | 'es' | 'pt'
 
 export type LocationType = 'Center' | 'Group' | 'ComingSoon'
 
@@ -25,23 +25,23 @@ export type ResourceCategory =
 export type ResourceItem = {
   id: string
   category: ResourceCategory
-  title: Record<Language, string>
-  summary: Record<Language, string>
-  content: Record<Language, string>
+  title: Record<string, string>
+  summary: Record<string, string>
+  content: Record<string, string>
 }
 
 export type Testimonial = {
   id: string
   person: string
-  summary: Record<Language, string>
-  detail: Record<Language, string>
+  summary: Record<string, string>
+  detail: Record<string, string>
   externalUrl: string
 }
 
 export type EventItem = {
   id: string
-  title: Record<Language, string>
+  title: Record<string, string>
   date?: string
   location?: string
-  description: Record<Language, string>
+  description: Record<string, string>
 }

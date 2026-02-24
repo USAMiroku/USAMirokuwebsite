@@ -3,6 +3,7 @@ import { Card } from '../components/Card'
 import { Section } from '../components/Section'
 import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
+import { resolveDonateHref } from '../config/siteConfig'
 
 const sacredScenesEn = [
   {
@@ -28,35 +29,29 @@ const sacredScenesEn = [
   },
 ]
 
-const sacredScenesFr = [
-  {
-    image: '/images/sacred-grounds/atami-sacred-grounds.jpg',
-    heading: 'Sol sacre d\'Atami',
-    location: 'Atami-shi, prefecture de Shizuoka, Japon.',
-    description:
-      "Connu comme la « Terre celeste », ce site a ete choisi par Meishu-Sama pour ses montagnes, sa mer et son climat doux. Il s'etend sur plus de 176 000 metres carres et offre des vues spectaculaires sur le littoral.",
-  },
-  {
-    image: '/images/sacred-grounds/guarapiranga-sacred-grounds.jpg',
-    heading: 'Sol sacre de Guarapiranga',
-    location: 'Sao Paulo, Bresil.',
-    description:
-      "Inaugure en 1995 sur les rives du reservoir de Guarapiranga, ce complexe de 327 500 metres carres est un « prototype du paradis » qui harmonise nature et spiritualite.",
-  },
-  {
-    image: '/images/sacred-grounds/saraburi-sacred-grounds.jpg',
-    heading: 'Sol sacre de Saraburi',
-    location: 'Saraburi, Thailande.',
-    description:
-      "Consacre en 1996, ce site de 160 hectares a ete le deuxieme sol sacre construit hors du Japon. Il abrite un temple messianique, des jardins botaniques et une ecole d'agriculture naturelle.",
-  },
-]
-
 export default function Home() {
   const { t, language } = useTranslation()
-  const sacredScenes = language === 'fr' ? sacredScenesFr : sacredScenesEn
-  const guidelineTitle = language === 'fr' ? t.guidelines.titleFr : t.guidelines.title
-  const guidelineMotto = language === 'fr' ? t.guidelines.mottoFr : t.guidelines.motto
+  const donateHref = resolveDonateHref()
+  const isInternalDonate = donateHref.startsWith('/')
+  const sacredScenes = sacredScenesEn
+
+  const guidelineCopy =
+    language === 'es'
+      ? {
+          title: 'Directrices 2026',
+          motto:
+            'Ayudar a otros a dedicarse a la construccion del Paraiso en la Tierra, a traves de las practicas de fe, es el camino de nuestra salvacion.',
+        }
+      : language === 'pt'
+        ? {
+            title: 'Diretrizes 2026',
+            motto:
+              'Ajudar outras pessoas a se dedicarem a construcao do Paraiso Terrestre, por meio das praticas de fe, e o caminho para nossa salvacao.',
+          }
+        : {
+            title: t.guidelines.title,
+            motto: t.guidelines.motto,
+          }
 
   usePageMeta({
     title: `${t.home.heroTitle} | ${t.brand}`,
@@ -64,20 +59,34 @@ export default function Home() {
   })
 
   const copy =
-    language === 'fr'
+    language === 'es'
       ? {
-          pillarsTag: 'Les trois piliers',
-          galleryTag: 'Inspiration et tranquillité',
-          galleryTitle: 'Atami, Guarapiranga et Saraburi',
+          pillarsTag: 'Los tres pilares',
+          galleryTag: 'Inspiracion y serenidad',
+          galleryTitle: 'Atami, Guarapiranga y Saraburi',
           galleryBody:
-            'Trois sols sacrés qui unissent la beauté naturelle, l’architecture sacrée et une atmosphère de prière et de gratitude.',
+            'Tres Suelos Sagrados donde la belleza natural, la arquitectura sagrada y el espiritu de gratitud se unen.',
           faqBody:
-            'Trouvez rapidement des réponses claires sur le Johrei, les séances et ce à quoi vous attendre lors de votre première visite.',
-          faqCta: 'Voir la FAQ',
-          actionsTitle: 'Visiter, contacter, soutenir',
+            'Encuentre respuestas claras sobre Johrei, las sesiones y que esperar en su primera visita.',
+          faqCta: 'Ver FAQ',
+          actionsTitle: 'Visitar, Contactar, Apoyar',
           actionsBody:
-            'Choisissez le chemin qui vous convient: recevoir le Johrei, contacter l’association ou soutenir la mission.',
+            'Elija su camino: recibir Johrei, contactar la asociacion o apoyar la mision.',
         }
+      : language === 'pt'
+        ? {
+            pillarsTag: 'Os tres pilares',
+            galleryTag: 'Inspiracao e serenidade',
+            galleryTitle: 'Atami, Guarapiranga e Saraburi',
+            galleryBody:
+              'Tres Solos Sagrados onde beleza natural, arquitetura sagrada e espirito de gratidao se unem.',
+            faqBody:
+              'Encontre respostas claras sobre Johrei, sessoes e o que esperar na primeira visita.',
+            faqCta: 'Ver FAQ',
+            actionsTitle: 'Visitar, Contatar, Apoiar',
+            actionsBody:
+              'Escolha seu caminho: receber Johrei, entrar em contato com a associacao ou apoiar a missao.',
+          }
       : {
           pillarsTag: 'The Three Pillars',
           galleryTag: 'Inspiration and tranquility',
@@ -153,9 +162,9 @@ export default function Home() {
 
       <Section className="bg-sanctuary-100">
         <div className="mx-auto max-w-4xl rounded-3xl border border-[rgba(184,134,11,0.25)] bg-white p-8 text-center shadow-sanctuary md:p-10">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-sage-600">{guidelineTitle}</p>
+          <p className="text-[11px] uppercase tracking-[0.3em] text-sage-600">{guidelineCopy.title}</p>
           <blockquote className="mt-4 text-lg font-serif leading-relaxed text-slate-700 md:text-2xl">
-            {guidelineMotto}
+            {guidelineCopy.motto}
           </blockquote>
         </div>
       </Section>
@@ -216,7 +225,18 @@ export default function Home() {
           <p className="text-lg text-slate-600">{copy.actionsBody}</p>
           <div className="flex flex-wrap justify-center gap-3">
             <ButtonLink to="/locations" variant="secondary">{t.nav.locations}</ButtonLink>
-            <ButtonLink to="/donate" variant="accent">{t.actions.donate}</ButtonLink>
+            {isInternalDonate ? (
+              <ButtonLink to={donateHref} variant="accent">{t.actions.donate}</ButtonLink>
+            ) : (
+              <a
+                href={donateHref}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-11 items-center justify-center rounded-full bg-deep-slate px-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-all hover:bg-sage-600"
+              >
+                {t.actions.donate}
+              </a>
+            )}
             <ButtonLink to="/contact" variant="outline">{t.actions.contact}</ButtonLink>
           </div>
         </div>

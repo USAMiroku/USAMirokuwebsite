@@ -15,7 +15,7 @@ const faqItemsEn = [
   },
   {
     q: 'Do I have to pay for a Johrei session?',
-    a: 'In accordance with Meishu-sama\'s spirit of service, Johrei is generally offered freely or through voluntary donations. Our goal is to share the Light with as many people as possible. Please check with your local center for specific visitor hours.',
+    a: "In accordance with Meishu-sama's spirit of service, Johrei is generally offered freely or through voluntary donations. Our goal is to share the Light with as many people as possible. Please check with your local center for specific visitor hours.",
   },
   {
     q: 'How long does a session last?',
@@ -31,59 +31,98 @@ const faqItemsEn = [
   },
 ]
 
-const faqItemsFr = [
+const faqItemsEs = [
   {
-    q: 'Qu’est-ce que le Johrei, exactement?',
-    a: 'Le Johrei est une pratique spirituelle qui consiste à canaliser la Lumière Divine d’une personne vers une autre. Le mot signifie littéralement « purification de l’esprit ». Pendant une séance, le pratiquant dirige la main vers le receveur pour aider à dissiper les nuages spirituels, compris comme la cause profonde des souffrances physiques, mentales et émotionnelles.',
+    q: 'Que es exactamente Johrei?',
+    a: 'Johrei es una practica espiritual que consiste en canalizar la Luz Divina de una persona a otra. El termino significa literalmente "purificacion del espiritu".',
   },
   {
-    q: 'Est-ce une religion?',
-    a: 'Même si les enseignements de Meishu-sama ont des bases spirituelles, sa philosophie est universelle. Des personnes de tous horizons, y compris celles appartenant déjà à d’autres traditions religieuses ou se considérant laïques, pratiquent ces principes. L’objectif est l’amélioration concrète de la vie humaine et la construction d’un Paradis sur Terre.',
+    q: 'Es una religion?',
+    a: 'Aunque las ensenanzas de Meishu-sama tienen una base espiritual, su filosofia es universal y abierta para personas de todos los contextos.',
   },
   {
-    q: 'Doit-on payer pour recevoir le Johrei?',
-    a: 'Conformément à l’esprit de service de Meishu-sama, le Johrei est généralement offert gratuitement ou par don volontaire. Notre objectif est de partager la Lumière avec le plus grand nombre. Veuillez vérifier auprès de votre centre local pour les horaires d’accueil.',
+    q: 'Hay que pagar para recibir Johrei?',
+    a: 'Johrei normalmente se ofrece gratuitamente o con donaciones voluntarias, de acuerdo con el espiritu de servicio.',
   },
   {
-    q: 'Combien de temps dure une séance?',
-    a: 'Une séance dure habituellement entre 15 et 30 minutes. C’est une expérience calme et méditative. Vous restez simplement assis confortablement pendant que le pratiquant canalise la Lumière. La plupart des personnes ressentent une profonde détente, de la chaleur ou une clarté mentale pendant et après la séance.',
+    q: 'Cuanto dura una sesion?',
+    a: 'Una sesion tipica dura entre 15 y 30 minutos en un ambiente de calma y meditacion.',
   },
   {
-    q: 'Quel est le lien entre l’Art et la guérison?',
-    a: 'Meishu-sama enseignait que la beauté est une manifestation physique de la Lumière Divine. Lorsque nous contemplons une belle peinture ou une fleur pleinement épanouie, notre esprit s’élève naturellement. Cette élévation spirituelle est une forme de guérison qui complète la pratique du Johrei et de l’Agriculture Naturelle.',
+    q: 'Cual es la conexion entre Arte y sanacion?',
+    a: 'Meishu-sama enseno que la belleza eleva el espiritu y complementa la practica de Johrei y la Agricultura Natural.',
   },
   {
-    q: 'Faut-il une formation spéciale pour commencer?',
-    a: 'Pas du tout. Vous pouvez commencer dès aujourd’hui en appliquant simplement les principes de gratitude et de beauté chez vous. Si vous souhaitez aller plus loin dans la pratique du Johrei, la plupart des centres proposent des cours d’introduction pour comprendre la philosophie et, éventuellement, apprendre à canaliser la Lumière.',
+    q: 'Necesito entrenamiento especial para comenzar?',
+    a: 'No. Puedes empezar hoy practicando gratitud y apreciacion por la belleza en tu vida diaria.',
+  },
+]
+
+const faqItemsPt = [
+  {
+    q: 'O que e Johrei?',
+    a: 'Johrei e uma pratica espiritual de canalizacao da Luz Divina de uma pessoa para outra, visando a purificacao do espirito.',
+  },
+  {
+    q: 'Isso e uma religiao?',
+    a: 'Embora tenha base espiritual, a filosofia de Meishu-sama e universal e acolhe pessoas de diferentes caminhos.',
+  },
+  {
+    q: 'Preciso pagar para receber Johrei?',
+    a: 'Em geral, o Johrei e oferecido gratuitamente ou por doacao voluntaria, em espirito de servico.',
+  },
+  {
+    q: 'Quanto tempo dura a sessao?',
+    a: 'Uma sessao costuma durar entre 15 e 30 minutos, em um ambiente de calma e meditacao.',
+  },
+  {
+    q: 'Qual a relacao entre Arte e cura?',
+    a: 'Meishu-sama ensinou que a beleza eleva o espirito e complementa a pratica de Johrei e Agricultura Natural.',
+  },
+  {
+    q: 'Preciso de treinamento especial para comecar?',
+    a: 'Nao. Voce pode comecar hoje aplicando gratidao e beleza no seu cotidiano.',
   },
 ]
 
 export default function FAQ() {
   const { t, language } = useTranslation()
-  const isFr = language === 'fr'
-  const faqs = isFr ? faqItemsFr : faqItemsEn
 
-  const copy = isFr
-    ? {
-        kicker: 'Foire aux questions',
-        title: 'Questions frequentes',
-        intro: 'Reponses claires sur le Johrei, la pratique et ce a quoi vous attendre lors de votre premiere visite.',
-        stillTitle: 'Vous avez encore des questions?',
-        stillBody:
-          'Nous serions heureux de vous entendre. Que vous recherchiez une communaute locale ou que vous vouliez en savoir plus sur un enseignement precis, nos portes vous sont ouvertes.',
-        contactCta: 'Nous contacter / Envoyer une demande',
-        centerCta: 'Trouver un centre pres de chez vous',
-      }
-    : {
-        kicker: 'Frequently Asked Questions',
-        title: 'Frequently Asked Questions',
-        intro: 'Clear answers about Johrei, Meishu-sama’s teachings, and what to expect on your first visit.',
-        stillTitle: 'Still have questions?',
-        stillBody:
-          'We’d love to hear from you. Whether you are looking for a local community or want to learn more about a specific teaching, our doors are open.',
-        contactCta: 'Contact Us / Send an Inquiry',
-        centerCta: 'Find a Center Near You',
-      }
+  const faqs = language === 'es' ? faqItemsEs : language === 'pt' ? faqItemsPt : faqItemsEn
+
+  const copy =
+    language === 'es'
+      ? {
+          kicker: 'Preguntas frecuentes',
+          title: 'Preguntas frecuentes',
+          intro: 'Respuestas claras sobre Johrei, la practica y que esperar en su primera visita.',
+          stillTitle: 'Todavia tiene preguntas?',
+          stillBody:
+            'Nos encantara escucharle. Si busca una comunidad local o desea conocer una ensenanza especifica, nuestras puertas estan abiertas.',
+          contactCta: 'Contactanos / Enviar consulta',
+          centerCta: 'Buscar un centro cercano',
+        }
+      : language === 'pt'
+        ? {
+            kicker: 'Perguntas frequentes',
+            title: 'Perguntas frequentes',
+            intro: 'Respostas claras sobre Johrei, a pratica e o que esperar na primeira visita.',
+            stillTitle: 'Ainda tem duvidas?',
+            stillBody:
+              'Queremos ouvir voce. Se procura uma comunidade local ou deseja aprender mais sobre um ensinamento especifico, nossas portas estao abertas.',
+            contactCta: 'Contato / Enviar mensagem',
+            centerCta: 'Encontrar um centro proximo',
+          }
+        : {
+            kicker: 'Frequently Asked Questions',
+            title: 'Frequently Asked Questions',
+            intro: 'Clear answers about Johrei, Meishu-sama’s teachings, and what to expect on your first visit.',
+            stillTitle: 'Still have questions?',
+            stillBody:
+              'We’d love to hear from you. Whether you are looking for a local community or want to learn more about a specific teaching, our doors are open.',
+            contactCta: 'Contact Us / Send an Inquiry',
+            centerCta: 'Find a Center Near You',
+          }
 
   usePageMeta({
     title: `${copy.title} | ${t.brand}`,

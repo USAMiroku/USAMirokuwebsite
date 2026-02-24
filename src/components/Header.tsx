@@ -1,7 +1,27 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation as useRouteLocation } from 'react-router-dom'
 import { useTranslation } from '../context/TranslationContext'
+import { resolveDonateHref, siteConfig } from '../config/siteConfig'
 import { LanguageToggle } from './LanguageToggle'
+
+function DonateButton({ className, onClick }: { className: string; onClick?: () => void }) {
+  const { t } = useTranslation()
+  const donateHref = resolveDonateHref()
+
+  if (donateHref.startsWith('/')) {
+    return (
+      <Link to={donateHref} onClick={onClick} className={className}>
+        {t.actions.donate}
+      </Link>
+    )
+  }
+
+  return (
+    <a href={donateHref} target="_blank" rel="noreferrer" onClick={onClick} className={className}>
+      {t.actions.donate}
+    </a>
+  )
+}
 
 export function Header() {
   const { t } = useTranslation()
@@ -40,24 +60,13 @@ export function Header() {
         }`}
       >
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 md:px-12">
-          {/* Logo Section */}
           <Link to="/" onClick={closeMobileMenu} className="flex items-center gap-3">
-            <img
-              src="/logo.png"
-              alt={t.brand}
-              className="h-11 w-auto"
-            />
+            <img src="/logo.png" alt={siteConfig.organizationName} className="h-11 w-auto" />
             <div className="flex flex-col leading-none">
-              <span className="text-sm font-bold tracking-tight text-deep-slate uppercase">
-                {t.brand}
-              </span>
-              <span className="text-sm font-bold tracking-tight text-deep-slate uppercase">
-                Miroku Association Canada
-              </span>
+              <span className="text-sm font-bold tracking-tight text-deep-slate uppercase">{siteConfig.shortName}</span>
             </div>
           </Link>
 
-          {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navLinks.map((link) => (
               <NavLink
@@ -75,19 +84,14 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Actions */}
           <div className="flex items-center gap-2 md:gap-3">
             <LanguageToggle className="hidden sm:inline-flex bg-white/75 shadow-sm" />
 
-            <Link
-              to="/donate"
+            <DonateButton
               onClick={closeMobileMenu}
               className="inline-flex h-9 items-center justify-center rounded-full bg-divine-gold px-4 text-[10px] font-semibold tracking-[0.14em] uppercase text-white transition-all hover:bg-[#9e730a] md:h-10 md:px-5"
-            >
-              {t.actions.donate}
-            </Link>
+            />
 
-            {/* Mobile Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 text-deep-slate"
@@ -103,9 +107,11 @@ export function Header() {
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 z-40 bg-white px-8 py-24 transition-all duration-500 lg:hidden ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        }`}>
+      <div
+        className={`fixed inset-0 z-40 bg-white px-8 py-24 transition-all duration-500 lg:hidden ${
+          isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+        }`}
+      >
         <nav className="flex flex-col gap-8 text-center pt-12">
           {navLinks.map((link) => (
             <Link
@@ -118,13 +124,10 @@ export function Header() {
             </Link>
           ))}
           <div className="mt-12 pt-12 border-t border-slate-100 flex flex-col items-center gap-8">
-            <Link
-              to="/donate"
+            <DonateButton
               onClick={closeMobileMenu}
               className="w-full max-w-xs rounded-full bg-amber-500 py-3 text-[11px] font-semibold tracking-[0.14em] uppercase text-white text-center"
-            >
-              {t.actions.donate}
-            </Link>
+            />
             <LanguageToggle />
           </div>
         </nav>

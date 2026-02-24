@@ -2,8 +2,4 @@ User-agent: *
 Disallow: /api/
 Allow: /
 
-Sitemap: /sitemap.xml
-User-agent: *
-Allow: /
-
-Sitemap: https://johrei.ca/sitemap.xml
+Sitemap: https://usa-mirokuwebsite.vercel.app/sitemap.xml

@@ -88,9 +88,9 @@ export default function FirstVisit() {
       {/* Location CTA */}
       <section className="py-40 text-center px-6">
         <div className="max-w-4xl mx-auto space-y-12">
-          <h2 className="text-4xl md:text-6xl font-serif text-deep-slate">Find a Sanctuary Near You</h2>
+          <h2 className="text-4xl md:text-6xl font-serif text-deep-slate">Find a Center Near You</h2>
           <p className="text-xl text-slate-500 font-serif italic">
-            Our doors are open across Canada. Search our directory to find a center or regional gathering.
+            Our doors are open across the United States. Search our directory to find a center or regional gathering.
           </p>
           <ButtonLink to="/locations" variant="primary" className="h-16 px-16">
             View All Locations

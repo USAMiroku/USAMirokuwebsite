@@ -4,9 +4,6 @@ import { Layout } from './components/Layout'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Donate from './pages/Donate'
-import CanadaUnits from './pages/CanadaUnits'
-import CanadaContact from './pages/CanadaContact'
-import CanadaActivities from './pages/CanadaActivities'
 import EventDetail from './pages/EventDetail'
 import Events from './pages/Events'
 import FAQ from './pages/FAQ'
@@ -44,9 +41,6 @@ function App() {
         <Route path="testimonials" element={<Testimonials />} />
         <Route path="testimonials/:id" element={<TestimonialDetail />} />
         <Route path="contact" element={<Contact />} />
-        <Route path="canada/units" element={<CanadaUnits />} />
-        <Route path="canada/contact" element={<CanadaContact />} />
-        <Route path="canada/activities" element={<CanadaActivities />} />
         <Route path="donate" element={<Donate />} />
         <Route path="faq" element={<FAQ />} />
         <Route path="guidelines-2026" element={<Guidelines2026 />} />

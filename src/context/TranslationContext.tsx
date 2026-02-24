@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { translations, type Language, type TranslationContent } from '../data/translations'
+import { siteConfig } from '../config/siteConfig'
 
 type TranslationContextValue = {
   language: Language
@@ -11,11 +12,15 @@ const TranslationContext = createContext<TranslationContextValue | undefined>(un
 
 const STORAGE_KEY = 'miroku-lang'
 
+function isLanguage(value: string | null): value is Language {
+  return value === 'en' || value === 'es' || value === 'pt'
+}
+
 export function TranslationProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>(() => {
     if (typeof window === 'undefined') return 'en'
-    const stored = localStorage.getItem(STORAGE_KEY) as Language | null
-    return stored === 'en' || stored === 'fr' ? stored : 'en'
+    const stored = localStorage.getItem(STORAGE_KEY)
+    return isLanguage(stored) ? stored : 'en'
   })
 
   useEffect(() => {
@@ -23,11 +28,17 @@ export function TranslationProvider({ children }: { children: React.ReactNode })
   }, [language])
 
   const value = useMemo(
-    () => ({
-      language,
-      setLanguage,
-      t: translations[language],
-    }),
+    () => {
+      const selected = (translations[language] ?? translations.en) as TranslationContent
+      return {
+        language,
+        setLanguage,
+        t: {
+          ...selected,
+          brand: siteConfig.organizationName,
+        },
+      }
+    },
     [language],
   )
 

@@ -35,7 +35,7 @@ export default function Resources() {
         {resources.map((res) => (
           <Card
             key={res.id}
-            title={res.title[language]}
+            title={res.title[language] ?? res.title.en}
             eyebrow={res.category}
             cta={
               <Link to={`/resources/${res.id}`} className="text-sm font-semibold text-emerald-700 hover:text-emerald-800">
@@ -43,7 +43,7 @@ export default function Resources() {
               </Link>
             }
           >
-            {res.summary[language]}
+            {res.summary[language] ?? res.summary.en}
           </Card>
         ))}
       </div>
