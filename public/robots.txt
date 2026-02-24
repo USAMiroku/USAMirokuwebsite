@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /api/
+Allow: /
+
+Sitemap: /sitemap.xml
+User-agent: *
+Allow: /
+
+Sitemap: https://johrei.ca/sitemap.xml

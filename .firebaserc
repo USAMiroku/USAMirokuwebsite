@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "mirokucanada-site"
+  },
+  "targets": {
+    "mirokucanada-site": {
+      "hosting": {
+        "prod": [
+          "mirokucanada-site"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
