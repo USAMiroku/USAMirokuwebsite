@@ -51,7 +51,7 @@ export function WelcomeOverlay() {
     >
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/hero-video-poster-v2.jpg')" }}
+        style={{ backgroundImage: "url('/images/johrei-group.png')" }}
       />
       <div className="absolute inset-0 bg-black/40" />
 

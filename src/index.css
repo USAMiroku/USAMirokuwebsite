@@ -85,17 +85,14 @@
   }
 
   .sacred-hero-image {
-    background-image: url("/images/hero-video-poster-v2.jpg");
+    background-image: url("/images/johrei-group.png");
     background-size: cover;
     background-position: center 40%;
     background-repeat: no-repeat;
     image-rendering: auto;
   }
 
-  .hero-video {
-    transform: scale(1.03);
-    filter: saturate(1.06) contrast(1.04);
-  }
+
 
   .oasis-glow {
     position: relative;
@@ -120,11 +117,7 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-video {
-    display: none;
-  }
-}
+
 
 /* Typography Utilities */
 .font-playfair {
