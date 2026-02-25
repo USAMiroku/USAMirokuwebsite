@@ -105,18 +105,12 @@ export default function Home() {
     <div className="min-h-screen bg-sanctuary-100 text-deep-slate">
       <section className="relative isolate overflow-hidden border-b border-[rgba(184,134,11,0.2)] px-6 pt-32 pb-24 text-center">
         <div className="sacred-hero-image absolute inset-0 -z-30" />
-        <video
-          className="hero-video pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover object-center"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          poster="/images/hero-video-poster-v2.jpg"
+        <img
+          src="/images/johrei-group.png"
+          alt="Johrei group session"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover object-center"
           aria-hidden="true"
-        >
-          <source src="/videos/hero-mountains-v2.mp4" type="video/mp4" />
-        </video>
+        />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/38 via-black/20 to-black/42" />
 
         <div className="mx-auto max-w-5xl space-y-7 text-white">
@@ -137,16 +131,7 @@ export default function Home() {
               {t.nav.locations}
             </ButtonLink>
           </div>
-          <p className="pt-2 text-xs text-white/80">
-            <a
-              href="https://www.vecteezy.com/free-videos/mountains"
-              target="_blank"
-              rel="noreferrer"
-              className="underline decoration-white/60 underline-offset-2 hover:text-white"
-            >
-              Mountains Stock Videos by Vecteezy
-            </a>
-          </p>
+
         </div>
       </section>
 
