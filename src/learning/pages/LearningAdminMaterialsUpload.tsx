@@ -173,9 +173,14 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
       <Section className="bg-white">
         <div className="max-w-5xl mx-auto px-6 space-y-8">
           <div className="flex justify-between items-center flex-wrap gap-3">
-            <Link to="/learn/admin/registrations" className="text-slate-600 hover:text-sage-600 underline text-sm">
-              Back to Admin
-            </Link>
+            <div className="flex gap-3">
+              <Link to="/learn/admin/registrations" className="text-slate-600 hover:text-sage-600 underline text-sm">
+                Registrations
+              </Link>
+              <Link to="/learn/admin/centers" className="text-slate-600 hover:text-sage-600 underline text-sm">
+                Centers & Activities
+              </Link>
+            </div>
             <p className="text-xs uppercase tracking-[0.18em] font-bold text-slate-400">Role: {role}</p>
           </div>
 

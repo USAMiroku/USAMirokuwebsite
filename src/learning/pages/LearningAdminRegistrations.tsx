@@ -195,6 +195,9 @@ function AdminRegistrationsInner({ role }: { role: string }) {
             <Link to="/learn" className="text-slate-600 hover:text-sage-600 underline text-sm">
               Back to Learning
             </Link>
+            <ButtonLink to="/learn/admin/centers" variant="outline">
+              Centers & Activities
+            </ButtonLink>
             <ButtonLink to="/learn/admin/materials" variant="outline">
               Upload Materials
             </ButtonLink>

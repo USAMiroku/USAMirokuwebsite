@@ -1,13 +1,15 @@
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { ButtonLink } from '../components/ButtonLink'
 import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { locations } from '../data/locations'
+import { useCenterActivities } from '../learning/hooks/useCenterActivities'
 
 export default function LocationDetail() {
   const { id } = useParams()
   const { t, language } = useTranslation()
   const location = locations.find((l) => l.id === id)
+  const { activities, isLoading } = useCenterActivities(id ?? '')
 
   usePageMeta({
     title: location ? `${location.name} | ${t.brand}` : `${t.notFound} | ${t.brand}`,
@@ -82,6 +84,47 @@ export default function LocationDetail() {
           </p>
         </div>
       </section>
+
+      {location.type !== 'ComingSoon' && (
+        <section className="mt-12 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-900">
+            {language === 'en' ? 'Classes & Activities' : language === 'es' ? 'Clases y actividades' : 'Aulas e atividades'}
+          </h2>
+          {isLoading ? (
+            <p className="mt-2 text-sm text-slate-500">{language === 'en' ? 'Loading...' : 'Cargando...'}</p>
+          ) : activities.length > 0 ? (
+            <div className="mt-4 space-y-2">
+              {activities.slice(0, 5).map((a) => (
+                <p key={a.id} className="text-sm text-slate-700">
+                  {a.title}
+                  <span className="ml-2 text-slate-500 text-xs">({a.type.replace('_', ' ')})</span>
+                </p>
+              ))}
+              <div className="mt-4">
+                <ButtonLink to={`/learn/centers/${location.id}`} variant="accent">
+                  {language === 'en' ? 'Learn more & sign up' : language === 'es' ? 'Ver más e inscribirse' : 'Saiba mais e inscreva-se'}
+                </ButtonLink>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-2 text-sm text-slate-600">
+              {language === 'en'
+                ? 'Find classes, study sessions, and learning activities at this center.'
+                : language === 'es'
+                  ? 'Encuentre clases, sesiones de estudio y actividades de aprendizaje en este centro.'
+                  : 'Encontre aulas, sessões de estudo e atividades de aprendizado neste centro.'}
+            </p>
+          )}
+          <div className="mt-4">
+            <Link
+              to={`/learn/centers/${location.id}`}
+              className="text-sm font-semibold text-sage-600 hover:text-sage-700 underline"
+            >
+              {language === 'en' ? 'View center activities and info →' : language === 'es' ? 'Ver actividades e información del centro →' : 'Ver atividades e informações do centro →'}
+            </Link>
+          </div>
+        </section>
+      )}
     </div>
   )
 }

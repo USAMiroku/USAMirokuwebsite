@@ -4,6 +4,17 @@ Follow these steps in order. You can copy and paste where indicated.
 
 ---
 
+## Migration: Add center_id (if you already ran the main schema)
+
+If you ran the main `learning_schema.sql` before, run this in Supabase SQL Editor to link activities to centers:
+
+```sql
+alter table public.learning_activities add column if not exists center_id text;
+create index if not exists learning_activities_center_id_idx on public.learning_activities(center_id);
+```
+
+---
+
 ## Step 1: Get Your Supabase Values
 
 ### 1a. Open Supabase

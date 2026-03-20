@@ -24,7 +24,9 @@ import LearningAccount from './learning/pages/LearningAccount'
 import LearningActivities from './learning/pages/LearningActivities'
 import LearningActivityDetail from './learning/pages/LearningActivityDetail'
 import LearningAdminRegistrations from './learning/pages/LearningAdminRegistrations'
+import LearningAdminCenterActivities from './learning/pages/LearningAdminCenterActivities'
 import LearningAdminMaterialsUpload from './learning/pages/LearningAdminMaterialsUpload'
+import LearningCenterActivities from './learning/pages/LearningCenterActivities'
 import LearningHome from './learning/pages/LearningHome'
 import LearningSignIn from './learning/pages/LearningSignIn'
 import LearningSignUp from './learning/pages/LearningSignUp'
@@ -56,12 +58,14 @@ function App() {
         <Route path="learn" element={<LearningHome />} />
         <Route path="learn/activities" element={<LearningActivities />} />
         <Route path="learn/activities/:activityId" element={<LearningActivityDetail />} />
+        <Route path="learn/centers/:centerId" element={<LearningCenterActivities />} />
         <Route path="learn/sessions/:sessionId/register" element={<LearningSessionRegister />} />
         <Route path="learn/account" element={<LearningAccount />} />
         <Route path="learn/sign-in" element={<LearningSignIn />} />
         <Route path="learn/sign-up" element={<LearningSignUp />} />
         <Route path="learn/admin" element={<LearningAdminRegistrations />} />
         <Route path="learn/admin/registrations" element={<LearningAdminRegistrations />} />
+        <Route path="learn/admin/centers" element={<LearningAdminCenterActivities />} />
         <Route path="learn/admin/materials" element={<LearningAdminMaterialsUpload />} />
         <Route path="*" element={<Home />} />
       </Route>

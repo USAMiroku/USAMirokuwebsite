@@ -91,7 +91,7 @@ export default function Locations() {
                         <ButtonLink to={`/locations/${loc.id}`} variant="primary" className="h-11">
                           {copy.visitCenter}
                         </ButtonLink>
-                        <ButtonLink to={`/locations/${loc.id}`} variant="ghost" className="text-slate-400 group-hover:text-sage-600 transition-colors h-8">
+                        <ButtonLink to={`/learn/centers/${loc.id}`} variant="ghost" className="text-slate-400 group-hover:text-sage-600 transition-colors h-8">
                           {copy.viewSessions} →
                         </ButtonLink>
                       </div>

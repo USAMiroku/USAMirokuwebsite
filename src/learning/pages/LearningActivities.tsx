@@ -4,12 +4,14 @@ import { Section } from '../../components/Section'
 import { ButtonLink } from '../../components/ButtonLink'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { supabase } from '../lib/supabaseClient'
+import { siteConfig } from '../../config/siteConfig'
 
 type Activity = {
   id: string
   type: 'class' | 'study_session' | 'event' | 'self_study'
   title: string
   description: string | null
+  center_id: string | null
 }
 
 export default function LearningActivities() {
@@ -30,7 +32,7 @@ export default function LearningActivities() {
 
       const { data, error: queryError } = await supabase
         .from('learning_activities')
-        .select('id,type,title,description')
+        .select('id,type,title,description,center_id')
         .order('created_at', { ascending: false })
         .limit(50)
 
@@ -75,22 +77,33 @@ export default function LearningActivities() {
           ) : null}
 
           <div className="grid gap-6 md:grid-cols-2">
-            {activities.map((activity) => (
-              <div key={activity.id} className="rounded-3xl border border-[rgba(184,134,11,0.22)] bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
-                <div className="space-y-3">
-                  <p className="text-[11px] uppercase tracking-[0.16em] font-semibold text-sage-600">{activity.type.replace('_',' ')}</p>
-                  <h2 className="text-2xl font-serif text-deep-slate">{activity.title}</h2>
-                  {activity.description ? (
-                    <p className="text-sm leading-relaxed text-slate-600">{activity.description}</p>
-                  ) : null}
+            {activities.map((activity) => {
+              const center = activity.center_id ? siteConfig.centers.find((c) => c.id === activity.center_id) : null
+              return (
+                <div key={activity.id} className="rounded-3xl border border-[rgba(184,134,11,0.22)] bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+                  <div className="space-y-3">
+                    <p className="text-[11px] uppercase tracking-[0.16em] font-semibold text-sage-600">
+                      {activity.type.replace('_', ' ')}
+                      {center ? ` · ${center.name}` : ''}
+                    </p>
+                    <h2 className="text-2xl font-serif text-deep-slate">{activity.title}</h2>
+                    {activity.description ? (
+                      <p className="text-sm leading-relaxed text-slate-600">{activity.description}</p>
+                    ) : null}
+                  </div>
+                  <div className="mt-6 flex gap-3">
+                    <ButtonLink to={`/learn/activities/${activity.id}`} variant="primary">
+                      View Sessions
+                    </ButtonLink>
+                    {center ? (
+                      <ButtonLink to={`/learn/centers/${activity.center_id}`} variant="ghost">
+                        Center
+                      </ButtonLink>
+                    ) : null}
+                  </div>
                 </div>
-                <div className="mt-6">
-                  <ButtonLink to={`/learn/activities/${activity.id}`} variant="primary">
-                    View Sessions
-                  </ButtonLink>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           <div className="pt-4 text-center">
