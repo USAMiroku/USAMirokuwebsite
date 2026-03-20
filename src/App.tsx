@@ -20,6 +20,15 @@ import ResourceDetail from './pages/ResourceDetail'
 import Resources from './pages/Resources'
 import TestimonialDetail from './pages/TestimonialDetail'
 import Testimonials from './pages/Testimonials'
+import LearningAccount from './learning/pages/LearningAccount'
+import LearningActivities from './learning/pages/LearningActivities'
+import LearningActivityDetail from './learning/pages/LearningActivityDetail'
+import LearningAdminRegistrations from './learning/pages/LearningAdminRegistrations'
+import LearningAdminMaterialsUpload from './learning/pages/LearningAdminMaterialsUpload'
+import LearningHome from './learning/pages/LearningHome'
+import LearningSignIn from './learning/pages/LearningSignIn'
+import LearningSignUp from './learning/pages/LearningSignUp'
+import LearningSessionRegister from './learning/pages/LearningSessionRegister'
 
 function App() {
   return (
@@ -44,6 +53,16 @@ function App() {
         <Route path="donate" element={<Donate />} />
         <Route path="faq" element={<FAQ />} />
         <Route path="guidelines-2026" element={<Guidelines2026 />} />
+        <Route path="learn" element={<LearningHome />} />
+        <Route path="learn/activities" element={<LearningActivities />} />
+        <Route path="learn/activities/:activityId" element={<LearningActivityDetail />} />
+        <Route path="learn/sessions/:sessionId/register" element={<LearningSessionRegister />} />
+        <Route path="learn/account" element={<LearningAccount />} />
+        <Route path="learn/sign-in" element={<LearningSignIn />} />
+        <Route path="learn/sign-up" element={<LearningSignUp />} />
+        <Route path="learn/admin" element={<LearningAdminRegistrations />} />
+        <Route path="learn/admin/registrations" element={<LearningAdminRegistrations />} />
+        <Route path="learn/admin/materials" element={<LearningAdminMaterialsUpload />} />
         <Route path="*" element={<Home />} />
       </Route>
     </Routes>

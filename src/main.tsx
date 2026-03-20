@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { TranslationProvider } from './context/TranslationContext'
+import { LearningAuthProvider } from './learning/context/LearningAuthContext'
 
 const gaId = import.meta.env.VITE_GA4_ID
 if (gaId && typeof window !== 'undefined') {
@@ -26,7 +27,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <TranslationProvider>
-        <App />
+        <LearningAuthProvider>
+          <App />
+        </LearningAuthProvider>
       </TranslationProvider>
     </BrowserRouter>
   </StrictMode>,

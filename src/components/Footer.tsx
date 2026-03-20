@@ -26,6 +26,7 @@ export function Footer() {
 
   const links = [
     { to: '/', label: t.nav.home },
+    { to: '/learn', label: 'Learn' },
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/meishu-sama', label: t.nav.meishuSama },

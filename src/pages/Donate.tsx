@@ -25,26 +25,31 @@ type DonationCardProps = {
   form: DonationFormState
   onChange: (field: keyof DonationFormState, value: string) => void
   onSubmit: () => void
+  /** When set, the main CTA is rendered as a direct link to this URL (e.g. Sangetsu hosted button) instead of a submit button. */
+  directPaypalHref?: string
+  footerNote?: string
 }
 
 const mainDonationTypes = [
-  'Gratitude',
-  'Ancestral Enshrinement (Sorei-Saishi)',
+  'Gratitude Offering',
+  'Enshrinement (Sorei-saishi)',
+  'Miroku Shop',
   'Books, Ohikari Cases, Strings',
-  'Religious Itens',
-  'Fundraisings',
-  'Ohikari Membership',
   'Pilgrimage',
+  'Religious Items',
+  'Ohikari Membership',
+  'Fundraising Miroku',
 ]
 
 const sangetsuDonationTypes = [
+  'Donation for Flowers',
   'Ikebana Classes',
   'Workshops',
-  'Donation for Flowers',
-  'Fundraisings Sangetsu',
+  'Sangetsu Activities',
   'Supplies',
-  'Sangetsu Exame',
-  'Study Fund',
+  'Sangetsu Fundraising',
+  'Study Fund (for instructors only)',
+  'Sangetsu Exam',
 ]
 
 function isFundType(value: string | null): value is FundType {
@@ -61,6 +66,9 @@ function initForm(defaultType: string): DonationFormState {
   }
 }
 
+const cardButtonClass =
+  'mt-2 inline-flex h-12 w-full items-center justify-center rounded-full bg-deep-slate px-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-all hover:bg-sage-600 disabled:cursor-not-allowed disabled:opacity-70'
+
 function DonationCard({
   fundType,
   title,
@@ -72,6 +80,8 @@ function DonationCard({
   form,
   onChange,
   onSubmit,
+  directPaypalHref,
+  footerNote,
 }: DonationCardProps) {
   const typeListId = `${fundType}-type-options`
   const centerListId = `${fundType}-center-options`
@@ -123,7 +133,7 @@ function DonationCard({
         </label>
 
         <label className="block">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Type of Donation / Payment *</span>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Type of Donation *</span>
           <input
             type="text"
             value={form.donationType}
@@ -153,18 +163,27 @@ function DonationCard({
           />
         </label>
 
-        <button
-          type="button"
-          onClick={onSubmit}
-          disabled={isSubmitting}
-          className="mt-2 inline-flex h-12 w-full items-center justify-center rounded-full bg-deep-slate px-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-white transition-all hover:bg-sage-600 disabled:cursor-not-allowed disabled:opacity-70"
-        >
-          {isSubmitting ? 'Preparing PayPal checkout...' : buttonLabel}
-        </button>
+        {directPaypalHref ? (
+          <a
+            href={directPaypalHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cardButtonClass}
+          >
+            {buttonLabel}
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={isSubmitting}
+            className={cardButtonClass}
+          >
+            {isSubmitting ? 'Preparing PayPal checkout...' : buttonLabel}
+          </button>
+        )}
 
-        <p className="text-xs leading-relaxed text-slate-500">
-          You will not need to type the amount again on PayPal. We send your amount and details directly to checkout.
-        </p>
+        {footerNote ? <p className="text-xs leading-relaxed text-slate-500">{footerNote}</p> : null}
       </div>
     </div>
   )
@@ -178,18 +197,24 @@ export default function Donate() {
   const createOrderEndpoint = `${donationApiBaseUrl}/api/paypal/create-order`
   const captureOrderEndpoint = `${donationApiBaseUrl}/api/paypal/capture-order`
 
-  const centerSuggestions = useMemo(() => siteConfig.centers.map((center) => center.name), [])
+  const centerSuggestions = useMemo(() => {
+    const names = siteConfig.centers.map((center) => center.name)
+    if (!names.includes('Headquarters')) {
+      names.push('Headquarters')
+    }
+    return names
+  }, [])
 
   const donationTypeSuggestions = useMemo(() => mainDonationTypes, [])
 
   const sangetsuTypeSuggestions = useMemo(() => sangetsuDonationTypes, [])
 
   const [donationForm, setDonationForm] = useState<DonationFormState>(() =>
-    initForm(donationTypeSuggestions[0] ?? 'Gratitude'),
+    initForm(donationTypeSuggestions[0] ?? 'Gratitude Offering'),
   )
 
   const [sangetsuForm, setSangetsuForm] = useState<DonationFormState>(() =>
-    initForm(sangetsuTypeSuggestions[0] ?? 'Sangetsu Class'),
+    initForm(sangetsuTypeSuggestions[0] ?? 'Donation for Flowers'),
   )
 
   const [pendingFund, setPendingFund] = useState<FundType | null>(null)
@@ -262,7 +287,7 @@ export default function Donate() {
     const amount = Number(form.amount)
 
     if (!donorName || !center || !donationType) {
-      setFormError('Please fill Full Name, Johrei Center, and Type of Donation/Payment before continuing.')
+      setFormError('Please fill Full Name, Johrei Center, and Type of Donation before continuing.')
       return
     }
 
@@ -377,6 +402,8 @@ export default function Donate() {
               onSubmit={() => {
                 void startCheckout('donation', donationForm)
               }}
+              directPaypalHref="https://www.paypal.com/donate/?hosted_button_id=W356S7FDNV9R8"
+              footerNote="Every time a donation is done, please record it."
             />
 
             <DonationCard
@@ -392,6 +419,7 @@ export default function Donate() {
               onSubmit={() => {
                 void startCheckout('sangetsu', sangetsuForm)
               }}
+              directPaypalHref="https://www.paypal.com/donate/?hosted_button_id=M4NZ4BE2D2ENC"
             />
           </div>
         </div>
