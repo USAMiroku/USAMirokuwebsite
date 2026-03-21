@@ -20,4 +20,9 @@ export const leadership: LeadershipEntry[] = [
     role: 'Executive Director',
     bio: 'The Executive Director provides national leadership for the organization\'s activities in the United States, including oversight of programs and services, supervision of ministers and volunteers, leadership development, and strategic planning for the expansion of the organization\'s activities across multiple cities.',
   },
+  {
+    name: 'Rev. Guilherme de Souza',
+    role: 'Executive Director',
+    bio: 'Rev. Guilherme de Souza provides leadership for the organization\'s activities in the United States, including oversight of programs and services, supervision of ministers and volunteers, and strategic planning.',
+  },
 ]
