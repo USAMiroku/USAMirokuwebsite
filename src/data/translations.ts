@@ -10,6 +10,7 @@ export type TranslationContent = {
     meishuSama: string
     paradise: string
     firstVisit: string
+    leadership: string
     locations: string
     events: string
     resources: string
@@ -216,6 +217,7 @@ export const translations: Record<string, TranslationContent> = {
       meishuSama: 'Meishu-Sama',
       paradise: 'Paradise on Earth',
       firstVisit: 'First Visit',
+      leadership: 'Leadership',
       locations: 'Locations',
       events: 'Events',
       resources: 'Resources',
@@ -679,6 +681,7 @@ export const translations: Record<string, TranslationContent> = {
       meishuSama: 'Meishu-Sama',
       paradise: 'Paraíso Terrenal',
       firstVisit: 'Primera visita',
+      leadership: 'Liderazgo',
       locations: 'Centros',
       events: 'Eventos',
       resources: 'Recursos',
@@ -1141,6 +1144,7 @@ export const translations: Record<string, TranslationContent> = {
       meishuSama: 'Meishu-Sama',
       paradise: 'Paraíso na Terra',
       firstVisit: 'Primeira visita',
+      leadership: 'Liderança',
       locations: 'Centros',
       events: 'Eventos',
       resources: 'Recursos',

@@ -89,14 +89,18 @@ export function LearningAuthProvider({ children }: { children: React.ReactNode }
         .eq('user_id', user.id)
         .maybeSingle()
 
-      if (profileError) {
-        // If no profile exists yet, create one with the default student role.
-        if (profileData === null || profileData === undefined) {
-          await assertSupabaseConfigured().from('learning_profiles').upsert(
-            { user_id: user.id, role: 'student' },
-            { onConflict: 'user_id' },
-          )
-        }
+      // Create profile if it doesn't exist (first-time sign-in).
+      if (!profileData && !profileError) {
+        await assertSupabaseConfigured().from('learning_profiles').insert({
+          user_id: user.id,
+          role: 'student',
+        })
+      } else if (profileError) {
+        // Try upsert as fallback (e.g. race condition).
+        await assertSupabaseConfigured().from('learning_profiles').upsert(
+          { user_id: user.id, role: 'student' },
+          { onConflict: 'user_id' },
+        )
       }
 
       const { data: profileData2 } = await assertSupabaseConfigured()

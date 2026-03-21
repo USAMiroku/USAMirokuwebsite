@@ -12,8 +12,9 @@ export const locations: Location[] = siteConfig.centers.map((center) => ({
   province: center.state,
   type: 'Center',
   address: center.address,
-  mapUrl: buildMapUrl(center.address),
+  mapUrl: center.address ? buildMapUrl(center.address) : undefined,
   phone: center.phone,
   email: center.email,
   schedule: center.schedule,
+  leadership: center.leadership,
 }))

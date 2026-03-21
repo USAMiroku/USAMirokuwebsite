@@ -1,3 +1,8 @@
+export type CenterLeadership = {
+  head?: string
+  assistant?: string
+}
+
 export type CenterConfig = {
   id: string
   name: string
@@ -7,6 +12,7 @@ export type CenterConfig = {
   phone: string
   email: string
   schedule?: string
+  leadership?: CenterLeadership
 }
 
 export const siteUrl = (import.meta.env.VITE_SITE_URL ?? 'https://usa-mirokuwebsite.vercel.app').trim()
@@ -31,6 +37,7 @@ export const siteConfig = {
       phone: '+1 (305) 308-8830',
       email: 'info@miroku.us',
       schedule: 'By appointment.',
+      leadership: { head: 'Center Head', assistant: 'Assistant' },
     },
     {
       id: 'los-angeles-johrei-center',
@@ -61,6 +68,7 @@ export const siteConfig = {
       phone: '+1 (305) 308-8830',
       email: 'info@miroku.us',
       schedule: 'By appointment.',
+      leadership: { head: 'Center Head', assistant: 'Assistant' },
     },
     {
       id: 'orlando-johrei-center',

@@ -11,6 +11,7 @@ import FirstVisit from './pages/FirstVisit'
 import Guidelines2026 from './pages/Guidelines2026'
 import Home from './pages/Home'
 import Johrei from './pages/Johrei'
+import Leadership from './pages/Leadership'
 import LocationDetail from './pages/LocationDetail'
 import Locations from './pages/Locations'
 import MeishuSama from './pages/MeishuSama'
@@ -43,6 +44,7 @@ function App() {
         <Route path="meishu-sama/legacy" element={<MeishuSamaLegacy />} />
         <Route path="paradise-on-earth" element={<ParadiseOnEarth />} />
         <Route path="first-visit" element={<FirstVisit />} />
+        <Route path="leadership" element={<Leadership />} />
         <Route path="locations" element={<Locations />} />
         <Route path="locations/:id" element={<LocationDetail />} />
         <Route path="events" element={<Events />} />

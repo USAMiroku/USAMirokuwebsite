@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom'
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { CookieConsent } from './CookieConsent'
-import { WelcomeOverlay } from './WelcomeOverlay'
 
 export function Layout() {
   return (
@@ -14,7 +13,6 @@ export function Layout() {
         Skip to main content
       </a>
       <Header />
-      <WelcomeOverlay />
       <CookieConsent />
       <main id="main-content">
         <Outlet />

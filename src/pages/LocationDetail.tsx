@@ -85,6 +85,37 @@ export default function LocationDetail() {
         </div>
       </section>
 
+      {(location.leadership?.head || location.leadership?.assistant) && (
+        <section className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-900">
+            {language === 'en' ? 'Leadership' : language === 'es' ? 'Liderazgo' : 'Liderança'}
+          </h2>
+          <div className="mt-3 space-y-2 text-sm text-slate-700">
+            {location.leadership.head && (
+              <p>
+                <span className="font-medium text-slate-500">
+                  {language === 'en' ? 'Center Head' : language === 'es' ? 'Jefe del centro' : 'Chefe do centro'}
+                </span>{' '}
+                {location.leadership.head}
+              </p>
+            )}
+            {location.leadership.assistant && (
+              <p>
+                <span className="font-medium text-slate-500">
+                  {language === 'en' ? 'Assistant' : language === 'es' ? 'Asistente' : 'Assistente'}
+                </span>{' '}
+                {location.leadership.assistant}
+              </p>
+            )}
+          </div>
+          <div className="mt-4">
+            <Link to="/leadership" className="text-sm font-semibold text-sage-600 hover:text-sage-700 underline">
+              {language === 'en' ? 'Meet the national leadership →' : language === 'es' ? 'Conocer el liderazgo nacional →' : 'Conhecer a liderança nacional →'}
+            </Link>
+          </div>
+        </section>
+      )}
+
       {location.type !== 'ComingSoon' && (
         <section className="mt-12 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900">

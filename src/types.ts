@@ -2,6 +2,11 @@ export type Language = 'en' | 'es' | 'pt'
 
 export type LocationType = 'Center' | 'Group' | 'ComingSoon'
 
+export type LocationLeadership = {
+  head?: string
+  assistant?: string
+}
+
 export type Location = {
   id: string
   name: string
@@ -14,6 +19,7 @@ export type Location = {
   email?: string
   notes?: string
   schedule?: string
+  leadership?: LocationLeadership
 }
 
 export type ResourceCategory =
