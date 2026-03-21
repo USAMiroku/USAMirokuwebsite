@@ -30,7 +30,6 @@ export function Footer() {
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/meishu-sama', label: t.nav.meishuSama },
-    { to: '/leadership', label: t.nav.leadership },
     { to: '/locations', label: t.nav.locations },
     { to: '/contact', label: t.nav.contact },
     { to: '/faq', label: 'FAQ' },

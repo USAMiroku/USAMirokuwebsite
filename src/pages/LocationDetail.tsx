@@ -108,11 +108,6 @@ export default function LocationDetail() {
               </p>
             )}
           </div>
-          <div className="mt-4">
-            <Link to="/leadership" className="text-sm font-semibold text-sage-600 hover:text-sage-700 underline">
-              {language === 'en' ? 'Meet the national leadership →' : language === 'es' ? 'Conocer el liderazgo nacional →' : 'Conhecer a liderança nacional →'}
-            </Link>
-          </div>
         </section>
       )}
 
