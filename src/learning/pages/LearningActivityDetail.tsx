@@ -447,7 +447,7 @@ export default function LearningActivityDetail() {
                                 href={s.meeting_url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex h-11 items-center justify-center rounded-full bg-deep-slate px-6 text-[10px] font-semibold tracking-[0.14em] uppercase text-white transition hover:bg-[#14202a]"
+                                className="inline-flex h-11 items-center justify-center rounded-full bg-blue-600 px-6 text-[10px] font-semibold tracking-[0.14em] uppercase text-white transition hover:bg-blue-700"
                               >
                                 {copy.joinOnline}
                               </a>
