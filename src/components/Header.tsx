@@ -64,28 +64,20 @@ function PublicHeader() {
             isScrolled ? 'bg-[rgba(247,241,231,0.95)] backdrop-blur-xl' : 'bg-[rgba(247,241,231,0.94)] backdrop-blur-md'
           }`}
         >
-          {/* Brand — logo + name column; language toggle sits below name on mobile */}
-          <div className="site-brand flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
-            <Link to="/" onClick={closeMobileMenu} className="shrink-0">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white sm:h-11 sm:w-11">
-                <img src="/logo.png" alt={siteConfig.organizationName} className="h-full w-full rounded-full object-cover" />
-              </div>
-            </Link>
-            <div className="min-w-0">
-              <Link to="/" onClick={closeMobileMenu} className="block leading-none">
-                <span className="block truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.1em] text-deep-slate">
-                  World Messianic Church of America
-                </span>
-                <span className="hidden whitespace-nowrap text-[10px] font-semibold tracking-[0.08em] text-slate-500 md:block">
-                  Miroku Association USA
-                </span>
-              </Link>
-              {/* Language toggle: below org name on mobile only */}
-              <div className="mt-1.5 sm:hidden">
-                <LanguageToggle compact className="border border-[rgba(15,23,42,0.08)] bg-white/70 shadow-none" />
-              </div>
+          {/* Brand */}
+          <Link to="/" onClick={closeMobileMenu} className="site-brand flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white sm:h-11 sm:w-11">
+              <img src="/logo.png" alt={siteConfig.organizationName} className="h-full w-full rounded-full object-cover" />
             </div>
-          </div>
+            <div className="min-w-0 leading-[1.25]">
+              <span className="block text-[10px] font-extrabold uppercase tracking-[0.1em] text-deep-slate">
+                World Messianic Church of America
+              </span>
+              <span className="block text-[9.5px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                Miroku Association USA
+              </span>
+            </div>
+          </Link>
 
           <nav className="hidden items-center gap-1 lg:flex">
             {navLinks.map((link) => (
@@ -105,12 +97,12 @@ function PublicHeader() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2 md:gap-3">
-            {/* Desktop only — mobile version lives at the bottom of the slide-out menu */}
-            <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none sm:inline-flex" />
+            {/* Language toggle: desktop only — mobile lives at top of slide-out menu */}
+            <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none lg:inline-flex" />
 
             <DonateButton
               onClick={closeMobileMenu}
-              className="hidden h-11 items-center justify-center rounded-full bg-divine-gold px-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#946615] sm:inline-flex"
+              className="inline-flex h-9 items-center justify-center rounded-full bg-divine-gold px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#946615] sm:h-11 sm:px-5"
             />
 
             <button
@@ -128,33 +120,36 @@ function PublicHeader() {
         </div>
       </header>
 
+      {/* Mobile slide-out menu — dark green card, Miroku.ca style */}
       <div
-        className={`fixed inset-0 z-40 bg-[#f8f4eb] px-6 py-24 transition-all duration-300 lg:hidden ${
-          isMobileMenuOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-full opacity-0'
+        className={`fixed inset-x-3 top-20 bottom-4 z-40 overflow-y-auto rounded-3xl bg-[#2c4840] shadow-2xl transition-all duration-300 lg:hidden ${
+          isMobileMenuOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'
         }`}
         aria-hidden={!isMobileMenuOpen}
       >
-        <nav className="mx-auto flex max-w-lg flex-col gap-4 pt-10">
-          {navLinks.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              onClick={closeMobileMenu}
-              className="rounded-full border border-[rgba(15,23,42,0.08)] bg-white/82 px-5 py-4 text-lg font-semibold text-deep-slate"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="mt-6 flex flex-col gap-4 border-t border-[rgba(15,23,42,0.08)] pt-6">
-            <DonateButton
-              onClick={closeMobileMenu}
-              className="inline-flex h-11 w-full items-center justify-center rounded-full bg-divine-gold px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-white"
-            />
-            <div className="border-t border-[rgba(15,23,42,0.06)] pt-4">
-              <LanguageToggle className="w-full justify-center border border-[rgba(15,23,42,0.08)] bg-white shadow-none" />
-            </div>
+        <div className="px-5 py-6">
+          {/* Language row */}
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-bold uppercase tracking-[0.32em] text-white/50">Language</span>
+            <LanguageToggle dark />
           </div>
-        </nav>
+
+          <div className="mt-5 border-t border-white/10" />
+
+          {/* Nav links */}
+          <nav className="mt-4 flex flex-col gap-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={closeMobileMenu}
+                className="rounded-2xl border border-white/10 bg-white/8 px-5 py-4 text-[1.9rem] font-serif italic text-white transition-colors hover:bg-white/12"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </div>
     </>
   )
