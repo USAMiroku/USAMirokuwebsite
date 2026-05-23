@@ -172,6 +172,7 @@ export default function LearningActivities() {
         .from('learning_activities')
         .select('id,type,title,description,center_id')
         .eq('is_published', true)
+        .eq('show_on_main_events', true)
         .order('created_at', { ascending: false })
         .limit(50)
 
@@ -180,6 +181,7 @@ export default function LearningActivities() {
         const fallback = await supabase
           .from('learning_activities')
           .select('id,type,title,description,center_id')
+          .eq('show_on_main_events', true)
           .order('created_at', { ascending: false })
           .limit(50)
         data = fallback.data
