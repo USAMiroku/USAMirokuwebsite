@@ -110,6 +110,7 @@ function AdminCenterActivitiesInner() {
   const [editCenterId, setEditCenterId] = useState<string>('')
   const [editShowOnMainEvents, setEditShowOnMainEvents] = useState(true)
   const [editIsPublished, setEditIsPublished] = useState(true)
+  const [toggleSavedField, setToggleSavedField] = useState<string | null>(null)
   const [editImageUrl, setEditImageUrl] = useState('')
   const [editContactName, setEditContactName] = useState('')
   const [editContactEmail, setEditContactEmail] = useState('')
@@ -251,6 +252,32 @@ function AdminCenterActivitiesInner() {
     setSessionDraftMode(null)
     setShowAddActivity(false)
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // ─── Instant toggle save (Published / Show on main) ─────────────────────
+  async function handleToggleSave(field: 'is_published' | 'show_on_main_events', value: boolean) {
+    if (!supabase || !editingActivity) return
+    if (field === 'is_published') setEditIsPublished(value)
+    else setEditShowOnMainEvents(value)
+
+    const { error: toggleError } = await supabase
+      .from('learning_activities')
+      .update({ [field]: value })
+      .eq('id', editingActivity.id)
+
+    if (toggleError) {
+      setError(toggleError.message)
+      return
+    }
+
+    // Update the activity in the local list immediately
+    setActivities((prev) =>
+      prev.map((a) => (a.id === editingActivity.id ? { ...a, [field]: value } : a)),
+    )
+
+    // Brief "Saved" feedback
+    setToggleSavedField(field)
+    setTimeout(() => setToggleSavedField(null), 2000)
   }
 
   // ─── Save edited activity ────────────────────────────────────────────────
@@ -672,26 +699,32 @@ function AdminCenterActivitiesInner() {
                   <input
                     type="checkbox"
                     checked={editIsPublished}
-                    onChange={(e) => setEditIsPublished(e.target.checked)}
+                    onChange={(e) => void handleToggleSave('is_published', e.target.checked)}
                     className="h-4 w-4 rounded border-slate-300 accent-sage-600"
                   />
-                  <div>
+                  <div className="flex-1">
                     <span className="text-sm font-semibold text-deep-slate">Published</span>
                     <p className="text-xs text-slate-500 mt-0.5">Visible to the public when checked</p>
                   </div>
+                  {toggleSavedField === 'is_published' && (
+                    <span className="text-[10px] font-semibold text-sage-600 uppercase tracking-wide">Saved ✓</span>
+                  )}
                 </label>
 
                 <label className="flex items-center gap-3 rounded-xl border border-[rgba(184,134,11,0.16)] bg-sanctuary-50/60 px-4 py-3 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={editShowOnMainEvents}
-                    onChange={(e) => setEditShowOnMainEvents(e.target.checked)}
+                    onChange={(e) => void handleToggleSave('show_on_main_events', e.target.checked)}
                     className="h-4 w-4 rounded border-slate-300 accent-sage-600"
                   />
-                  <div>
+                  <div className="flex-1">
                     <span className="text-sm font-semibold text-deep-slate">Show on main Activities page</span>
                     <p className="text-xs text-slate-500 mt-0.5">Uncheck to show only on the center page</p>
                   </div>
+                  {toggleSavedField === 'show_on_main_events' && (
+                    <span className="text-[10px] font-semibold text-sage-600 uppercase tracking-wide">Saved ✓</span>
+                  )}
                 </label>
               </div>
 
