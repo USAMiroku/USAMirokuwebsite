@@ -70,13 +70,13 @@ function PublicHeader() {
             </div>
             <div className="min-w-0 leading-none">
               <span className="block truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.14em] text-deep-slate sm:hidden">
-                Miroku USA
+                World Messianic
               </span>
-              <span className="hidden truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.16em] text-deep-slate sm:block">
-                Miroku Association USA
+              <span className="hidden truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.1em] text-deep-slate sm:block">
+                World Messianic Church of America
               </span>
               <span className="hidden whitespace-nowrap text-[10px] font-semibold tracking-[0.08em] text-slate-500 md:block">
-                World Messianic Church of America
+                Miroku Association USA
               </span>
             </div>
           </Link>

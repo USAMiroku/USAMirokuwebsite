@@ -160,13 +160,10 @@ export default function Home() {
           <div className="mx-auto grid min-h-screen max-w-7xl gap-8 px-6 pb-10 pt-32 md:px-10 lg:grid-cols-[1.2fr_0.68fr] lg:px-12 lg:pb-12 lg:pt-28">
             <div className="flex min-h-[32rem] flex-col justify-end">
               <div className="max-w-3xl">
-                <p className="inline-flex rounded-full border border-white/20 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/78">
-                  {t.home.heroKicker}
-                </p>
-                <p className="mt-7 text-[13px] uppercase tracking-[0.34em] text-white/72">{t.home.heroTitle}</p>
+                <p className="mt-4 text-[13px] uppercase tracking-[0.34em] text-white/72">{t.home.heroTitle}</p>
                 <h1 className="mt-2 max-w-2xl leading-tight text-white">
-                  <span className="block text-4xl font-bold sm:text-5xl lg:text-[3.25rem]">{siteConfig.shortName}</span>
                   <span className="block text-4xl font-bold sm:text-5xl lg:text-[3.25rem]">World Messianic Church of America</span>
+                  <span className="block text-4xl font-bold sm:text-5xl lg:text-[3.25rem]">{siteConfig.shortName}</span>
                 </h1>
                 <p className="mt-7 max-w-2xl text-xl leading-9 text-white/86">{t.home.heroIntro}</p>
                 <p className="mt-4 max-w-2xl text-base leading-8 text-white/60">{supportCopy.heroPath}</p>
