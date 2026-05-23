@@ -64,22 +64,28 @@ function PublicHeader() {
             isScrolled ? 'bg-[rgba(247,241,231,0.95)] backdrop-blur-xl' : 'bg-[rgba(247,241,231,0.94)] backdrop-blur-md'
           }`}
         >
-          <Link to="/" onClick={closeMobileMenu} className="site-brand flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white sm:h-11 sm:w-11">
-              <img src="/logo.png" alt={siteConfig.organizationName} className="h-full w-full rounded-full object-cover" />
+          {/* Brand — logo + name column; language toggle sits below name on mobile */}
+          <div className="site-brand flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
+            <Link to="/" onClick={closeMobileMenu} className="shrink-0">
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white sm:h-11 sm:w-11">
+                <img src="/logo.png" alt={siteConfig.organizationName} className="h-full w-full rounded-full object-cover" />
+              </div>
+            </Link>
+            <div className="min-w-0">
+              <Link to="/" onClick={closeMobileMenu} className="block leading-none">
+                <span className="block truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.1em] text-deep-slate">
+                  World Messianic Church of America
+                </span>
+                <span className="hidden whitespace-nowrap text-[10px] font-semibold tracking-[0.08em] text-slate-500 md:block">
+                  Miroku Association USA
+                </span>
+              </Link>
+              {/* Language toggle: below org name on mobile only */}
+              <div className="mt-1.5 sm:hidden">
+                <LanguageToggle compact className="border border-[rgba(15,23,42,0.08)] bg-white/70 shadow-none" />
+              </div>
             </div>
-            <div className="min-w-0 leading-none">
-              <span className="block truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.14em] text-deep-slate sm:hidden">
-                World Messianic
-              </span>
-              <span className="hidden truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.1em] text-deep-slate sm:block">
-                World Messianic Church of America
-              </span>
-              <span className="hidden whitespace-nowrap text-[10px] font-semibold tracking-[0.08em] text-slate-500 md:block">
-                Miroku Association USA
-              </span>
-            </div>
-          </Link>
+          </div>
 
           <nav className="hidden items-center gap-1 lg:flex">
             {navLinks.map((link) => (
