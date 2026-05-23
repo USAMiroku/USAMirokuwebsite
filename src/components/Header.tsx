@@ -99,8 +99,8 @@ function PublicHeader() {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2 md:gap-3">
+            {/* Desktop only — mobile version lives at the bottom of the slide-out menu */}
             <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none sm:inline-flex" />
-            <LanguageToggle compact className="inline-flex border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none sm:hidden" />
 
             <DonateButton
               onClick={closeMobileMenu}
@@ -144,7 +144,9 @@ function PublicHeader() {
               onClick={closeMobileMenu}
               className="inline-flex h-11 w-full items-center justify-center rounded-full bg-divine-gold px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-white"
             />
-            <LanguageToggle className="self-start border border-[rgba(15,23,42,0.08)] bg-white shadow-none" />
+            <div className="border-t border-[rgba(15,23,42,0.06)] pt-4">
+              <LanguageToggle className="w-full justify-center border border-[rgba(15,23,42,0.08)] bg-white shadow-none" />
+            </div>
           </div>
         </nav>
       </div>
