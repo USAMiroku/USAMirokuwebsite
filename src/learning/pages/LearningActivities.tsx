@@ -20,8 +20,6 @@ type Session = {
   start_time: string | null
 }
 
-const TYPE_OPTIONS: Array<Activity['type']> = ['event', 'study_session', 'class', 'self_study']
-
 const TYPE_BADGE: Record<Activity['type'], string> = {
   event: 'border border-amber-200 bg-amber-50 text-amber-800',
   study_session: 'border border-[rgba(141,107,38,0.25)] bg-[rgba(248,244,235,0.8)] text-sage-600',
@@ -124,27 +122,12 @@ export default function LearningActivities() {
   const [sessions, setSessions] = useState<Session[]>([])
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedCenterId, setSelectedCenterId] = useState('')
-  const [selectedType, setSelectedType] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
 
   const copy =
     language === 'es'
       ? {
           title: 'Actividades',
           eyebrow: 'Explorar',
-          centerLabel: 'Centro o grupo',
-          allCenters: 'Todos los centros',
-          typeLabel: 'Tipo',
-          allTypes: 'Todos los tipos',
-          searchLabel: 'Buscar',
-          searchPlaceholder: 'Busque por nombre, tema o detalle',
-          clearFilters: 'Limpiar filtros',
-          showing: 'Mostrando',
-          of: 'de',
-          results: 'actividades',
-          emptyTitle: 'No se encontraron actividades con esos filtros.',
-          emptyBody: 'Pruebe con otro centro, tipo o quite los filtros.',
           noEventsTitle: 'Aún no se han agregado actividades.',
           noEventsBody: 'Vuelva pronto para ver servicios especiales, seminarios y sesiones de estudio.',
           viewEvent: 'Ver actividad',
@@ -155,18 +138,6 @@ export default function LearningActivities() {
         ? {
             title: 'Atividades',
             eyebrow: 'Explorar',
-            centerLabel: 'Centro ou grupo',
-            allCenters: 'Todos os centros',
-            typeLabel: 'Tipo',
-            allTypes: 'Todos os tipos',
-            searchLabel: 'Buscar',
-            searchPlaceholder: 'Busque por nome, tema ou detalhe',
-            clearFilters: 'Limpar filtros',
-            showing: 'Mostrando',
-            of: 'de',
-            results: 'atividades',
-            emptyTitle: 'Nenhuma atividade foi encontrada com esses filtros.',
-            emptyBody: 'Tente outro centro, tipo ou limpe os filtros.',
             noEventsTitle: 'Ainda não foram adicionadas atividades.',
             noEventsBody: 'Volte em breve para ver cultos especiais, seminários e sessões de estudo.',
             viewEvent: 'Ver atividade',
@@ -176,18 +147,6 @@ export default function LearningActivities() {
         : {
             title: 'Activities',
             eyebrow: 'Browse',
-            centerLabel: 'Center or group',
-            allCenters: 'All centers',
-            typeLabel: 'Type',
-            allTypes: 'All types',
-            searchLabel: 'Search',
-            searchPlaceholder: 'Search by name, topic, or detail',
-            clearFilters: 'Clear filters',
-            showing: 'Showing',
-            of: 'of',
-            results: 'activities',
-            emptyTitle: 'No activities match these filters.',
-            emptyBody: 'Try another center, type, or clear the filters.',
             noEventsTitle: 'No activities have been added yet.',
             noEventsBody: 'Check back soon for special services, seminars, and study sessions.',
             viewEvent: 'View Activity',
@@ -265,19 +224,8 @@ export default function LearningActivities() {
     })
   }, [activities, sessions])
 
-  const filteredActivities = useMemo(() => {
-    const normalizedSearch = searchTerm.trim().toLowerCase()
-
-    const filtered = activeActivities.filter((activity) => {
-      const center = activity.center_id ? activeCenters.find((item) => item.id === activity.center_id) : null
-      const matchesCenter = !selectedCenterId || activity.center_id === selectedCenterId
-      const matchesType = !selectedType || activity.type === selectedType
-      const haystack = `${activity.title} ${activity.description ?? ''} ${center?.name ?? ''}`.toLowerCase()
-      const matchesSearch = !normalizedSearch || haystack.includes(normalizedSearch)
-      return matchesCenter && matchesType && matchesSearch
-    })
-
-    return filtered.sort((a, b) => {
+  const sortedActivities = useMemo(() => {
+    return [...activeActivities].sort((a, b) => {
       const nextA = getNextSession(sessions, a.id)
       const nextB = getNextSession(sessions, b.id)
       if (nextA && nextB) return new Date(nextA.start_time!).getTime() - new Date(nextB.start_time!).getTime()
@@ -285,102 +233,16 @@ export default function LearningActivities() {
       if (nextB) return 1
       return 0
     })
-  }, [activeActivities, activeCenters, sessions, searchTerm, selectedCenterId, selectedType])
-
-  const hasFilters = selectedCenterId !== '' || selectedType !== '' || searchTerm.trim() !== ''
-
-  function clearFilters() {
-    setSelectedCenterId('')
-    setSelectedType('')
-    setSearchTerm('')
-  }
+  }, [activeActivities, sessions])
 
   return (
     <div className="relative min-h-screen bg-sanctuary-100 text-deep-slate">
       <div className="noise-subtle" />
 
-      <section className="relative px-6 pt-14 pb-6 md:pt-20 md:pb-8">
-        <div className="mx-auto max-w-6xl space-y-6">
-          <div className="space-y-3">
-            <span className="text-[10px] font-bold tracking-[0.4em] text-sage-600 uppercase">{copy.eyebrow}</span>
-            <h1 className="text-5xl md:text-6xl font-serif text-deep-slate leading-tight">{copy.title}</h1>
-          </div>
-
-          {/* Filter bar */}
-          <div className="rounded-2xl border border-[rgba(184,134,11,0.22)] bg-white px-6 py-5 shadow-[0_4px_24px_rgba(15,23,42,0.06)]">
-            <div className="grid gap-4 md:grid-cols-4">
-              <label className="block">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  {copy.centerLabel}
-                </span>
-                <select
-                  value={selectedCenterId}
-                  onChange={(event) => setSelectedCenterId(event.target.value)}
-                  className="mt-2 w-full rounded-xl border border-[rgba(184,134,11,0.22)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
-                >
-                  <option value="">{copy.allCenters}</option>
-                  {activeCenters.map((center) => (
-                    <option key={center.id} value={center.id}>
-                      {center.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  {copy.typeLabel}
-                </span>
-                <select
-                  value={selectedType}
-                  onChange={(event) => setSelectedType(event.target.value)}
-                  className="mt-2 w-full rounded-xl border border-[rgba(184,134,11,0.22)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
-                >
-                  <option value="">{copy.allTypes}</option>
-                  {TYPE_OPTIONS.map((type) => (
-                    <option key={type} value={type}>
-                      {formatTypeLabel(type, language)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  {copy.searchLabel}
-                </span>
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(event) => setSearchTerm(event.target.value)}
-                  placeholder={copy.searchPlaceholder}
-                  className="mt-2 w-full rounded-xl border border-[rgba(184,134,11,0.22)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
-                />
-              </label>
-
-              <div className="flex flex-col justify-end gap-2">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  &nbsp;
-                </span>
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-slate-500">
-                    <span className="font-semibold text-deep-slate">{filteredActivities.length}</span>
-                    {' '}{copy.of}{' '}
-                    <span className="font-semibold text-deep-slate">{activeActivities.length}</span>
-                    {' '}{copy.results}
-                  </p>
-                  <button
-                    type="button"
-                    onClick={clearFilters}
-                    disabled={!hasFilters}
-                    className="inline-flex h-10 items-center justify-center rounded-full border border-[rgba(184,134,11,0.22)] px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-deep-slate transition hover:bg-sanctuary-50 disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    {copy.clearFilters}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+      <section className="relative px-6 pt-14 pb-10 md:pt-20 md:pb-12">
+        <div className="mx-auto max-w-6xl">
+          <span className="text-[10px] font-bold tracking-[0.4em] text-sage-600 uppercase">{copy.eyebrow}</span>
+          <h1 className="mt-3 text-5xl font-serif text-deep-slate leading-tight md:text-6xl">{copy.title}</h1>
         </div>
       </section>
 
@@ -398,30 +260,16 @@ export default function LearningActivities() {
             </div>
           ) : null}
 
-          {!isLoading && !error && activeActivities.length === 0 ? (
+          {!isLoading && !error && sortedActivities.length === 0 ? (
             <div className="rounded-2xl border border-slate-100 bg-sanctuary-50/50 px-8 py-16 text-center">
               <p className="text-2xl font-serif text-deep-slate">{copy.noEventsTitle}</p>
               <p className="mx-auto mt-3 max-w-md text-sm text-slate-500">{copy.noEventsBody}</p>
             </div>
           ) : null}
 
-          {!isLoading && !error && activeActivities.length > 0 && filteredActivities.length === 0 ? (
-            <div className="rounded-2xl border border-slate-100 bg-sanctuary-50/50 px-8 py-16 text-center">
-              <p className="text-2xl font-serif text-deep-slate">{copy.emptyTitle}</p>
-              <p className="mx-auto mt-3 max-w-md text-sm text-slate-500">{copy.emptyBody}</p>
-              <button
-                type="button"
-                onClick={clearFilters}
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-full border border-[rgba(184,134,11,0.22)] bg-white px-6 text-[10px] font-semibold uppercase tracking-[0.14em] text-deep-slate transition hover:bg-sanctuary-50"
-              >
-                {copy.clearFilters}
-              </button>
-            </div>
-          ) : null}
-
           {!isLoading && !error ? (
             <div className="grid gap-6 md:grid-cols-2">
-              {filteredActivities.map((activity) => {
+              {sortedActivities.map((activity) => {
                 const center = activity.center_id
                   ? activeCenters.find((c) => c.id === activity.center_id)
                   : null
