@@ -1,6 +1,43 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/events",
+      "destination": "/activities",
+      "statusCode": 301
+    },
+    {
+      "source": "/events/:path*",
+      "destination": "/activities/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/learn/activities",
+      "destination": "/activities",
+      "statusCode": 301
+    },
+    {
+      "source": "/learn/activities/:path*",
+      "destination": "/activities/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/learn/centers/:path*",
+      "destination": "/activities/centers/:path*",
+      "statusCode": 301
+    },
+    {
+      "source": "/learn/sessions/:path*",
+      "destination": "/activities",
+      "statusCode": 301
+    },
+    {
+      "source": "/learn",
+      "destination": "/activities",
+      "statusCode": 301
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

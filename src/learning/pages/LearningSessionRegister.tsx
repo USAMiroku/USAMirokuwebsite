@@ -132,7 +132,7 @@ function RegistrationForm({
         {error ? <p className="text-sm text-rose-700">{error}</p> : null}
 
         <div className="flex items-center justify-between gap-4 flex-wrap pt-2">
-          <ButtonLink to="/learn/activities" variant="ghost">
+          <ButtonLink to="/activities" variant="ghost">
             Back
           </ButtonLink>
 
@@ -291,4 +291,3 @@ export default function LearningSessionRegister() {
     </RequireAuth>
   )
 }
-

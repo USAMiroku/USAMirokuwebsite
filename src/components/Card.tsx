@@ -13,15 +13,16 @@ function classNames(...parts: Array<string | undefined>) {
 export function Card({ title, children, eyebrow, cta, className }: CardProps) {
   return (
     <div
+      data-ui="content-card"
       className={classNames(
-        'rounded-3xl border border-[rgba(184,134,11,0.2)] bg-white p-6 shadow-[0_14px_34px_-30px_rgba(45,55,72,0.45)] transition-transform duration-200 hover:-translate-y-1',
+        'paper-panel ornament-ring rounded-[30px] p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_30px_80px_-46px_rgba(31,41,51,0.45)]',
         className,
       )}
     >
-      {eyebrow && <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600">{eyebrow}</p>}
-      {title && <h3 className="mt-2 text-lg font-semibold text-slate-900">{title}</h3>}
-      <div className="mt-3 text-sm text-slate-600">{children}</div>
-      {cta && <div className="mt-4">{cta}</div>}
+      {eyebrow && <p className="text-[10px] font-bold uppercase tracking-[0.26em] text-sage-600">{eyebrow}</p>}
+      {title && <h3 className="mt-3 text-2xl font-serif text-slate-900">{title}</h3>}
+      <div className="mt-4 text-sm leading-7 text-slate-600">{children}</div>
+      {cta && <div className="mt-6">{cta}</div>}
     </div>
   )
 }

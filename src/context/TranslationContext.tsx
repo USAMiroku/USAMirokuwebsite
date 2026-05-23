@@ -10,7 +10,7 @@ type TranslationContextValue = {
 
 const TranslationContext = createContext<TranslationContextValue | undefined>(undefined)
 
-const STORAGE_KEY = 'miroku-lang'
+const STORAGE_KEY = 'miroku-lang-v2'
 
 function isLanguage(value: string | null): value is Language {
   return value === 'en' || value === 'es' || value === 'pt'
@@ -25,6 +25,10 @@ export function TranslationProvider({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, language)
+  }, [language])
+
+  useEffect(() => {
+    document.documentElement.lang = language
   }, [language])
 
   const value = useMemo(

@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /api/
 Allow: /
 
-Sitemap: https://usa-mirokuwebsite.vercel.app/sitemap.xml
+Sitemap: https://www.worldmessianic.org/sitemap.xml

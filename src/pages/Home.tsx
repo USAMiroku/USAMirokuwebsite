@@ -1,231 +1,469 @@
-import { ButtonLink } from '../components/ButtonLink'
-import { Card } from '../components/Card'
-import { Section } from '../components/Section'
+import { Link } from 'react-router-dom'
 import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
-import { resolveDonateHref } from '../config/siteConfig'
+import { resolveDonateHref, siteConfig } from '../config/siteConfig'
 
-const sacredScenesEn = [
+const sacredScenes = [
   {
     image: '/images/sacred-grounds/atami-sacred-grounds.jpg',
     heading: 'Atami Sacred Grounds',
-    location: 'Atami-shi, Shizuoka-ken, Japan.',
-    description:
-      "Known as the 'Celestial Land,' this site was chosen by Meishu-Sama for its mountains, sea, and balmy climate. It covers over 176,000 square meters and features spectacular views of the coastline.",
+    location: 'Atami-shi, Shizuoka-ken, Japan',
+    body: 'Known as the Celestial Land, this site was chosen by Meishu-sama for its mountains, sea, and balanced climate.',
   },
   {
     image: '/images/sacred-grounds/guarapiranga-sacred-grounds.jpg',
     heading: 'Guarapiranga Sacred Grounds',
-    location: 'São Paulo, Brazil.',
-    description:
-      "Inaugurated in 1995 on the banks of the Guarapiranga Reservoir, this 327,500-square-meter complex is a 'prototype of paradise' harmonizing nature and spirituality.",
+    location: 'Sao Paulo, Brazil',
+    body: 'Inaugurated in 1995 on the banks of the Guarapiranga reservoir, this sacred ground harmonizes nature and spirituality.',
   },
   {
     image: '/images/sacred-grounds/saraburi-sacred-grounds.jpg',
     heading: 'Saraburi Sacred Grounds',
-    location: 'Saraburi, Thailand.',
-    description:
-      'Dedicated in 1996, this 160-hectare site was the second sacred ground built outside of Japan. It houses a Messianic Temple, botanical gardens, and an Agricultural School for Nature Farming.',
+    location: 'Saraburi, Thailand',
+    body: 'Dedicated in 1996, this sacred ground houses a Messianic temple, botanical gardens, and an agricultural school.',
   },
-]
+] as const
+
+function HomeLink({
+  to,
+  children,
+  tone = 'light',
+  className = '',
+}: {
+  to: string
+  children: React.ReactNode
+  tone?: 'light' | 'dark' | 'gold'
+  className?: string
+}) {
+  const tones = {
+    light: 'border border-white/28 bg-white/12 text-white hover:bg-white/18',
+    dark: 'border border-[rgba(15,23,42,0.08)] bg-[#213a36] text-white hover:bg-[#1b312e]',
+    gold: 'border border-transparent bg-divine-gold text-white hover:bg-[#946615]',
+  }
+
+  return (
+    <Link
+      to={to}
+      className={`inline-flex h-11 items-center justify-center rounded-full px-6 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors ${tones[tone]} ${className}`}
+    >
+      {children}
+    </Link>
+  )
+}
+
+function HomeAction({
+  href,
+  children,
+  tone = 'gold',
+  className = '',
+}: {
+  href: string
+  children: React.ReactNode
+  tone?: 'light' | 'dark' | 'gold'
+  className?: string
+}) {
+  const tones = {
+    light: 'border border-white/28 bg-white/12 text-white hover:bg-white/18',
+    dark: 'border border-[rgba(15,23,42,0.08)] bg-[#213a36] text-white hover:bg-[#1b312e]',
+    gold: 'border border-transparent bg-divine-gold text-white hover:bg-[#946615]',
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className={`inline-flex h-11 items-center justify-center rounded-full px-6 text-[10px] font-semibold uppercase tracking-[0.18em] transition-colors ${tones[tone]} ${className}`}
+    >
+      {children}
+    </a>
+  )
+}
 
 export default function Home() {
   const { t, language } = useTranslation()
   const donateHref = resolveDonateHref()
   const isInternalDonate = donateHref.startsWith('/')
-  const sacredScenes = sacredScenesEn
-
-  const guidelineCopy =
-    language === 'es'
-      ? {
-          title: 'Directrices 2026',
-          motto:
-            'Ayudar a otros a dedicarse a la construccion del Paraiso en la Tierra, a traves de las practicas de fe, es el camino de nuestra salvacion.',
-        }
-      : language === 'pt'
-        ? {
-            title: 'Diretrizes 2026',
-            motto:
-              'Ajudar outras pessoas a se dedicarem a construcao do Paraiso Terrestre, por meio das praticas de fe, e o caminho para nossa salvacao.',
-          }
-        : {
-            title: t.guidelines.title,
-            motto: t.guidelines.motto,
-          }
 
   usePageMeta({
-    title: `${t.home.heroTitle} | ${t.brand}`,
+    title: t.brand,
     description: t.home.heroIntro,
   })
 
-  const copy =
+  const supportCopy =
     language === 'es'
       ? {
-          pillarsTag: 'Los tres pilares',
-          galleryTag: 'Inspiracion y serenidad',
-          galleryTitle: 'Atami, Guarapiranga y Saraburi',
-          galleryBody:
-            'Tres Suelos Sagrados donde la belleza natural, la arquitectura sagrada y el espiritu de gratitud se unen.',
-          faqBody:
-            'Encuentre respuestas claras sobre Johrei, las sesiones y que esperar en su primera visita.',
-          faqCta: 'Ver FAQ',
-          actionsTitle: 'Visitar, Contactar, Apoyar',
-          actionsBody:
-            'Elija su camino: recibir Johrei, contactar la asociacion o apoyar la mision.',
+          heroPath: 'Elija su camino: reciba Johrei, haga contacto o apoye la misión.',
+          heroContact: 'Contactarnos',
+          faqCta: 'Abrir FAQ',
+          faqBody: 'Respuestas claras y rápidas sobre el Johrei, las sesiones y su primera visita.',
+          newHereKicker: 'Nuevo aquí',
+          sacredKicker: 'Inspiración y tranquilidad',
+          sacredTitle: 'Atami, Guarapiranga y Saraburi',
+          sacredBody: 'Tres Tierras Sagradas donde la belleza natural, la arquitectura sagrada y un espíritu de oración y gratitud se unen.',
+          visitContactTitle: 'Visitar, contactar, apoyar',
+          supportKicker: 'Visitar, contactar, apoyar',
+          supportActions: {
+            locations: 'Ubicaciones',
+            donate: 'Donar',
+            contact: 'Contactarnos',
+          },
         }
       : language === 'pt'
         ? {
-            pillarsTag: 'Os tres pilares',
-            galleryTag: 'Inspiracao e serenidade',
-            galleryTitle: 'Atami, Guarapiranga e Saraburi',
-            galleryBody:
-              'Tres Solos Sagrados onde beleza natural, arquitetura sagrada e espirito de gratidao se unem.',
-            faqBody:
-              'Encontre respostas claras sobre Johrei, sessoes e o que esperar na primeira visita.',
-            faqCta: 'Ver FAQ',
-            actionsTitle: 'Visitar, Contatar, Apoiar',
-            actionsBody:
-              'Escolha seu caminho: receber Johrei, entrar em contato com a associacao ou apoiar a missao.',
+            heroPath: 'Escolha seu caminho: receba Johrei, entre em contato ou apoie a missão.',
+            heroContact: 'Contato',
+            faqCta: 'Abrir FAQ',
+            faqBody: 'Respostas rápidas e claras sobre Johrei, sessões e sua primeira visita.',
+            newHereKicker: 'Novo por aqui',
+            sacredKicker: 'Inspiração e tranquilidade',
+            sacredTitle: 'Atami, Guarapiranga e Saraburi',
+            sacredBody: 'Três Terras Sagradas onde beleza natural, arquitetura sagrada e espírito de oração e gratidão se unem.',
+            visitContactTitle: 'Visitar, contatar, apoiar',
+            supportKicker: 'Visitar, contatar, apoiar',
+            supportActions: {
+              locations: 'Locais',
+              donate: 'Doar',
+              contact: 'Contato',
+            },
           }
-      : {
-          pillarsTag: 'The Three Pillars',
-          galleryTag: 'Inspiration and tranquility',
-          galleryTitle: 'Atami, Guarapiranga, and Saraburi',
-          galleryBody:
-            'Three Sacred Grounds where natural beauty, sacred architecture, and a spirit of prayer and gratitude come together.',
-          faqBody:
-            'Get quick, clear answers about Johrei, sessions, and what to expect on your first visit.',
-          faqCta: 'Open FAQ',
-          actionsTitle: 'Visit, Contact, Support',
-          actionsBody:
-            'Choose your path: receive Johrei, contact the association, or support the mission.',
-        }
+        : {
+            heroPath: 'Choose your path: receive Johrei, contact the association, or support the mission.',
+            heroContact: 'Contact Us',
+            faqCta: 'Open FAQ',
+            faqBody: 'Get quick, clear answers about Johrei, sessions, and your first visit.',
+            newHereKicker: 'New Here',
+            sacredKicker: 'Inspiration and Tranquility',
+            sacredTitle: 'Atami, Guarapiranga, and Saraburi',
+            sacredBody: 'Three Sacred Grounds where natural beauty, sacred architecture, and a spirit of prayer and gratitude come together.',
+            visitContactTitle: 'Visit, Contact, Support',
+            supportKicker: 'Visit, Contact, Support',
+            supportActions: {
+              locations: 'Locations',
+              donate: 'Donate',
+              contact: 'Contact Us',
+            },
+          }
 
   return (
-    <div className="min-h-screen bg-sanctuary-100 text-deep-slate">
-      <section className="relative isolate overflow-hidden border-b border-[rgba(184,134,11,0.2)] px-6 pt-32 pb-24 text-center">
-        <div className="sacred-hero-image absolute inset-0 -z-30" />
-        <img
-          src="/images/johrei-group.png"
-          alt="Johrei group session"
-          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover object-center"
-          aria-hidden="true"
-        />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/38 via-black/20 to-black/42" />
+    <div className="min-h-screen bg-[#f8f4eb] text-deep-slate">
+      <section className="border-b border-[rgba(15,23,42,0.06)]">
+        <div
+          className="min-h-screen overflow-hidden"
+          style={{
+            backgroundImage:
+              "linear-gradient(90deg, rgba(18,26,27,0.84) 0%, rgba(18,26,27,0.58) 42%, rgba(18,26,27,0.22) 100%), url('/images/johrei-group.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <div className="mx-auto grid min-h-screen max-w-7xl gap-8 px-6 pb-10 pt-32 md:px-10 lg:grid-cols-[1.2fr_0.68fr] lg:px-12 lg:pb-12 lg:pt-28">
+            <div className="flex min-h-[32rem] flex-col justify-end">
+              <div className="max-w-3xl">
+                <p className="inline-flex rounded-full border border-white/20 bg-white/8 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/78">
+                  {t.home.heroKicker}
+                </p>
+                <p className="mt-7 text-[13px] uppercase tracking-[0.34em] text-white/72">{t.home.heroTitle}</p>
+                <h1 className="mt-2 max-w-2xl leading-[0.92] text-white">
+                  <span className="block text-5xl sm:text-6xl lg:text-7xl">{siteConfig.shortName}</span>
+                  <span className="mt-2 block text-[1.1rem] font-semibold uppercase tracking-[0.12em] text-white/68 sm:text-[1.2rem]">
+                    World Messianic Church of America
+                  </span>
+                </h1>
+                <p className="mt-7 max-w-2xl text-xl leading-9 text-white/86">{t.home.heroIntro}</p>
+                <p className="mt-4 max-w-2xl text-base leading-8 text-white/60">{supportCopy.heroPath}</p>
 
-        <div className="mx-auto max-w-5xl space-y-7 text-white">
-          <h1 className="text-4xl font-serif leading-tight [text-shadow:0_3px_20px_rgba(0,0,0,0.55)] md:text-6xl lg:text-7xl">
-            <span className="block">{t.home.heroTitle}</span>
-            <span className="mt-2 block text-3xl md:text-5xl lg:text-6xl">{t.home.heroSubtitle}</span>
-          </h1>
-          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-slate-100 [text-shadow:0_2px_12px_rgba(0,0,0,0.55)] md:text-2xl">
-            {t.home.heroIntro}
-          </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <HomeLink to="/locations" tone="gold">
+                    {t.actions.findCenter}
+                  </HomeLink>
+                  <HomeLink to="/first-visit" tone="light">
+                    {t.actions.firstVisit}
+                  </HomeLink>
+                  <HomeLink to="/contact" tone="light">
+                    {supportCopy.heroContact}
+                  </HomeLink>
+                </div>
+              </div>
 
-          <div className="flex flex-wrap justify-center gap-3 pt-4">
-            <ButtonLink to="/johrei" variant="accent">{t.nav.aboutJohrei}</ButtonLink>
-            <ButtonLink to="/contact" variant="outline" className="border-white/70 text-white hover:bg-white/18 hover:text-white">
-              {t.nav.contact}
-            </ButtonLink>
-            <ButtonLink to="/locations" variant="primary" className="bg-white/92 text-divine-gold hover:bg-white hover:text-[#9e730a]">
-              {t.nav.locations}
-            </ButtonLink>
+              <div className="mt-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {t.home.stats.map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="rounded-[20px] border border-white/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.08))] px-5 py-4 text-white backdrop-blur-sm"
+                  >
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-white/56">{stat.label}</p>
+                    <p className="mt-2 text-2xl leading-tight">{stat.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[30px] border border-white/14 bg-[linear-gradient(180deg,rgba(166,150,130,0.62),rgba(60,67,66,0.34))] p-5 text-white backdrop-blur-md lg:mt-6">
+              <p className="px-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/68">{t.home.visitTitle}</p>
+              <div className="mt-4 space-y-3">
+                {t.home.visitSteps.map((step, index) => (
+                  <div
+                    key={step.title}
+                    className="rounded-[24px] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.06))] px-5 py-5"
+                  >
+                    <div className="flex gap-4">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/7 text-sm text-white/82">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <h2 className="text-[2rem] leading-none text-white">{step.title}</h2>
+                        <p className="mt-3 text-sm leading-7 text-white/72">{step.body}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-
         </div>
       </section>
 
-      <Section className="bg-white border-y border-[rgba(184,134,11,0.2)]">
-        <div className="mx-auto max-w-4xl rounded-3xl border border-[rgba(184,134,11,0.25)] bg-sanctuary-100 p-8 text-center md:p-10">
-          <h2 className="text-3xl font-serif md:text-5xl">{t.home.faqTitle}</h2>
-          <p className="mt-4 text-lg leading-relaxed text-slate-600">{copy.faqBody}</p>
-          <div className="mt-6">
-            <ButtonLink to="/faq" variant="accent">{copy.faqCta}</ButtonLink>
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-[1.15fr_0.68fr_0.52fr]">
+          <article className="rounded-[30px] bg-[linear-gradient(135deg,#8ea086_0%,#a6af97_55%,#c8ccb2_100%)] px-7 py-7 text-white shadow-[0_34px_80px_-52px_rgba(49,67,67,0.45)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/72">{t.nav.guidelines}</p>
+            <h2 className="mt-4 max-w-md text-[3.4rem] leading-[0.94]">
+              “Helping others dedicate themselves to the construction of Paradise on Earth, through our practices of faith, is the path to our salvation.”
+            </h2>
+            <p className="mt-8 max-w-lg text-base leading-8 text-white/76">{t.home.guideline.body}</p>
+            <div className="mt-8">
+              <HomeLink to="/guidelines-2026" tone="light" className="border-white/25 bg-white text-deep-slate hover:bg-[#f2ede4]">
+                {t.home.guideline.button}
+              </HomeLink>
+            </div>
+          </article>
+
+          <article className="rounded-[30px] border border-[rgba(15,23,42,0.05)] bg-[#fffdfa] px-7 py-7 shadow-[0_30px_72px_-54px_rgba(60,52,39,0.24)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.johreiKicker}</p>
+            <h2 className="mt-4 text-[3rem] leading-none text-[#314343]">{t.home.whatIsJohrei.title}</h2>
+            <p className="mt-5 text-lg leading-9 text-slate-500">{t.home.whatIsJohrei.body}</p>
+            <div className="mt-7">
+              <HomeLink to="/johrei" tone="gold">
+                {t.home.johreiCta}
+              </HomeLink>
+            </div>
+          </article>
+
+          <article className="rounded-[30px] border border-[rgba(15,23,42,0.05)] bg-[#fffdfa] px-6 py-7 shadow-[0_30px_72px_-54px_rgba(60,52,39,0.24)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.faqTitle}</p>
+            <p className="mt-4 text-[2rem] leading-tight text-[#314343]">{supportCopy.faqBody}</p>
+            <div className="mt-7 flex flex-col gap-3">
+              <HomeLink to="/faq" tone="light" className="border-[rgba(15,23,42,0.12)] bg-white text-deep-slate hover:bg-[#f4ecdf]">
+                {supportCopy.faqCta}
+              </HomeLink>
+              <HomeLink to="/contact" tone="dark">
+                {supportCopy.supportActions.contact}
+              </HomeLink>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{supportCopy.newHereKicker}</p>
+            <h2 className="mt-4 text-5xl leading-none text-[#314343] md:text-6xl">{t.home.newcomers.title}</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-xl leading-8 text-slate-500">{t.home.newcomers.body}</p>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {t.home.newcomers.cards.map((card, index) => (
+              <article
+                key={card.title}
+                className="relative overflow-hidden rounded-[28px] border border-white/70 bg-white px-7 py-7 shadow-[0_26px_60px_-44px_rgba(60,52,39,0.3)]"
+              >
+                <div className="absolute right-6 top-4 h-20 w-20 rounded-full bg-[radial-gradient(circle,rgba(222,194,145,0.24),rgba(255,255,255,0))]" />
+                <p className="relative text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-400">0{index + 1}</p>
+                <h3 className="relative mt-5 text-[2.1rem] leading-none text-[#314343]">{card.title}</h3>
+                <p className="relative mt-4 text-base leading-8 text-slate-500">{card.body}</p>
+                <Link
+                  to={card.to}
+                  className="relative mt-8 inline-flex text-[10px] font-semibold uppercase tracking-[0.24em] text-sage-600 transition-colors hover:text-sage-700"
+                >
+                  {card.cta}
+                </Link>
+              </article>
+            ))}
           </div>
         </div>
-      </Section>
+      </section>
 
-      <Section className="bg-sanctuary-100">
-        <div className="mx-auto max-w-4xl rounded-3xl border border-[rgba(184,134,11,0.25)] bg-white p-8 text-center shadow-sanctuary md:p-10">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-sage-600">{guidelineCopy.title}</p>
-          <blockquote className="mt-4 text-lg font-serif leading-relaxed text-slate-700 md:text-2xl">
-            {guidelineCopy.motto}
-          </blockquote>
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-white px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.vision.kicker}</p>
+            <h2 className="mt-4 text-5xl leading-none text-[#314343] md:text-6xl">{t.home.vision.title}</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-xl leading-8 text-slate-500">{t.home.vision.body}</p>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {t.home.vision.cards.map((card, index) => (
+              <article
+                key={card.title}
+                className="rounded-[28px] border border-[rgba(15,23,42,0.04)] bg-[#fffdfa] px-7 py-7 shadow-[0_28px_70px_-50px_rgba(60,52,39,0.28)]"
+              >
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-400">0{index + 1}</p>
+                <h3 className="mt-5 text-[2rem] leading-none text-[#314343]">{card.title}</h3>
+                <p className="mt-4 text-lg leading-9 text-slate-500">{card.body}</p>
+              </article>
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
-      <Section className="bg-white">
-        <div className="mx-auto max-w-4xl space-y-5 text-center">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-sage-600">{t.home.johreiKicker}</p>
-          <h2 className="text-4xl font-serif md:text-5xl">{t.home.whatIsJohrei.title}</h2>
-          <p className="text-lg leading-relaxed text-slate-600">{t.home.whatIsJohrei.body}</p>
-        </div>
-      </Section>
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{supportCopy.sacredKicker}</p>
+            <h2 className="mt-4 text-4xl leading-none text-[#314343] md:text-5xl">{supportCopy.sacredTitle}</h2>
+            <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-slate-500">
+              {supportCopy.sacredBody}
+            </p>
+          </div>
 
-      <Section className="bg-sanctuary-100">
-        <div className="mb-10 text-center">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-sage-600">{copy.pillarsTag}</p>
-          <h2 className="mt-2 text-4xl font-serif md:text-5xl">{t.home.vision.title}</h2>
-          <p className="mx-auto mt-3 max-w-3xl text-lg text-slate-600">{t.home.vision.body}</p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {t.home.vision.cards.map((card) => (
-            <Card key={card.title} title={card.title} className="h-full bg-white p-8">
-              <p className="text-base leading-relaxed text-slate-600">{card.body}</p>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      <Section className="border-y border-[rgba(184,134,11,0.2)] bg-white">
-        <div className="mb-10 text-center">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-sage-600">{copy.galleryTag}</p>
-          <h2 className="mt-2 text-4xl font-serif md:text-5xl">{copy.galleryTitle}</h2>
-          <p className="mx-auto mt-3 max-w-3xl text-lg text-slate-600">{copy.galleryBody}</p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {sacredScenes.map((scene) => (
-            <article key={scene.heading} className="overflow-hidden rounded-3xl border border-[rgba(184,134,11,0.25)] bg-white shadow-sanctuary">
+          <div className="mt-12 grid gap-4 lg:grid-cols-[1.08fr_0.68fr]">
+            <article className="overflow-hidden rounded-[28px] border border-[rgba(15,23,42,0.05)] bg-white shadow-[0_28px_70px_-50px_rgba(60,52,39,0.28)]">
               <img
-                src={scene.image}
-                alt={scene.heading}
-                className="h-52 w-full object-cover object-center"
+                src={sacredScenes[0].image}
+                alt={sacredScenes[0].heading}
+                className="h-[25rem] w-full object-cover object-center"
                 loading="lazy"
               />
-              <div className="space-y-3 p-6">
-                <h3 className="text-2xl font-serif">{scene.heading}</h3>
-                <p className="text-sm font-semibold text-slate-700">{scene.location}</p>
-                <p className="text-sm leading-relaxed text-slate-600">{scene.description}</p>
+              <div className="space-y-3 px-6 py-6">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-sage-600/80">{sacredScenes[0].location}</p>
+                <h3 className="text-[2.1rem] leading-none text-[#314343]">{sacredScenes[0].heading}</h3>
+                <p className="text-base leading-8 text-slate-500">{sacredScenes[0].body}</p>
               </div>
             </article>
-          ))}
-        </div>
-      </Section>
 
-      <Section className="bg-sanctuary-100">
-        <div className="mx-auto max-w-4xl space-y-6 text-center">
-          <h2 className="text-3xl font-serif md:text-5xl">{copy.actionsTitle}</h2>
-          <p className="text-lg text-slate-600">{copy.actionsBody}</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <ButtonLink to="/locations" variant="secondary">{t.nav.locations}</ButtonLink>
-            {isInternalDonate ? (
-              <ButtonLink to={donateHref} variant="accent">{t.actions.donate}</ButtonLink>
-            ) : (
-              <a
-                href={donateHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-11 items-center justify-center rounded-full bg-deep-slate px-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-all hover:bg-sage-600"
-              >
-                {t.actions.donate}
-              </a>
-            )}
-            <ButtonLink to="/contact" variant="outline">{t.actions.contact}</ButtonLink>
+            <div className="grid gap-4">
+              {sacredScenes.slice(1).map((scene) => (
+                <article
+                  key={scene.heading}
+                  className="overflow-hidden rounded-[24px] border border-[rgba(15,23,42,0.05)] bg-white shadow-[0_28px_70px_-50px_rgba(60,52,39,0.24)]"
+                >
+                  <img src={scene.image} alt={scene.heading} className="h-40 w-full object-cover object-center" loading="lazy" />
+                  <div className="space-y-2 px-5 py-4">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-sage-600/80">{scene.location}</p>
+                    <h3 className="text-[1.7rem] leading-none text-[#314343]">{scene.heading}</h3>
+                    <p className="text-sm leading-7 text-slate-500">{scene.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
+
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-white px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-[1.08fr_0.92fr]">
+          <div className="rounded-[28px] border border-[rgba(15,23,42,0.05)] bg-[#fffdfa] p-6 shadow-[0_28px_70px_-50px_rgba(60,52,39,0.24)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.faqTitle}</p>
+            <div className="mt-5 space-y-3">
+              {t.home.faqs.map((faq) => (
+                <div key={faq.q} className="rounded-[18px] border border-[rgba(15,23,42,0.06)] bg-white px-4 py-4">
+                  <h3 className="text-lg leading-7 text-[#314343]">{faq.q}</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-500">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            <article className="rounded-[28px] border border-[rgba(15,23,42,0.05)] bg-[#fffdfa] p-6 shadow-[0_28px_70px_-50px_rgba(60,52,39,0.24)]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.contactTitle}</p>
+              <h3 className="mt-4 text-[2.1rem] leading-none text-[#314343]">{supportCopy.visitContactTitle}</h3>
+              <p className="mt-4 text-base leading-8 text-slate-500">{t.home.contactBody}</p>
+              <div className="mt-5 space-y-1 text-sm leading-7 text-slate-500">
+                <p>{siteConfig.hq.address}</p>
+                <p>{siteConfig.hq.email}</p>
+                <p>{siteConfig.hq.phone}</p>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <HomeLink to="/contact" tone="dark">
+                  {supportCopy.supportActions.contact}
+                </HomeLink>
+                <HomeLink to="/locations" tone="light" className="border-[rgba(15,23,42,0.12)] bg-white text-deep-slate hover:bg-[#f4ecdf]">
+                  {supportCopy.supportActions.locations}
+                </HomeLink>
+              </div>
+            </article>
+
+            <article className="rounded-[28px] border border-[rgba(15,23,42,0.05)] bg-[#fffdfa] p-6 shadow-[0_28px_70px_-50px_rgba(60,52,39,0.24)]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.ready.title}</p>
+              <p className="mt-4 text-base leading-8 text-slate-500">{t.home.ready.body}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {isInternalDonate ? (
+                  <HomeLink to={donateHref} tone="gold">
+                    {supportCopy.supportActions.donate}
+                  </HomeLink>
+                ) : (
+                  <HomeAction href={donateHref} tone="gold">
+                    {supportCopy.supportActions.donate}
+                  </HomeAction>
+                )}
+                <HomeLink to="/first-visit" tone="light" className="border-[rgba(15,23,42,0.12)] bg-white text-deep-slate hover:bg-[#f4ecdf]">
+                  {t.actions.firstVisit}
+                </HomeLink>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl rounded-[30px] bg-[linear-gradient(135deg,#8fa08d_0%,#97a78f_48%,#8b9984_100%)] px-6 py-6 text-white shadow-[0_34px_80px_-52px_rgba(49,67,67,0.45)] md:px-8">
+          <div className="grid gap-4 lg:grid-cols-[1.28fr_0.55fr_0.55fr_0.46fr]">
+            <div className="rounded-[24px] border border-white/14 bg-white/5 px-5 py-5">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/72">{supportCopy.supportKicker}</p>
+              <h2 className="mt-4 max-w-sm text-[2.4rem] leading-none">{t.home.ready.title}</h2>
+              <p className="mt-4 max-w-md text-base leading-8 text-white/76">{t.home.ready.body}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <HomeLink to="/locations" tone="light" className="border-white/22 bg-white text-deep-slate hover:bg-[#f1ede5]">
+                  {supportCopy.supportActions.locations}
+                </HomeLink>
+                {isInternalDonate ? (
+                  <HomeLink to={donateHref} tone="gold">
+                    {supportCopy.supportActions.donate}
+                  </HomeLink>
+                ) : (
+                  <HomeAction href={donateHref} tone="gold">
+                    {supportCopy.supportActions.donate}
+                  </HomeAction>
+                )}
+                <HomeLink to="/contact" tone="light">
+                  {supportCopy.supportActions.contact}
+                </HomeLink>
+              </div>
+            </div>
+
+            <article className="rounded-[24px] border border-white/14 bg-white/5 px-5 py-5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-white/62">{t.home.centers.title}</p>
+              <h3 className="mt-3 text-[1.8rem] leading-none">{t.home.centers.link}</h3>
+              <p className="mt-4 text-sm leading-7 text-white/72">{t.home.centers.body}</p>
+            </article>
+
+            <article className="rounded-[24px] border border-white/14 bg-white/5 px-5 py-5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-white/62">{t.home.resources.title}</p>
+              <h3 className="mt-3 text-[1.8rem] leading-none">{t.home.resources.link}</h3>
+              <p className="mt-4 text-sm leading-7 text-white/72">{t.home.resources.body}</p>
+            </article>
+
+            <article className="rounded-[24px] border border-white/14 bg-white/5 px-5 py-5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-white/62">{t.home.guideline.title}</p>
+              <h3 className="mt-3 text-[1.8rem] leading-none">{t.home.guideline.button}</h3>
+              <p className="mt-4 text-sm leading-7 text-white/72">{t.home.guideline.body}</p>
+            </article>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

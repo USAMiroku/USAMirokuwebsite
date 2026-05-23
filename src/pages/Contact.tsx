@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
 import { ButtonLink } from '../components/ButtonLink'
+import { Card } from '../components/Card'
 import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { Section } from '../components/Section'
 import { siteConfig } from '../config/siteConfig'
+import { useManagedCenters } from '../organization/centers'
 
 type ContactFormState = {
   name: string
@@ -16,12 +18,9 @@ function buildMapsEmbed(address: string) {
   return `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`
 }
 
-function buildMapsLink(address: string) {
-  return `https://maps.google.com/?q=${encodeURIComponent(address)}`
-}
-
 export default function Contact() {
   const { t, language } = useTranslation()
+  const { activeCenters } = useManagedCenters()
 
   const [form, setForm] = useState<ContactFormState>({
     name: '',
@@ -30,35 +29,23 @@ export default function Contact() {
     message: '',
   })
 
-  const locationLabel =
-    language === 'es'
-      ? 'Centro'
-      : language === 'pt'
-        ? 'Centro'
-        : 'Center'
+  const locationLabel = language === 'en' ? 'Center' : 'Centro'
+  const messageLabel = language === 'en' ? 'Message' : language === 'es' ? 'Mensaje' : 'Mensagem'
+  const submitLabel = language === 'en' ? 'Send message' : language === 'es' ? 'Enviar mensaje' : 'Enviar mensagem'
+  const pageLabel = language === 'en' ? 'National Office' : language === 'es' ? 'Oficina nacional' : 'Escritório nacional'
+  const officeLabel = language === 'en' ? 'Office details' : language === 'es' ? 'Datos de oficina' : 'Dados do escritório'
+  const recipientLabel = language === 'en' ? 'Messages go to' : language === 'es' ? 'Los mensajes se enviarán a' : 'As mensagens serão enviadas para'
 
-  const messageLabel =
-    language === 'es'
-      ? 'Mensaje'
-      : language === 'pt'
-        ? 'Mensagem'
-        : 'Message'
-
-  const submitLabel =
-    language === 'es'
-      ? 'Enviar mensaje'
-      : language === 'pt'
-        ? 'Enviar mensagem'
-        : 'Send message'
+  const selectedCenter = useMemo(
+    () => activeCenters.find((entry) => entry.id === form.locationId) ?? null,
+    [activeCenters, form.locationId],
+  )
 
   const mailtoRecipient = useMemo(() => {
-    const center = siteConfig.centers.find((entry) => entry.id === form.locationId)
-    return center?.email || siteConfig.hq.email
-  }, [form.locationId])
+    return selectedCenter?.email || siteConfig.hq.email
+  }, [selectedCenter])
 
   const mapEmbedSrc = buildMapsEmbed(siteConfig.hq.address)
-  const mapLink = buildMapsLink(siteConfig.hq.address)
-
   usePageMeta({
     title: `${t.contact.title} | ${siteConfig.organizationName}`,
     description: t.contact.intro,
@@ -71,8 +58,9 @@ export default function Contact() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    const centerName = siteConfig.centers.find((entry) => entry.id === form.locationId)?.name ?? 'General Inquiry'
+    const centerName = selectedCenter?.name ?? 'General Inquiry'
     const subject = encodeURIComponent(`Website Inquiry - ${centerName}`)
+    const cc = encodeURIComponent(siteConfig.hq.email)
     const body = encodeURIComponent(
       [
         `Full Name: ${form.name.trim()}`,
@@ -83,71 +71,80 @@ export default function Contact() {
       ].join('\n'),
     )
 
-    window.location.href = `mailto:${mailtoRecipient}?subject=${subject}&body=${body}`
+    window.location.href = `mailto:${mailtoRecipient}?cc=${cc}&subject=${subject}&body=${body}`
   }
 
   return (
     <div className="relative min-h-screen bg-sanctuary-100 text-deep-slate">
-      <div className="noise-subtle" />
-
-      <section className="relative py-32 md:py-48 flex flex-col items-center justify-center text-center px-6">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <span className="text-[10px] font-bold tracking-[0.4em] text-sage-600 uppercase">Direct Resonance</span>
-          <h1 className="text-6xl md:text-8xl font-serif text-deep-slate">{t.contact.title}</h1>
-          <p className="text-xl md:text-3xl font-serif italic text-slate-500 max-w-2xl mx-auto">{t.contact.intro}</p>
+      <section className="public-hero">
+        <div className="public-hero-grid">
+          <div className="public-hero-copy">
+            <p className="public-eyebrow">{pageLabel}</p>
+            <h1 className="public-title">{t.contact.title}</h1>
+            <p className="public-body">{t.contact.intro}</p>
+          </div>
+          <div className="public-hero-note">
+            <p className="public-eyebrow">{officeLabel}</p>
+            <p className="mt-4">{siteConfig.hq.address}</p>
+            <p className="mt-3">{siteConfig.hq.phone}</p>
+            <p>{siteConfig.hq.email}</p>
+          </div>
         </div>
       </section>
 
-      <Section py-24 className="bg-white">
-        <div className="max-w-7xl mx-auto px-6 grid gap-16 lg:grid-cols-2">
-          <div className="space-y-12">
-            <h2 className="text-3xl font-serif text-deep-slate border-b border-slate-100 pb-6">{t.contact.title}</h2>
-            <div className="grid gap-8">
-              {[
-                {
-                  label: t.contact.options.general,
-                  value: siteConfig.hq.email,
-                  type: t.contact.options.general,
-                  link: `mailto:${siteConfig.hq.email}`,
-                },
-                {
-                  label: t.contact.options.visit,
-                  value: siteConfig.hq.phone,
-                  type: t.contact.options.visit,
-                  link: `tel:${siteConfig.hq.phone}`,
-                },
-                {
-                  label: t.contact.options.learn,
-                  value: t.actions.learnMore,
-                  type: t.contact.options.learn,
-                  link: '/resources',
-                },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="group p-8 rounded-sanctuary border border-slate-50 bg-slate-50/50 hover:bg-white hover:border-sage-600/30 transition-all duration-500"
-                >
-                  <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">{item.type}</span>
-                  <p className="text-xl font-serif mt-2 text-deep-slate">{item.value}</p>
-                  <p className="text-sm text-slate-500 mt-2 font-serif italic">{item.label}</p>
-                  <a
-                    href={item.link}
-                    className="inline-block mt-6 text-[10px] font-bold tracking-[0.2em] text-sage-600 uppercase border-b border-transparent hover:border-sage-600 transition-all"
-                  >
-                    {t.actions.contact}
-                  </a>
-                </div>
-              ))}
-            </div>
+      <Section className="bg-white">
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="space-y-6">
+            <Card title={t.contact.title}>
+              <div className="grid gap-4">
+                {[
+                  {
+                    label: t.contact.options.general,
+                    value: siteConfig.hq.email,
+                    caption: t.contact.options.general,
+                    link: `mailto:${siteConfig.hq.email}`,
+                    external: true,
+                  },
+                  {
+                    label: t.contact.options.visit,
+                    value: siteConfig.hq.phone,
+                    caption: t.contact.options.visit,
+                    link: `tel:${siteConfig.hq.phone}`,
+                    external: true,
+                  },
+                  {
+                    label: t.contact.options.learn,
+                    value: t.actions.learnMore,
+                    caption: t.contact.options.learn,
+                    link: '/resources',
+                    external: false,
+                  },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-xl border border-[rgba(15,23,42,0.08)] bg-white px-5 py-4">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-sage-600">{item.caption}</p>
+                    <p className="mt-2 text-xl font-serif text-deep-slate">{item.value}</p>
+                    {item.external ? (
+                      <a href={item.link} className="mt-4 inline-block text-[10px] font-bold uppercase tracking-[0.18em] text-sage-600">
+                        {t.actions.contact}
+                      </a>
+                    ) : (
+                      <ButtonLink to={item.link} variant="ghost" className="mt-4 px-0">
+                        {t.actions.contact}
+                      </ButtonLink>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </Card>
           </div>
 
-          <div className="bg-sanctuary-100/50 rounded-sanctuary-lg p-10 md:p-16 space-y-10">
+          <div className="border border-[rgba(15,23,42,0.08)] bg-white p-8 md:p-10">
             <div className="space-y-4">
-              <h3 className="text-4xl font-serif text-deep-slate">{t.contact.title}</h3>
-              <p className="text-slate-500 font-serif italic">{t.contact.intro}</p>
+              <h2 className="text-4xl font-serif text-deep-slate">{t.contact.title}</h2>
+              <p className="text-slate-600">{t.contact.intro}</p>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t.donate.fields.name}</label>
@@ -155,7 +152,7 @@ export default function Contact() {
                     type="text"
                     value={form.name}
                     onChange={(event) => updateField('name', event.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-full px-6 h-12 outline-none focus:border-sage-600 transition-colors"
+                    className="h-12 w-full rounded-lg border border-[rgba(15,23,42,0.12)] bg-white px-4 outline-none transition-colors focus:border-sage-600"
                     required
                   />
                 </div>
@@ -165,7 +162,7 @@ export default function Contact() {
                     type="email"
                     value={form.email}
                     onChange={(event) => updateField('email', event.target.value)}
-                    className="w-full bg-white border border-slate-200 rounded-full px-6 h-12 outline-none focus:border-sage-600 transition-colors"
+                    className="h-12 w-full rounded-lg border border-[rgba(15,23,42,0.12)] bg-white px-4 outline-none transition-colors focus:border-sage-600"
                     required
                   />
                 </div>
@@ -176,14 +173,16 @@ export default function Contact() {
                 <select
                   value={form.locationId}
                   onChange={(event) => updateField('locationId', event.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-full px-6 h-12 outline-none focus:border-sage-600 transition-colors"
+                  className="h-12 w-full rounded-lg border border-[rgba(15,23,42,0.12)] bg-white px-4 outline-none transition-colors focus:border-sage-600"
                 >
                   <option value="">{siteConfig.shortName} - HQ</option>
-                  {siteConfig.centers.map((center) => (
+                  {activeCenters
+                    .filter((center) => center.kind !== 'hq')
+                    .map((center) => (
                     <option key={center.id} value={center.id}>
                       {center.name}
                     </option>
-                  ))}
+                    ))}
                 </select>
               </div>
 
@@ -192,49 +191,43 @@ export default function Contact() {
                 <textarea
                   value={form.message}
                   onChange={(event) => updateField('message', event.target.value)}
-                  className="w-full bg-white border border-slate-200 rounded-3xl p-6 min-h-[160px] outline-none focus:border-sage-600 transition-colors"
+                  className="min-h-[180px] w-full rounded-lg border border-[rgba(15,23,42,0.12)] bg-white p-4 outline-none transition-colors focus:border-sage-600"
                   required
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full h-10 bg-deep-slate text-white rounded-full text-[10px] font-semibold tracking-[0.14em] uppercase hover:bg-sage-600 transition-all"
+                className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-deep-slate text-[10px] font-semibold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#14202a]"
               >
                 {submitLabel}
               </button>
 
               <p className="text-xs text-slate-500 leading-relaxed">
-                Recipient: <span className="font-semibold text-deep-slate">{mailtoRecipient}</span>
+                {recipientLabel}: <span className="font-semibold text-deep-slate">{mailtoRecipient}</span>
               </p>
             </form>
           </div>
         </div>
       </Section>
 
-      <Section className="pb-40">
-        <div className="max-w-5xl mx-auto p-16 md:p-24 text-center border-t border-slate-100">
-          <h2 className="text-4xl md:text-6xl font-serif text-deep-slate mb-8">{t.firstVisit.title}</h2>
-          <ButtonLink to="/locations" variant="primary">
-            {t.actions.findCenter}
-          </ButtonLink>
+      <Section className="section-wash border-y border-[rgba(141,107,38,0.12)]">
+        <div className="mx-auto max-w-6xl">
+          <h3 className="mb-6 text-3xl font-serif text-deep-slate">{t.contact.options.visit}</h3>
+          <div className="overflow-hidden rounded-xl border border-[rgba(15,23,42,0.08)] bg-white">
+            <iframe title="Headquarters map" src={mapEmbedSrc} className="h-[420px] w-full border-0" loading="lazy" />
+          </div>
         </div>
       </Section>
 
-      <Section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <h3 className="text-2xl font-serif text-deep-slate mb-6">{t.contact.options.visit}</h3>
-          <div className="w-full h-[420px] rounded-sanctuary overflow-hidden">
-            <iframe title="Headquarters map" src={mapEmbedSrc} className="w-full h-full border-0" loading="lazy" />
+      <Section className="bg-sanctuary-100">
+        <div className="public-band mx-auto max-w-4xl px-8 py-12 text-center md:px-12">
+          <h2 className="text-4xl font-serif md:text-5xl">{t.firstVisit.title}</h2>
+          <div className="mt-8">
+            <ButtonLink to="/locations" variant="secondary" className="bg-white text-deep-slate hover:bg-[#f3ede2]">
+              {t.actions.findCenter}
+            </ButtonLink>
           </div>
-          <a
-            href={mapLink}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex text-[10px] font-bold tracking-[0.2em] uppercase text-sage-600 border-b border-transparent hover:border-sage-600 transition-all"
-          >
-            {t.locations.detail.directions}
-          </a>
         </div>
       </Section>
     </div>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation as useRouteLocation } from 'react-router-dom'
 import { useTranslation } from '../context/TranslationContext'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
 
@@ -21,12 +21,85 @@ function FooterDonateLink({ className }: { className: string }) {
   )
 }
 
-export function Footer() {
+function PublicFooter() {
+  const { t } = useTranslation()
+
+  const links = [
+    { to: '/', label: t.nav.home },
+    { to: '/about', label: t.nav.about },
+    { to: '/johrei', label: t.nav.aboutJohrei },
+    { to: '/activities', label: t.nav.activities },
+    { to: '/locations', label: t.nav.locations },
+    { to: '/contact', label: t.nav.contact },
+  ]
+
+  return (
+    <footer className="site-footer border-t border-[rgba(15,23,42,0.06)] bg-[#f8f4eb] px-4 py-18 md:px-6">
+      <div className="mx-auto max-w-7xl rounded-[30px] bg-[linear-gradient(135deg,#8fa08d_0%,#97a78f_48%,#8b9984_100%)] px-8 py-8 text-white shadow-[0_34px_80px_-52px_rgba(49,67,67,0.45)]">
+        <div className="grid gap-5 lg:grid-cols-[1.3fr_0.8fr_0.95fr]">
+          <div className="rounded-[24px] border border-white/14 bg-white/5 px-6 py-6">
+            <p className="text-[1.35rem] font-bold leading-snug tracking-tight">Miroku Association USA</p>
+            <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/78">World Messianic Church of America</p>
+            <p className="mt-4 max-w-sm text-base leading-8 text-white/76">{t.tagline}</p>
+            <div className="mt-6 space-y-1 text-sm leading-7 text-white/78">
+              <p>{siteConfig.hq.address}</p>
+              <p>{siteConfig.hq.phone}</p>
+              <p>{siteConfig.hq.email}</p>
+            </div>
+          </div>
+
+          <div className="rounded-[24px] border border-white/14 bg-white/5 px-6 py-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/72">Navigation</p>
+            <nav className="mt-4 flex flex-col gap-3">
+              {links.map((link) => (
+                <Link key={link.to} to={link.to} className="text-sm text-white/82 transition-colors hover:text-white">
+                  {link.label}
+                </Link>
+              ))}
+              <FooterDonateLink className="text-sm text-white/82 transition-colors hover:text-white" />
+            </nav>
+          </div>
+
+          <div className="rounded-[24px] border border-white/14 bg-white/5 px-6 py-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/72">Contact</p>
+            <div className="mt-4 space-y-3 text-sm text-white/82">
+              <p>
+                Website:{' '}
+                <a href="https://miroku.us" target="_blank" rel="noreferrer" className="underline-offset-2 hover:underline">
+                  miroku.us
+                </a>
+              </p>
+              <p>
+                Contact email:{' '}
+                <a href={`mailto:${siteConfig.hq.email}`} className="underline-offset-2 hover:underline">
+                  {siteConfig.hq.email}
+                </a>
+              </p>
+              <p>
+                Phone number:{' '}
+                <a href={`tel:${siteConfig.hq.phone}`} className="underline-offset-2 hover:underline">
+                  {siteConfig.hq.phone}
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-col gap-4 border-t border-white/12 pt-6 text-[11px] uppercase tracking-[0.18em] text-white/62 md:flex-row md:items-center md:justify-between">
+          <p>© {new Date().getFullYear()} World Messianic Church of America</p>
+          <p>Miroku Association USA</p>
+        </div>
+      </div>
+    </footer>
+  )
+}
+
+function LearningFooter() {
   const { t, language } = useTranslation()
 
   const links = [
     { to: '/', label: t.nav.home },
-    { to: '/learn', label: 'Learn' },
+    { to: '/activities', label: t.nav.activities },
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/meishu-sama', label: t.nav.meishuSama },
@@ -134,4 +207,14 @@ export function Footer() {
       </div>
     </footer>
   )
+}
+
+export function Footer() {
+  const routeLocation = useRouteLocation()
+  const isLearningRoute =
+    routeLocation.pathname.startsWith('/learn') ||
+    routeLocation.pathname.startsWith('/admin') ||
+    routeLocation.pathname.startsWith('/reset-password')
+
+  return isLearningRoute ? <LearningFooter /> : <PublicFooter />
 }

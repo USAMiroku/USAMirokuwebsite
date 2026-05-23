@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation as useRouteLocation } from 'react-router-dom'
 import { useTranslation } from '../context/TranslationContext'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
@@ -23,7 +23,136 @@ function DonateButton({ className, onClick }: { className: string; onClick?: () 
   )
 }
 
-export function Header() {
+function PublicHeader() {
+  const { t } = useTranslation()
+  const routeLocation = useRouteLocation()
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 24)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [routeLocation.pathname])
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [routeLocation.pathname])
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false)
+
+  const navLinks = [
+    { to: '/', label: t.nav.home },
+    { to: '/about', label: t.nav.about },
+    { to: '/johrei', label: t.nav.aboutJohrei },
+    { to: '/activities', label: t.nav.activities },
+    { to: '/locations', label: t.nav.locations },
+    { to: '/contact', label: t.nav.contact },
+  ]
+
+  return (
+    <>
+      <header
+        className="site-header fixed inset-x-0 top-0 z-50 px-3 pt-4 sm:px-4 md:px-6"
+      >
+        <div
+          className={`mx-auto flex max-w-7xl items-center justify-between gap-2 rounded-full border border-[rgba(208,194,168,0.72)] px-3 py-3 shadow-[0_18px_40px_-28px_rgba(34,31,27,0.34)] transition-all duration-300 sm:gap-4 sm:px-4 md:gap-5 md:px-6 ${
+            isScrolled ? 'bg-[rgba(247,241,231,0.95)] backdrop-blur-xl' : 'bg-[rgba(247,241,231,0.94)] backdrop-blur-md'
+          }`}
+        >
+          <Link to="/" onClick={closeMobileMenu} className="site-brand flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white sm:h-11 sm:w-11">
+              <img src="/logo.png" alt={siteConfig.organizationName} className="h-full w-full rounded-full object-cover" />
+            </div>
+            <div className="min-w-0 leading-none">
+              <span className="block truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.14em] text-deep-slate sm:hidden">
+                Miroku USA
+              </span>
+              <span className="hidden truncate whitespace-nowrap text-[11px] font-extrabold uppercase tracking-[0.16em] text-deep-slate sm:block">
+                Miroku Association USA
+              </span>
+              <span className="hidden whitespace-nowrap text-[10px] font-semibold tracking-[0.08em] text-slate-500 md:block">
+                World Messianic Church of America
+              </span>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-1 lg:flex">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                onClick={closeMobileMenu}
+                className={({ isActive }) =>
+                  `inline-flex items-center justify-center rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+                    isActive ? 'bg-[#294341] text-white' : 'text-slate-600 hover:bg-white/75 hover:text-deep-slate'
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="flex shrink-0 items-center gap-2 md:gap-3">
+            <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none sm:inline-flex" />
+            <LanguageToggle compact className="inline-flex border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none sm:hidden" />
+
+            <DonateButton
+              onClick={closeMobileMenu}
+              className="hidden h-11 items-center justify-center rounded-full bg-divine-gold px-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#946615] sm:inline-flex"
+            />
+
+            <button
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              className="rounded-full border border-[rgba(15,23,42,0.08)] bg-white/78 p-3 text-deep-slate lg:hidden"
+              aria-label="Toggle menu"
+            >
+              <div className="w-6 space-y-1.5">
+                <div className={`h-[2px] w-6 bg-current transition-all ${isMobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+                <div className={`h-[2px] w-6 bg-current transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
+                <div className={`h-[2px] w-6 bg-current transition-all ${isMobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
+              </div>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div
+        className={`fixed inset-0 z-40 bg-[#f8f4eb] px-6 py-24 transition-all duration-300 lg:hidden ${
+          isMobileMenuOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-full opacity-0'
+        }`}
+        aria-hidden={!isMobileMenuOpen}
+      >
+        <nav className="mx-auto flex max-w-lg flex-col gap-4 pt-10">
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              onClick={closeMobileMenu}
+              className="rounded-full border border-[rgba(15,23,42,0.08)] bg-white/82 px-5 py-4 text-lg font-semibold text-deep-slate"
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="mt-6 flex flex-col gap-4 border-t border-[rgba(15,23,42,0.08)] pt-6">
+            <DonateButton
+              onClick={closeMobileMenu}
+              className="inline-flex h-11 w-full items-center justify-center rounded-full bg-divine-gold px-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-white"
+            />
+            <LanguageToggle className="self-start border border-[rgba(15,23,42,0.08)] bg-white shadow-none" />
+          </div>
+        </nav>
+      </div>
+    </>
+  )
+}
+
+function LearningHeader() {
   const { t } = useTranslation()
   const routeLocation = useRouteLocation()
   const [isScrolled, setIsScrolled] = useState(false)
@@ -43,7 +172,7 @@ export function Header() {
 
   const navLinks = [
     { to: '/', label: t.nav.home },
-    { to: '/learn', label: 'Learn' },
+    { to: '/activities', label: t.nav.activities },
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/meishu-sama', label: t.nav.meishuSama },
@@ -135,4 +264,14 @@ export function Header() {
       </div>
     </>
   )
+}
+
+export function Header() {
+  const routeLocation = useRouteLocation()
+  const isLearningRoute =
+    routeLocation.pathname.startsWith('/learn') ||
+    routeLocation.pathname.startsWith('/admin') ||
+    routeLocation.pathname.startsWith('/reset-password')
+
+  return isLearningRoute ? <LearningHeader /> : <PublicHeader />
 }

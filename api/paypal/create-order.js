@@ -10,6 +10,7 @@ import {
   paypalRequest,
   sanitizeText,
 } from './_paypal.js'
+import { recordDonationOrder } from './_donations.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -28,6 +29,7 @@ export default async function handler(req, res) {
     const donorName = sanitizeText(body.donorName, 80)
     const donorEmail = sanitizeText(body.donorEmail, 120)
     const center = sanitizeText(body.center, 80)
+    const centerId = sanitizeText(body.centerId, 80)
     const donationType = sanitizeText(body.donationType, 80)
     const amount = parseAmount(body.amount)
     const currency = sanitizeText(body.currency || 'USD', 3).toUpperCase()
@@ -43,22 +45,32 @@ export default async function handler(req, res) {
     const { baseUrl, accessToken } = await getAccessToken(fundType)
     const origin = getRequestOrigin(req)
 
+    const invoiceId = buildInvoiceId(fundType)
+    const customId = buildCustomId({
+      donorName,
+      center,
+      centerId,
+      donationType,
+      fundType,
+    })
+
     const orderBody = {
       intent: 'CAPTURE',
       purchase_units: [
         {
           reference_id: fundType.toUpperCase(),
-          invoice_id: buildInvoiceId(fundType),
-          custom_id: buildCustomId({
-            donorName,
-            center,
-            donationType,
-            fundType,
-          }),
+          invoice_id: invoiceId,
+          custom_id: customId,
           description: `${donationType} | ${center}`.slice(0, 127),
           amount: {
             currency_code: currency,
             value: amount,
+            breakdown: {
+              item_total: {
+                currency_code: currency,
+                value: amount,
+              },
+            },
           },
           items: [
             {
@@ -100,6 +112,25 @@ export default async function handler(req, res) {
 
     if (!approveUrl) {
       return res.status(500).json({ error: 'PayPal order created but approval URL is missing.' })
+    }
+
+    try {
+      await recordDonationOrder({
+        orderId: orderResponse.data.id,
+        invoiceId,
+        fundType,
+        donorName,
+        donorEmail,
+        centerId,
+        centerName: center,
+        donationType,
+        amount,
+        currency,
+        customId,
+        orderPayload: orderResponse.data,
+      })
+    } catch (recordError) {
+      console.error('Could not record donation order.', recordError)
     }
 
     return res.status(200).json({

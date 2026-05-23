@@ -2,32 +2,35 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { type Session, type User } from '@supabase/supabase-js'
 import { assertSupabaseConfigured, supabase } from '../lib/supabaseClient'
 
-type Role = 'student' | 'instructor' | 'admin'
+export type LearningRole = 'student' | 'instructor' | 'admin' | 'center_admin' | 'super_admin'
 
 type LearningAuthContextValue = {
   session: Session | null
   user: User | null
-  role: Role | null
+  role: LearningRole | null
+  managedCenterId: string | null
   isAuthLoading: boolean
   signIn: (email: string, password: string) => Promise<void>
-  signUp: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
   isAdmin: boolean
   isInstructor: boolean
+  isSuperAdmin: boolean
+  isCenterAdmin: boolean
 }
 
 const LearningAuthContext = createContext<LearningAuthContextValue | undefined>(undefined)
 
-function getRoleFromString(value: string | null | undefined): Role | null {
+function getRoleFromString(value: string | null | undefined): LearningRole | null {
   if (!value) return null
-  if (value === 'admin' || value === 'instructor' || value === 'student') return value
+  if (value === 'admin' || value === 'instructor' || value === 'student' || value === 'center_admin' || value === 'super_admin') return value
   return null
 }
 
 export function LearningAuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<User | null>(null)
-  const [role, setRole] = useState<Role | null>(null)
+  const [role, setRole] = useState<LearningRole | null>(null)
+  const [managedCenterId, setManagedCenterId] = useState<string | null>(null)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
 
   useEffect(() => {
@@ -75,17 +78,19 @@ export function LearningAuthProvider({ children }: { children: React.ReactNode }
     async function syncRoleAndProfile() {
       if (!supabase) {
         setRole(null)
+        setManagedCenterId(null)
         return
       }
 
       if (!user) {
         setRole(null)
+        setManagedCenterId(null)
         return
       }
 
       const { data: profileData, error: profileError } = await assertSupabaseConfigured()
         .from('learning_profiles')
-        .select('role')
+        .select('role,managed_center_id')
         .eq('user_id', user.id)
         .maybeSingle()
 
@@ -94,23 +99,44 @@ export function LearningAuthProvider({ children }: { children: React.ReactNode }
         await assertSupabaseConfigured().from('learning_profiles').insert({
           user_id: user.id,
           role: 'student',
+          email: user.email ?? null,
+          full_name: (user.user_metadata?.full_name as string | undefined) ?? null,
         })
       } else if (profileError) {
         // Try upsert as fallback (e.g. race condition).
         await assertSupabaseConfigured().from('learning_profiles').upsert(
-          { user_id: user.id, role: 'student' },
+          {
+            user_id: user.id,
+            role: 'student',
+            email: user.email ?? null,
+            full_name: (user.user_metadata?.full_name as string | undefined) ?? null,
+          },
+          { onConflict: 'user_id' },
+        )
+      } else {
+        const existingRole = getRoleFromString(profileData?.role) ?? 'student'
+        const existingManagedCenterId = profileData?.managed_center_id ?? null
+        await assertSupabaseConfigured().from('learning_profiles').upsert(
+          {
+            user_id: user.id,
+            role: existingRole,
+            managed_center_id: existingManagedCenterId,
+            email: user.email ?? null,
+            full_name: (user.user_metadata?.full_name as string | undefined) ?? null,
+          },
           { onConflict: 'user_id' },
         )
       }
 
       const { data: profileData2 } = await assertSupabaseConfigured()
         .from('learning_profiles')
-        .select('role')
+        .select('role,managed_center_id')
         .eq('user_id', user.id)
         .maybeSingle()
 
       if (!isMounted) return
       setRole(getRoleFromString(profileData2?.role ?? null))
+      setManagedCenterId(profileData2?.managed_center_id ?? null)
     }
 
     void syncRoleAndProfile()
@@ -124,15 +150,11 @@ export function LearningAuthProvider({ children }: { children: React.ReactNode }
       session,
       user,
       role,
+      managedCenterId,
       isAuthLoading,
       async signIn(email: string, password: string) {
         const client = assertSupabaseConfigured()
         const { error } = await client.auth.signInWithPassword({ email, password })
-        if (error) throw error
-      },
-      async signUp(email: string, password: string) {
-        const client = assertSupabaseConfigured()
-        const { error } = await client.auth.signUp({ email, password })
         if (error) throw error
       },
       async signOut() {
@@ -140,10 +162,12 @@ export function LearningAuthProvider({ children }: { children: React.ReactNode }
         const { error } = await client.auth.signOut()
         if (error) throw error
       },
-      isAdmin: role === 'admin',
+      isAdmin: role === 'admin' || role === 'super_admin' || role === 'center_admin',
       isInstructor: role === 'instructor',
+      isSuperAdmin: role === 'super_admin',
+      isCenterAdmin: role === 'center_admin',
     }),
-    [role, session, user, isAuthLoading],
+    [managedCenterId, role, session, user, isAuthLoading],
   )
 
   return <LearningAuthContext.Provider value={value}>{children}</LearningAuthContext.Provider>
@@ -155,4 +179,3 @@ export function useLearningAuth() {
   if (!ctx) throw new Error('useLearningAuth must be used within LearningAuthProvider')
   return ctx
 }
-

@@ -6,6 +6,7 @@ import {
   paypalRequest,
   sanitizeText,
 } from './_paypal.js'
+import { markDonationCompleted } from './_donations.js'
 
 async function fetchOrderDetails({ baseUrl, accessToken, orderId }) {
   return paypalRequest({
@@ -50,6 +51,20 @@ export default async function handler(req, res) {
       const captureId =
         captureResponse.data?.purchase_units?.[0]?.payments?.captures?.[0]?.id || null
 
+      try {
+        await markDonationCompleted({
+          orderId,
+          captureId,
+          fundType,
+          paypalStatus: status,
+          payerEmail: captureResponse.data?.payer?.email_address || null,
+          payerId: captureResponse.data?.payer?.payer_id || null,
+          capturePayload: captureResponse.data,
+        })
+      } catch (recordError) {
+        console.error('Could not mark donation as completed.', recordError)
+      }
+
       return res.status(200).json({
         status,
         orderId,
@@ -62,6 +77,20 @@ export default async function handler(req, res) {
       const orderResponse = await fetchOrderDetails({ baseUrl, accessToken, orderId })
 
       if (orderResponse.ok && orderResponse.data?.status === 'COMPLETED') {
+        try {
+          await markDonationCompleted({
+            orderId,
+            captureId: orderResponse.data?.purchase_units?.[0]?.payments?.captures?.[0]?.id || null,
+            fundType,
+            paypalStatus: orderResponse.data?.status || 'COMPLETED',
+            payerEmail: orderResponse.data?.payer?.email_address || null,
+            payerId: orderResponse.data?.payer?.payer_id || null,
+            capturePayload: orderResponse.data,
+          })
+        } catch (recordError) {
+          console.error('Could not mark already-completed donation.', recordError)
+        }
+
         return res.status(200).json({
           status: 'COMPLETED',
           orderId,

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Section } from '../../components/Section'
 import { ButtonLink } from '../../components/ButtonLink'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { supabase } from '../lib/supabaseClient'
+import { LearningAdminToolbar } from '../components/LearningAdminToolbar'
 import { RequireAdmin } from '../components/LearningRouteGuards'
 import { useLearningAuth } from '../context/LearningAuthContext'
 
@@ -20,13 +20,6 @@ type Session = {
 
 type UploadMode = 'session' | 'self_study'
 
-const MATERIALS_BUCKET = 'learning-materials'
-
-function sanitizeFileName(name: string) {
-  // Keep it simple: avoid spaces and path traversal.
-  return name.replaceAll('/', '_').replaceAll('\\', '_').replace(/\s+/g, '_')
-}
-
 function formatDateTime(iso: string | null) {
   if (!iso) return null
   const d = new Date(iso)
@@ -35,21 +28,20 @@ function formatDateTime(iso: string | null) {
 }
 
 export default function LearningAdminMaterialsUpload() {
-  const { role } = useLearningAuth()
-
   usePageMeta({
-    title: 'Admin | Upload Materials',
-    description: 'Upload course/study materials to be downloaded by enrolled students.',
+    title: 'Admin | Event Downloads',
+    description: 'Upload event downloads and session files that appear on public event pages.',
   })
 
   return (
     <RequireAdmin>
-      <AdminMaterialsUploadInner role={role ?? 'admin'} />
+      <AdminMaterialsUploadInner />
     </RequireAdmin>
   )
 }
 
-function AdminMaterialsUploadInner({ role }: { role: string }) {
+function AdminMaterialsUploadInner() {
+  const { session } = useLearningAuth()
   const [uploadMode, setUploadMode] = useState<UploadMode>('session')
   const [activities, setActivities] = useState<Activity[]>([])
   const [sessions, setSessions] = useState<Session[]>([])
@@ -103,16 +95,20 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
       setError('Learning app is not configured (Supabase missing).')
       return
     }
+    if (!session?.access_token) {
+      setError('Your admin session expired. Please sign in again.')
+      return
+    }
     if (!file) {
       setError('Please select a file to upload.')
       return
     }
     if (!title.trim()) {
-      setError('Please provide a title for the material.')
+      setError('Please provide a title for the download.')
       return
     }
     if (!derivedActivityId) {
-      setError('Please select the related activity/session.')
+      setError('Please select the related event or session.')
       return
     }
 
@@ -120,37 +116,45 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
     setError(null)
 
     try {
-      const safeFileName = sanitizeFileName(file.name)
-      const path =
-        uploadMode === 'session'
-          ? `session/${sessionId}/${safeFileName}`
-          : `activity/${activityId}/${safeFileName}`
-
-      const { error: uploadError } = await supabase.storage.from(MATERIALS_BUCKET).upload(path, file, {
-        upsert: false,
-        contentType: file.type || undefined,
+      const fileBase64 = await file.arrayBuffer().then((buffer) => {
+        let binary = ''
+        const bytes = new Uint8Array(buffer)
+        const chunkSize = 0x8000
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+          binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize))
+        }
+        return btoa(binary)
       })
 
-      if (uploadError) throw uploadError
-
-      const { error: insertError } = await supabase.from('learning_materials').insert({
-        activity_id: derivedActivityId,
-        session_id: uploadMode === 'session' ? sessionId : null,
-        title: title.trim(),
-        description: description.trim() || null,
-        storage_path: path,
-        file_name: safeFileName,
-        mime_type: file.type || null,
+      const response = await fetch('/api/admin/upload-material', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({
+          uploadMode,
+          activityId: uploadMode === 'self_study' ? activityId : derivedActivityId,
+          sessionId: uploadMode === 'session' ? sessionId : null,
+          title: title.trim(),
+          description: description.trim() || null,
+          fileName: file.name,
+          mimeType: file.type || null,
+          fileBase64,
+        }),
       })
 
-      if (insertError) throw insertError
+      const payload = await response.json()
+      if (!response.ok) {
+        throw new Error(payload.error || 'Could not upload download.')
+      }
 
       setTitle('')
       setDescription('')
       setFile(null)
       // Keep selection
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Could not upload material.')
+      setError(e instanceof Error ? e.message : 'Could not upload download.')
     } finally {
       setIsSubmitting(false)
     }
@@ -163,26 +167,16 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
       <section className="relative py-28 md:py-36 flex flex-col items-center justify-center text-center px-6">
         <div className="max-w-4xl mx-auto space-y-6">
           <span className="text-[10px] font-bold tracking-[0.4em] text-sage-600 uppercase">Admin</span>
-          <h1 className="text-5xl md:text-7xl font-serif text-deep-slate leading-tight">Upload Materials</h1>
+          <h1 className="text-5xl md:text-7xl font-serif text-deep-slate leading-tight">Event Downloads</h1>
           <p className="text-lg md:text-2xl font-serif italic text-slate-500 leading-relaxed max-w-2xl mx-auto">
-            Upload files that become available to enrolled students.
+            Upload files that will appear on public event pages for visitors and members to download.
           </p>
         </div>
       </section>
 
       <Section className="bg-white">
         <div className="max-w-5xl mx-auto px-6 space-y-8">
-          <div className="flex justify-between items-center flex-wrap gap-3">
-            <div className="flex gap-3">
-              <Link to="/learn/admin/registrations" className="text-slate-600 hover:text-sage-600 underline text-sm">
-                Registrations
-              </Link>
-              <Link to="/learn/admin/centers" className="text-slate-600 hover:text-sage-600 underline text-sm">
-                Centers & Activities
-              </Link>
-            </div>
-            <p className="text-xs uppercase tracking-[0.18em] font-bold text-slate-400">Role: {role}</p>
-          </div>
+          <LearningAdminToolbar current="materials" />
 
           {error ? (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 px-6 py-5 text-rose-900">{error}</div>
@@ -198,7 +192,7 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
                     uploadMode === 'session' ? 'bg-divine-gold text-white' : 'bg-white text-deep-slate border border-slate-200 hover:bg-sage-mist'
                   }`}
                 >
-                  Session Material
+                  Session Download
                 </button>
                 <button
                   type="button"
@@ -207,7 +201,7 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
                     uploadMode === 'self_study' ? 'bg-divine-gold text-white' : 'bg-white text-deep-slate border border-slate-200 hover:bg-sage-mist'
                   }`}
                 >
-                  Self-Study Material
+                  Event Attachment
                 </button>
               </div>
 
@@ -229,7 +223,7 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
                   </label>
                 ) : (
                   <label className="block md:col-span-2">
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Choose Activity</span>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Choose Event</span>
                     <select
                       value={activityId}
                       onChange={(e) => setActivityId(e.target.value)}
@@ -245,7 +239,7 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
                 )}
 
                 <label className="block">
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Material Title *</span>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Download Title *</span>
                   <input
                     type="text"
                     value={title}
@@ -270,14 +264,14 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
                     onChange={(e) => setDescription(e.target.value)}
                     className="mt-2 w-full rounded-xl border border-[rgba(184,134,11,0.22)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
                     rows={3}
-                    placeholder="Short description shown to students."
+                    placeholder="Short description shown on the public event page."
                   />
                 </label>
               </div>
 
               <div className="flex items-center justify-between gap-4 flex-wrap pt-2">
-                <ButtonLink to="/learn" variant="ghost">
-                  Back to Learning
+                <ButtonLink to="/activities" variant="ghost">
+                  Back to Activities
                 </ButtonLink>
 
                 <button
@@ -286,7 +280,7 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
                   onClick={() => void handleUpload()}
                   className="inline-flex h-12 items-center justify-center rounded-full bg-divine-gold px-10 text-[10px] font-semibold tracking-[0.14em] uppercase text-white transition hover:bg-[#9e730a] disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Uploading...' : 'Upload Material'}
+                  {isSubmitting ? 'Uploading...' : 'Upload Download'}
                 </button>
               </div>
             </div>
@@ -296,4 +290,3 @@ function AdminMaterialsUploadInner({ role }: { role: string }) {
     </div>
   )
 }
-

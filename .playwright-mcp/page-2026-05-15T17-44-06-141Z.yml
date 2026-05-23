@@ -1,0 +1,35 @@
+- main [ref=e2]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - paragraph [ref=e7]: Account Access
+      - heading "Staff sign-in and invited account access" [level=1] [ref=e8]
+      - paragraph [ref=e9]: Public student sign-up is no longer part of the enrollment process. Use this page for staff access or for invited account holders who were given direct instructions by Sangetsu.
+    - generic [ref=e10]:
+      - article [ref=e11]:
+        - paragraph [ref=e12]: Staff Access
+        - heading "Sign in with your Sangetsu account." [level=2] [ref=e13]
+        - paragraph [ref=e14]: Use this form if you are an instructor, administrator, or an invited account holder who received direct instructions from Sangetsu.
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - generic [ref=e18]: Email
+            - textbox "Email" [ref=e19]
+          - generic [ref=e20]:
+            - generic [ref=e21]: Password
+            - textbox "Password" [ref=e22]
+          - generic [ref=e23]:
+            - button "Sign In" [ref=e24]
+            - button "Reset password" [ref=e25]
+          - paragraph [ref=e26]: Use the account details provided by Sangetsu.
+      - article [ref=e28]:
+        - paragraph [ref=e29]: For Students
+        - heading "Students do not need to sign in here." [level=2] [ref=e30]
+        - paragraph [ref=e31]: Students should contact the instructor or center directly for enrollment. If Sangetsu later asks you to use an account for payment tracking or follow-up, the instructions will be sent to you personally.
+        - generic [ref=e32]:
+          - link "View activities" [ref=e33] [cursor=pointer]:
+            - /url: /activities.html
+          - link "Contact Sangetsu" [ref=e34] [cursor=pointer]:
+            - /url: /contact.html#inquiry-form
+    - paragraph [ref=e36]:
+      - text: Need help accessing your account?
+      - link "Contact Headquarters" [ref=e37] [cursor=pointer]:
+        - /url: /contact.html#inquiry-form

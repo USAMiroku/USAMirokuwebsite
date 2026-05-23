@@ -13,6 +13,7 @@ export type TranslationContent = {
     leadership: string
     locations: string
     events: string
+    activities: string
     resources: string
     testimonials: string
     contact: string
@@ -220,6 +221,7 @@ export const translations: Record<string, TranslationContent> = {
       leadership: 'Leadership',
       locations: 'Locations',
       events: 'Events',
+      activities: 'Activities',
       resources: 'Resources',
       testimonials: 'Testimonials',
       contact: 'Contact',
@@ -320,7 +322,7 @@ export const translations: Record<string, TranslationContent> = {
       contactBody: 'We are happy to answer questions or help you plan a visit.',
       centers: {
         title: 'USA Units',
-        body: 'Toronto, Montreal, Ottawa, and Vancouver: clear paths to local centers and groups.',
+        body: 'Boston, Los Angeles, Miami, New York, Orlando, and Washington, DC: clear paths to local centers and groups.',
         link: 'View units in USA',
       },
       resources: {
@@ -573,30 +575,28 @@ export const translations: Record<string, TranslationContent> = {
         },
         units: [
           {
-            name: 'Toronto Center',
-            address: '3416 Dundas Street West, Suite 209, Toronto, ON M6S 2S1',
+            name: 'Boston Johrei Center',
+            address: '230 Congress Street, 5th Floor, Boston, MA 02110',
             phone: '+1 (305) 308-8830',
-            leaders: 'Rev. Guilherme de Souza; Rev. Ana De Sousa',
             email: 'info@miroku.us',
           },
           {
-            name: 'Ottawa Group',
+            name: 'Los Angeles Johrei Center',
+            address: '2730 W 8th Street, Suite 100, Los Angeles, CA 90005',
             phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
+            email: 'info@miroku.us',
+          },
+          {
+            name: 'Miami Johrei Center',
+            address: '14180 SW 88th Street, Suite 201, Miami, FL 33186',
+            phone: '+1 (305) 308-8830',
+            email: 'info@miroku.us',
+          },
+          {
+            name: 'Washington, DC Group',
+            phone: '+1 (305) 308-8830',
             email: 'info@miroku.us',
             note: 'No public street address listed - contact for meeting locations and schedules.',
-          },
-          {
-            name: 'Montreal Group',
-            phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
-            email: 'info@miroku.us',
-          },
-          {
-            name: 'Vancouver Group',
-            phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
-            email: 'info@miroku.us',
           },
         ],
       },
@@ -618,11 +618,11 @@ export const translations: Record<string, TranslationContent> = {
     donate: {
       title: 'Support Our Mission',
       intro: 'Your contribution supports our activities and the sharing of Johrei across USA. We appreciate your participation.',
-      placeholder: 'We are currently setting up secure online giving. Please contact our Toronto center for participation inquiries.',
+      placeholder: 'Secure online giving is handled through the USA donation page. Please contact the national office if you need help with your offering.',
       stripeTitle: 'Donate by Card / Wallet (Stripe)',
-      interacTitle: 'Donate by Interac e-Transfer',
-      interacStep1: 'Send Interac e-Transfer to: info@miroku.us',
-      interacStep2: 'Fill out the "Interac Donation Confirmation" form to record your donation',
+      interacTitle: 'Donate Through the USA Office',
+      interacStep1: 'Use the USA donation page or contact info@miroku.us for assistance.',
+      interacStep2: 'Record your donation details so the offering can be assigned correctly.',
       formTitle: 'Donation Confirmation',
       formIntro: 'Thank you for your support. Please record the details of your e-Transfer to help us with our monthly participation reporting.',
       fields: {
@@ -651,11 +651,11 @@ export const translations: Record<string, TranslationContent> = {
         'Sangetsu Workshop'
       ],
       groups: {
-        toronto: 'Toronto',
-        montreal: 'Montreal',
-        vancouver: 'Vancouver',
-        calgary: 'Calgary',
-        ottawa: 'Ottawa',
+        toronto: 'Boston',
+        montreal: 'Los Angeles',
+        vancouver: 'Miami',
+        calgary: 'New York',
+        ottawa: 'Orlando',
         other: 'Other'
       }
     },
@@ -684,6 +684,7 @@ export const translations: Record<string, TranslationContent> = {
       leadership: 'Liderazgo',
       locations: 'Centros',
       events: 'Eventos',
+      activities: 'Actividades',
       resources: 'Recursos',
       testimonials: 'Testimonios',
       contact: 'Contacto',
@@ -1038,30 +1039,28 @@ export const translations: Record<string, TranslationContent> = {
         },
         units: [
           {
-            name: 'Centro de Toronto',
-            address: '3416 Dundas Street West, Suite 209, Toronto, ON M6S 2S1',
+            name: 'Centro Johrei de Boston',
+            address: '230 Congress Street, 5th Floor, Boston, MA 02110',
             phone: '+1 (305) 308-8830',
-            leaders: 'Rev. Guilherme de Souza; Rev. Ana De Sousa',
             email: 'info@miroku.us',
           },
           {
-            name: 'Grupo de Ottawa',
+            name: 'Centro Johrei de Los Angeles',
+            address: '2730 W 8th Street, Suite 100, Los Angeles, CA 90005',
             phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
+            email: 'info@miroku.us',
+          },
+          {
+            name: 'Centro Johrei de Miami',
+            address: '14180 SW 88th Street, Suite 201, Miami, FL 33186',
+            phone: '+1 (305) 308-8830',
+            email: 'info@miroku.us',
+          },
+          {
+            name: 'Grupo de Washington, DC',
+            phone: '+1 (305) 308-8830',
             email: 'info@miroku.us',
             note: 'No hay dirección pública — comunícate con nosotros para conocer los lugares de reunión y los horarios.',
-          },
-          {
-            name: 'Grupo de Montreal',
-            phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
-            email: 'info@miroku.us',
-          },
-          {
-            name: 'Grupo de Vancouver',
-            phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
-            email: 'info@miroku.us',
           },
         ],
       },
@@ -1083,11 +1082,11 @@ export const translations: Record<string, TranslationContent> = {
     donate: {
       title: 'Apoya nuestra misión',
       intro: 'Tu contribución apoya nuestras actividades y la difusión del Johrei en todo EE.UU. Agradecemos tu participación.',
-      placeholder: 'Actualmente estamos configurando donaciones seguras en línea. Por favor, comunícate con nuestro centro de Toronto para consultas.',
+      placeholder: 'Las donaciones seguras en línea se gestionan a través de la página de donaciones de USA. Comunícate con la oficina nacional si necesitas ayuda con tu ofrenda.',
       stripeTitle: 'Donar con tarjeta / billetera digital (Stripe)',
-      interacTitle: 'Donar por transferencia Interac',
-      interacStep1: 'Envía una transferencia Interac a: info@miroku.us',
-      interacStep2: 'Completa el formulario de "Confirmación de donación Interac" para registrar tu donación',
+      interacTitle: 'Donar a través de la oficina de USA',
+      interacStep1: 'Usa la página de donaciones de USA o escribe a info@miroku.us para recibir ayuda.',
+      interacStep2: 'Registra los detalles de tu donación para asignar correctamente la ofrenda.',
       formTitle: 'Confirmación de donación',
       formIntro: 'Gracias por tu apoyo. Por favor, registra los detalles de tu transferencia para ayudarnos con nuestros informes mensuales.',
       fields: {
@@ -1116,11 +1115,11 @@ export const translations: Record<string, TranslationContent> = {
         'Taller Sangetsu',
       ],
       groups: {
-        toronto: 'Toronto',
-        montreal: 'Montreal',
-        vancouver: 'Vancouver',
-        calgary: 'Calgary',
-        ottawa: 'Ottawa',
+        toronto: 'Boston',
+        montreal: 'Los Angeles',
+        vancouver: 'Miami',
+        calgary: 'Nueva York',
+        ottawa: 'Orlando',
         other: 'Otro',
       },
     },
@@ -1147,6 +1146,7 @@ export const translations: Record<string, TranslationContent> = {
       leadership: 'Liderança',
       locations: 'Centros',
       events: 'Eventos',
+      activities: 'Atividades',
       resources: 'Recursos',
       testimonials: 'Testemunhos',
       contact: 'Contato',
@@ -1501,30 +1501,28 @@ export const translations: Record<string, TranslationContent> = {
         },
         units: [
           {
-            name: 'Centro de Toronto',
-            address: '3416 Dundas Street West, Suite 209, Toronto, ON M6S 2S1',
+            name: 'Centro Johrei de Boston',
+            address: '230 Congress Street, 5th Floor, Boston, MA 02110',
             phone: '+1 (305) 308-8830',
-            leaders: 'Rev. Guilherme de Souza; Rev. Ana De Sousa',
             email: 'info@miroku.us',
           },
           {
-            name: 'Grupo de Ottawa',
+            name: 'Centro Johrei de Los Angeles',
+            address: '2730 W 8th Street, Suite 100, Los Angeles, CA 90005',
             phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
+            email: 'info@miroku.us',
+          },
+          {
+            name: 'Centro Johrei de Miami',
+            address: '14180 SW 88th Street, Suite 201, Miami, FL 33186',
+            phone: '+1 (305) 308-8830',
+            email: 'info@miroku.us',
+          },
+          {
+            name: 'Grupo de Washington, DC',
+            phone: '+1 (305) 308-8830',
             email: 'info@miroku.us',
             note: 'Sem endereço público — entre em contato para saber os locais de reunião e os horários.',
-          },
-          {
-            name: 'Grupo de Montreal',
-            phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
-            email: 'info@miroku.us',
-          },
-          {
-            name: 'Grupo de Vancouver',
-            phone: '+1 (305) 308-8830',
-            contact: 'Rev. Guilherme de Souza',
-            email: 'info@miroku.us',
           },
         ],
       },
@@ -1546,11 +1544,11 @@ export const translations: Record<string, TranslationContent> = {
     donate: {
       title: 'Apoie nossa missão',
       intro: 'Sua contribuição apoia nossas atividades e a difusão do Johrei em todo os EUA. Agradecemos sua participação.',
-      placeholder: 'Estamos configurando doações online seguras. Por favor, entre em contato com nosso centro de Toronto para mais informações.',
+      placeholder: 'As doações online seguras são feitas pela página de doações dos EUA. Entre em contato com o escritório nacional se precisar de ajuda com sua oferta.',
       stripeTitle: 'Doar com cartão / carteira digital (Stripe)',
-      interacTitle: 'Doar por transferência Interac',
-      interacStep1: 'Envie uma transferência Interac para: info@miroku.us',
-      interacStep2: 'Preencha o formulário de "Confirmação de doação Interac" para registrar sua doação',
+      interacTitle: 'Doar pelo escritório dos EUA',
+      interacStep1: 'Use a página de doações dos EUA ou escreva para info@miroku.us para receber ajuda.',
+      interacStep2: 'Registre os detalhes da sua doação para encaminhar corretamente a oferta.',
       formTitle: 'Confirmação de doação',
       formIntro: 'Obrigado pelo seu apoio. Por favor, registre os detalhes da sua transferência para nos ajudar em nossos relatórios mensais.',
       fields: {
@@ -1579,11 +1577,11 @@ export const translations: Record<string, TranslationContent> = {
         'Workshop Sangetsu',
       ],
       groups: {
-        toronto: 'Toronto',
-        montreal: 'Montreal',
-        vancouver: 'Vancouver',
-        calgary: 'Calgary',
-        ottawa: 'Ottawa',
+        toronto: 'Boston',
+        montreal: 'Los Angeles',
+        vancouver: 'Miami',
+        calgary: 'Nova York',
+        ottawa: 'Orlando',
         other: 'Outro',
       },
     },

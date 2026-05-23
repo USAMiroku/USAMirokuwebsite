@@ -213,7 +213,7 @@ function AccountInner({
       <Section className="bg-white">
         <div className="max-w-5xl mx-auto px-6 space-y-8">
           <div className="flex justify-between items-center flex-wrap gap-3">
-            <Link to="/learn/activities" className="text-slate-600 hover:text-sage-600 underline text-sm">
+            <Link to="/activities" className="text-slate-600 hover:text-sage-600 underline text-sm">
               Browse Activities
             </Link>
 
@@ -242,7 +242,7 @@ function AccountInner({
               <p className="text-slate-600">No registrations yet.</p>
               <p className="text-slate-500 text-sm mt-2">Browse activities and request enrollment.</p>
               <div className="mt-6">
-                <ButtonLink to="/learn/activities" variant="accent">
+                <ButtonLink to="/activities" variant="accent">
                   Explore Classes
                 </ButtonLink>
               </div>
@@ -325,4 +325,3 @@ function AccountInner({
     </div>
   )
 }
-

@@ -39,6 +39,7 @@ create table if not exists public.learning_activities (
   type text not null check (type in ('class', 'study_session', 'event', 'self_study')),
   title text not null,
   description text,
+  show_on_main_events boolean not null default true,
   created_at timestamptz not null default now()
 );
 
@@ -257,4 +258,3 @@ create policy "learning_materials_storage_admin_write"
   on storage.objects for all
   using (bucket_id = 'learning-materials' AND public.learning_is_admin())
   with check (bucket_id = 'learning-materials' AND public.learning_is_admin());
-

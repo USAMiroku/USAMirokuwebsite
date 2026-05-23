@@ -1,0 +1,111 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Sangetsu USA" [ref=e4] [cursor=pointer]:
+        - /url: /index.html
+        - img "Sangetsu USA" [ref=e5]
+      - navigation [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: /index.html
+        - link "About" [ref=e8] [cursor=pointer]:
+          - /url: /about.html
+        - link "Learn" [ref=e9] [cursor=pointer]:
+          - /url: /classes.html
+        - link "Activities" [ref=e10] [cursor=pointer]:
+          - /url: /activities.html
+        - link "Instructors" [ref=e11] [cursor=pointer]:
+          - /url: /instructors.html
+        - link "Locations" [ref=e12] [cursor=pointer]:
+          - /url: /locations.html
+        - link "Gallery" [ref=e13] [cursor=pointer]:
+          - /url: /gallery.html
+        - link "Payment / Donation" [ref=e14] [cursor=pointer]:
+          - /url: /payment.html
+        - link "Contact" [ref=e15] [cursor=pointer]:
+          - /url: /contact.html
+        - link "Staff Sign In" [ref=e16] [cursor=pointer]:
+          - /url: /portal/login/
+      - combobox [ref=e18]:
+        - option "English" [selected]
+        - option "Español"
+        - option "Português"
+  - main [ref=e19]:
+    - generic [ref=e22]:
+      - paragraph [ref=e23]: Payment / Donation
+      - heading "Send a donation or payment with the right center, purpose, and record." [level=1] [ref=e24]
+      - paragraph [ref=e25]: Every payment on this page is tied to a specific Johrei Center or location. Start with the center, choose whether this is a donation or an activity payment, then complete the details before PayPal opens.
+    - generic [ref=e28]:
+      - article [ref=e29]:
+        - heading "Payment details" [level=2] [ref=e30]
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - paragraph [ref=e33]: Step 1 · Select Johrei Center / Location
+            - paragraph [ref=e34]: This selection is mandatory for every donation, class fee, workshop fee, event payment, materials payment, or other financial transaction.
+            - generic [ref=e35]:
+              - generic [ref=e36]: Select Johrei Center / Location *
+              - combobox "Select Johrei Center / Location *" [ref=e37]:
+                - option "Choose a center or location" [selected]
+          - generic [ref=e38]:
+            - paragraph [ref=e39]: Step 2 · Choose payment type
+            - paragraph [ref=e40]: Tell us whether this is a donation or a payment for a class, workshop, event, materials, or another activity.
+            - generic [ref=e41]:
+              - generic [ref=e42]:
+                - radio "Donation" [ref=e43]
+                - generic [ref=e45]: Donation
+              - generic [ref=e46]:
+                - radio "Payment for Activity / Event / Class" [ref=e47]
+                - generic [ref=e49]: Payment for Activity / Event / Class
+          - generic [ref=e50]:
+            - paragraph [ref=e51]: Step 3 · Complete the purpose details
+            - paragraph [ref=e52]: Describe the payment clearly so the instructor or center can identify it quickly, even if the activity is not listed online.
+          - generic [ref=e53]:
+            - paragraph [ref=e54]: Step 4 · Add payer details
+            - paragraph [ref=e55]: These details are saved with the payment record and included in the confirmation workflow.
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - generic [ref=e58]: Payer name *
+                - textbox "Payer name *" [ref=e59]
+              - generic [ref=e60]:
+                - generic [ref=e61]: Email *
+                - textbox "Email *" [ref=e62]
+            - generic [ref=e63]:
+              - generic [ref=e64]:
+                - generic [ref=e65]: Phone
+                - textbox "Phone" [ref=e66]
+              - generic [ref=e67]:
+                - generic [ref=e68]: City
+                - textbox "City" [ref=e69]
+            - generic [ref=e70]:
+              - generic [ref=e71]: Additional notes
+              - textbox "Additional notes" [ref=e72]:
+                - /placeholder: Optional note for the instructor, center, or admin.
+          - paragraph [ref=e73]: Select a Johrei Center / Location to begin.
+      - article [ref=e74]:
+        - heading "Payment summary" [level=2] [ref=e75]
+        - paragraph [ref=e76]: This summary reflects exactly how the payment will be recorded for your center or location.
+        - generic [ref=e77]:
+          - heading "How this payment will be recorded" [level=3] [ref=e78]
+          - paragraph [ref=e79]: Review the center, donation vs payment type, purpose, and amount before continuing to PayPal.
+          - paragraph [ref=e81]: Start by selecting a center or location and then choose the payment type.
+        - generic [ref=e82]:
+          - heading "Why this flow is used" [level=3] [ref=e83]
+          - list [ref=e84]:
+            - listitem [ref=e85]: Every payment is stored under a specific center or location.
+            - listitem [ref=e86]: Donations stay separate from activity-related payments in reporting.
+            - listitem [ref=e87]: Activity payments can still be described manually when an event is not listed online.
+            - listitem [ref=e88]: Admin and instructor views can verify the center, purpose, and payer details more easily.
+  - contentinfo [ref=e89]:
+    - generic [ref=e90]:
+      - generic [ref=e91]:
+        - link "Terms of service" [ref=e92] [cursor=pointer]:
+          - /url: /terms-of-service.html
+        - generic [ref=e93]: "|"
+        - link "Privacy policy" [ref=e94] [cursor=pointer]:
+          - /url: /privacy-policy.html
+        - generic [ref=e95]: "|"
+        - link "Staff Sign In" [ref=e96] [cursor=pointer]:
+          - /url: /portal/login/
+        - generic [ref=e97]: "|"
+        - link "Payment page" [ref=e98] [cursor=pointer]:
+          - /url: /payment.html
+      - paragraph [ref=e99]: © 2026 Ikebana Sangetsu USA by Miroku Association USA. All rights reserved.

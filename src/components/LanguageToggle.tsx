@@ -1,6 +1,11 @@
 import { useTranslation } from '../context/TranslationContext'
 
-export function LanguageToggle({ className = '' }: { className?: string }) {
+type LanguageToggleProps = {
+  className?: string
+  compact?: boolean
+}
+
+export function LanguageToggle({ className = '', compact = false }: LanguageToggleProps) {
   const { language, setLanguage } = useTranslation()
 
   const options = [
@@ -15,7 +20,9 @@ export function LanguageToggle({ className = '' }: { className?: string }) {
         <button
           key={option.id}
           onClick={() => setLanguage(option.id)}
-          className={`rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 ${
+          className={`rounded-full font-bold uppercase tracking-wider transition-all duration-300 ${
+            compact ? 'px-2.5 py-1 text-[9px]' : 'px-3 py-1.5 text-[10px]'
+          } ${
             language === option.id ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-50'
           }`}
           aria-pressed={language === option.id}

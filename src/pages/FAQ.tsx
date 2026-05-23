@@ -11,78 +11,42 @@ const faqItemsEn = [
   },
   {
     q: 'Is this a religion?',
-    a: 'While Meishu-sama’s teachings have spiritual foundations, his philosophy is universal. People from all walks of life, including those who already belong to various faiths or those who consider themselves secular, practice these principles. The goal is the practical improvement of human life and the creation of a Paradise on Earth.',
+    a: 'While Meishu-sama’s teachings have spiritual foundations, his philosophy is universal. People from many walks of life, including those who already belong to other faiths or consider themselves secular, practice these principles. The goal is the practical improvement of human life and the creation of Paradise on Earth.',
   },
   {
     q: 'Do I have to pay for a Johrei session?',
-    a: "In accordance with Meishu-sama's spirit of service, Johrei is generally offered freely or through voluntary donations. Our goal is to share the Light with as many people as possible. Please check with your local center for specific visitor hours.",
+    a: "In accordance with Meishu-sama's spirit of service, Johrei is generally offered freely or through voluntary donations. Please check with your local center for specific visitor hours.",
   },
   {
     q: 'How long does a session last?',
-    a: 'A typical session lasts between 15 and 30 minutes. It is a quiet, meditative experience. You simply sit comfortably while the practitioner channels the Light. Most people report feeling a sense of deep relaxation, warmth, or mental clarity during and after the session.',
+    a: 'A typical session lasts between 15 and 30 minutes. It is a quiet, meditative experience. Most people report deep relaxation, warmth, or mental clarity during and after the session.',
   },
   {
     q: 'What is the connection between Art and Healing?',
-    a: 'Meishu-sama taught that beauty is a physical manifestation of Divine Light. When we look at a beautiful painting or a perfectly bloomed flower, our spirits are naturally uplifted. This spiritual elevation is a form of healing that complements the practice of Johrei and Nature Farming.',
+    a: 'Meishu-sama taught that beauty is a physical manifestation of Divine Light. Beautiful surroundings uplift the spirit, and that elevation complements Johrei and Nature Farming.',
   },
   {
     q: 'Do I need special training to start?',
-    a: 'Not at all. You can begin by simply applying the principles of gratitude and beauty in your home today. If you find yourself drawn to the practice of Johrei, most centers offer introductory classes to help you understand the philosophy and eventually learn how to channel the Light yourself.',
+    a: 'Not at all. You can begin by practicing gratitude and beauty in daily life. If you feel drawn to Johrei, many centers offer introductory classes and orientation.',
   },
 ]
 
 const faqItemsEs = [
-  {
-    q: 'Que es exactamente Johrei?',
-    a: 'Johrei es una practica espiritual que consiste en canalizar la Luz Divina de una persona a otra. El termino significa literalmente "purificacion del espiritu".',
-  },
-  {
-    q: 'Es una religion?',
-    a: 'Aunque las ensenanzas de Meishu-sama tienen una base espiritual, su filosofia es universal y abierta para personas de todos los contextos.',
-  },
-  {
-    q: 'Hay que pagar para recibir Johrei?',
-    a: 'Johrei normalmente se ofrece gratuitamente o con donaciones voluntarias, de acuerdo con el espiritu de servicio.',
-  },
-  {
-    q: 'Cuanto dura una sesion?',
-    a: 'Una sesion tipica dura entre 15 y 30 minutos en un ambiente de calma y meditacion.',
-  },
-  {
-    q: 'Cual es la conexion entre Arte y sanacion?',
-    a: 'Meishu-sama enseno que la belleza eleva el espiritu y complementa la practica de Johrei y la Agricultura Natural.',
-  },
-  {
-    q: 'Necesito entrenamiento especial para comenzar?',
-    a: 'No. Puedes empezar hoy practicando gratitud y apreciacion por la belleza en tu vida diaria.',
-  },
+  { q: '¿Qué es exactamente Johrei?', a: 'Johrei es una práctica espiritual que consiste en canalizar la Luz Divina de una persona a otra. El término significa literalmente "purificación del espíritu".' },
+  { q: '¿Es una religión?', a: 'Aunque las enseñanzas de Meishu-sama tienen una base espiritual, su filosofía es universal y abierta para personas de todos los contextos.' },
+  { q: '¿Hay que pagar para recibir Johrei?', a: 'Johrei normalmente se ofrece gratuitamente o con donaciones voluntarias, de acuerdo con el espíritu de servicio.' },
+  { q: '¿Cuánto dura una sesión?', a: 'Una sesión típica dura entre 15 y 30 minutos en un ambiente de calma y meditación.' },
+  { q: '¿Cuál es la conexión entre Arte y sanación?', a: 'Meishu-sama enseñó que la belleza eleva el espíritu y complementa la práctica de Johrei y la Agricultura Natural.' },
+  { q: '¿Necesito entrenamiento especial para comenzar?', a: 'No. Puede empezar hoy practicando gratitud y apreciación por la belleza en su vida diaria.' },
 ]
 
 const faqItemsPt = [
-  {
-    q: 'O que e Johrei?',
-    a: 'Johrei e uma pratica espiritual de canalizacao da Luz Divina de uma pessoa para outra, visando a purificacao do espirito.',
-  },
-  {
-    q: 'Isso e uma religiao?',
-    a: 'Embora tenha base espiritual, a filosofia de Meishu-sama e universal e acolhe pessoas de diferentes caminhos.',
-  },
-  {
-    q: 'Preciso pagar para receber Johrei?',
-    a: 'Em geral, o Johrei e oferecido gratuitamente ou por doacao voluntaria, em espirito de servico.',
-  },
-  {
-    q: 'Quanto tempo dura a sessao?',
-    a: 'Uma sessao costuma durar entre 15 e 30 minutos, em um ambiente de calma e meditacao.',
-  },
-  {
-    q: 'Qual a relacao entre Arte e cura?',
-    a: 'Meishu-sama ensinou que a beleza eleva o espirito e complementa a pratica de Johrei e Agricultura Natural.',
-  },
-  {
-    q: 'Preciso de treinamento especial para comecar?',
-    a: 'Nao. Voce pode comecar hoje aplicando gratidao e beleza no seu cotidiano.',
-  },
+  { q: 'O que é Johrei?', a: 'Johrei é uma prática espiritual de canalização da Luz Divina de uma pessoa para outra, visando a purificação do espírito.' },
+  { q: 'Isso é uma religião?', a: 'Embora tenha base espiritual, a filosofia de Meishu-sama é universal e acolhe pessoas de diferentes caminhos.' },
+  { q: 'Preciso pagar para receber Johrei?', a: 'Em geral, o Johrei é oferecido gratuitamente ou por doação voluntária, em espírito de serviço.' },
+  { q: 'Quanto tempo dura a sessão?', a: 'Uma sessão costuma durar entre 15 e 30 minutos, em um ambiente de calma e meditação.' },
+  { q: 'Qual a relação entre Arte e cura?', a: 'Meishu-sama ensinou que a beleza eleva o espírito e complementa a prática de Johrei e da Agricultura Natural.' },
+  { q: 'Preciso de treinamento especial para começar?', a: 'Não. Você pode começar hoje aplicando gratidão e beleza no seu cotidiano.' },
 ]
 
 export default function FAQ() {
@@ -95,23 +59,23 @@ export default function FAQ() {
       ? {
           kicker: 'Preguntas frecuentes',
           title: 'Preguntas frecuentes',
-          intro: 'Respuestas claras sobre Johrei, la practica y que esperar en su primera visita.',
-          stillTitle: 'Todavia tiene preguntas?',
+          intro: 'Respuestas claras sobre Johrei, la práctica y qué esperar en su primera visita.',
+          stillTitle: '¿Todavía tiene preguntas?',
           stillBody:
-            'Nos encantara escucharle. Si busca una comunidad local o desea conocer una ensenanza especifica, nuestras puertas estan abiertas.',
-          contactCta: 'Contactanos / Enviar consulta',
+            'Nos encantará escucharle. Si busca una comunidad local o desea conocer una enseñanza específica, nuestras puertas están abiertas.',
+          contactCta: 'Contáctenos / Enviar consulta',
           centerCta: 'Buscar un centro cercano',
         }
       : language === 'pt'
         ? {
             kicker: 'Perguntas frequentes',
             title: 'Perguntas frequentes',
-            intro: 'Respostas claras sobre Johrei, a pratica e o que esperar na primeira visita.',
-            stillTitle: 'Ainda tem duvidas?',
+            intro: 'Respostas claras sobre Johrei, a prática e o que esperar na primeira visita.',
+            stillTitle: 'Ainda tem dúvidas?',
             stillBody:
-              'Queremos ouvir voce. Se procura uma comunidade local ou deseja aprender mais sobre um ensinamento especifico, nossas portas estao abertas.',
+              'Queremos ouvir você. Se procura uma comunidade local ou deseja aprender mais sobre um ensinamento específico, nossas portas estão abertas.',
             contactCta: 'Contato / Enviar mensagem',
-            centerCta: 'Encontrar um centro proximo',
+            centerCta: 'Encontrar um centro próximo',
           }
         : {
             kicker: 'Frequently Asked Questions',
@@ -131,31 +95,37 @@ export default function FAQ() {
 
   return (
     <div className="min-h-screen bg-sanctuary-100 text-deep-slate">
-      <section className="border-b border-[rgba(184,134,11,0.2)] bg-white px-6 pt-32 pb-20 text-center">
-        <div className="mx-auto max-w-5xl space-y-6">
-          <p className="text-[11px] uppercase tracking-[0.35em] text-sage-600">{copy.kicker}</p>
-          <h1 className="text-4xl font-serif leading-tight md:text-6xl">{copy.title}</h1>
-          <p className="mx-auto max-w-4xl text-lg leading-relaxed text-slate-600 md:text-2xl">{copy.intro}</p>
+      <section className="relative overflow-hidden border-b border-[rgba(141,107,38,0.14)] px-6 pb-18 pt-36 md:pt-40">
+        <div className="floating-orb left-[9%] top-24 h-28 w-28 bg-[rgba(173,123,34,0.16)]" />
+        <div className="floating-orb right-[11%] top-30 h-24 w-24 bg-[rgba(255,255,255,0.28)]" />
+        <div className="mx-auto max-w-5xl space-y-6 text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.35em] text-sage-600">{copy.kicker}</p>
+          <h1 className="text-5xl font-serif leading-[0.95] md:text-7xl">{copy.title}</h1>
+          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-slate-600 md:text-xl">{copy.intro}</p>
         </div>
       </section>
 
       <Section className="bg-white">
-        <div className="mx-auto max-w-5xl space-y-6">
-          {faqs.map((faq) => (
-            <Card key={faq.q} title={faq.q} className="border-[rgba(184,134,11,0.2)] bg-white p-8">
+        <div className="mx-auto max-w-5xl space-y-5">
+          {faqs.map((faq, index) => (
+            <Card key={faq.q} title={faq.q} eyebrow={`0${index + 1}`}>
               <p className="text-base leading-relaxed text-slate-600">{faq.a}</p>
             </Card>
           ))}
         </div>
       </Section>
 
-      <Section className="bg-sanctuary-100 border-y border-[rgba(184,134,11,0.2)] text-center">
-        <div className="mx-auto max-w-4xl space-y-6">
-          <h2 className="text-3xl font-serif md:text-5xl">{copy.stillTitle}</h2>
-          <p className="text-lg leading-relaxed text-slate-600">{copy.stillBody}</p>
-          <div className="flex flex-wrap justify-center gap-3 pt-2">
-            <ButtonLink to="/contact" variant="accent">{copy.contactCta}</ButtonLink>
-            <ButtonLink to="/locations" variant="outline">{copy.centerCta}</ButtonLink>
+      <Section className="bg-sanctuary-100">
+        <div className="mx-auto max-w-4xl rounded-[32px] bg-[linear-gradient(140deg,#1f2933_0%,#203831_100%)] px-8 py-12 text-center text-white shadow-[0_34px_80px_-48px_rgba(31,41,51,0.85)] md:px-12">
+          <h2 className="text-4xl font-serif md:text-5xl">{copy.stillTitle}</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white/75">{copy.stillBody}</p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <ButtonLink to="/contact" variant="accent">
+              {copy.contactCta}
+            </ButtonLink>
+            <ButtonLink to="/locations" variant="outline" className="border-white/30 bg-white/8 text-white hover:bg-white/12 hover:text-white">
+              {copy.centerCta}
+            </ButtonLink>
           </div>
         </div>
       </Section>

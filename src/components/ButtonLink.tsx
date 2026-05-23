@@ -9,17 +9,23 @@ interface ButtonLinkProps {
 
 export function ButtonLink({ to, children, variant = 'primary', className = '' }: ButtonLinkProps) {
   const styles = {
-    primary: 'bg-deep-slate text-white hover:bg-slate-700 shadow-md hover:shadow-lg',
-    secondary: 'bg-sage-mist text-deep-slate hover:bg-[#f2e8cf]',
-    ghost: 'text-deep-slate hover:text-sage-600 hover:bg-[#f9f6ee]',
-    outline: 'border-2 border-[rgba(184,134,11,0.45)] text-deep-slate hover:bg-sage-mist',
-    accent: 'bg-divine-gold text-white hover:bg-[#9e730a] border-2 border-transparent'
+    primary:
+      'bg-deep-slate text-white shadow-[0_18px_36px_-24px_rgba(31,41,51,0.8)] hover:-translate-y-0.5 hover:bg-[#14202a] hover:shadow-[0_24px_42px_-24px_rgba(31,41,51,0.9)]',
+    secondary:
+      'bg-sage-mist text-deep-slate shadow-[0_16px_34px_-26px_rgba(141,107,38,0.45)] hover:-translate-y-0.5 hover:bg-[#e9dcc4]',
+    ghost:
+      'text-deep-slate hover:-translate-y-0.5 hover:text-sage-600 hover:bg-white/70',
+    outline:
+      'border border-[rgba(141,107,38,0.36)] bg-white/45 text-deep-slate hover:-translate-y-0.5 hover:bg-sage-mist',
+    accent:
+      'bg-divine-gold text-white shadow-[0_18px_36px_-24px_rgba(173,123,34,0.72)] hover:-translate-y-0.5 hover:bg-[#946615] hover:shadow-[0_24px_42px_-24px_rgba(173,123,34,0.85)] border border-transparent',
   }
 
-  const base = 'inline-flex items-center justify-center rounded-full px-6 h-10 text-[10px] font-semibold tracking-[0.14em] uppercase transition-all duration-300'
+  const base =
+    'inline-flex h-11 items-center justify-center rounded-full px-6 text-[10px] font-semibold tracking-[0.18em] uppercase transition-all duration-300'
 
   return (
-    <Link to={to} className={`${base} ${styles[variant]} ${className}`}>
+    <Link to={to} data-ui="button-link" className={`${base} ${styles[variant]} ${className}`}>
       {children}
     </Link>
   )

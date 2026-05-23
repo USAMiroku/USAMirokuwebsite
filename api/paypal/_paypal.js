@@ -88,9 +88,10 @@ export function parseAmount(value) {
   return amount.toFixed(2)
 }
 
-export function buildCustomId({ donorName, center, donationType, fundType }) {
+export function buildCustomId({ donorName, center, centerId, donationType, fundType }) {
   const payload = [
     `fund:${sanitizeText(fundType, 12)}`,
+    `centerId:${sanitizeText(centerId, 32)}`,
     `name:${sanitizeText(donorName, 24)}`,
     `center:${sanitizeText(center, 24)}`,
     `type:${sanitizeText(donationType, 24)}`,

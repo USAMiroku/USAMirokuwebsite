@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Section } from '../../components/Section'
 import { ButtonLink } from '../../components/ButtonLink'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { supabase } from '../lib/supabaseClient'
+import { LearningAdminToolbar } from '../components/LearningAdminToolbar'
 import { RequireAdmin } from '../components/LearningRouteGuards'
 import { useLearningAuth } from '../context/LearningAuthContext'
 
@@ -61,8 +61,6 @@ function normalizeSession(
 }
 
 export default function LearningAdminRegistrations() {
-  const { role } = useLearningAuth()
-
   usePageMeta({
     title: 'Admin | Enrollment Requests',
     description: 'Approve or reject learning enrollment requests.',
@@ -70,12 +68,13 @@ export default function LearningAdminRegistrations() {
 
   return (
     <RequireAdmin>
-      <AdminRegistrationsInner role={role ?? 'admin'} />
+      <AdminRegistrationsInner />
     </RequireAdmin>
   )
 }
 
-function AdminRegistrationsInner({ role }: { role: string }) {
+function AdminRegistrationsInner() {
+  const { isSuperAdmin } = useLearningAuth()
   const [pending, setPending] = useState<PendingRegistrationRow[]>([])
   const [profilesById, setProfilesById] = useState<Record<string, Profile>>({})
   const [activitiesById, setActivitiesById] = useState<Record<string, Activity>>({})
@@ -175,6 +174,27 @@ function AdminRegistrationsInner({ role }: { role: string }) {
     if (!pendingError) setPending((pendingData ?? []) as unknown as PendingRegistrationRow[])
   }
 
+  async function deleteRegistration(registrationId: string) {
+    if (!supabase || !isSuperAdmin) return
+
+    const confirmed = window.confirm('Delete this registrant request? This cannot be undone.')
+    if (!confirmed) return
+
+    setActionError(null)
+
+    const { error: deleteError } = await supabase
+      .from('learning_registrations')
+      .delete()
+      .eq('id', registrationId)
+
+    if (deleteError) {
+      setActionError(deleteError.message)
+      return
+    }
+
+    setPending((current) => current.filter((item) => item.id !== registrationId))
+  }
+
   return (
     <div className="relative min-h-screen bg-sanctuary-100 text-deep-slate">
       <div className="noise-subtle" />
@@ -191,18 +211,7 @@ function AdminRegistrationsInner({ role }: { role: string }) {
 
       <Section className="bg-white">
         <div className="max-w-5xl mx-auto px-6 space-y-8">
-          <div className="flex justify-between items-center flex-wrap gap-3">
-            <Link to="/learn" className="text-slate-600 hover:text-sage-600 underline text-sm">
-              Back to Learning
-            </Link>
-            <ButtonLink to="/learn/admin/centers" variant="outline">
-              Centers & Activities
-            </ButtonLink>
-            <ButtonLink to="/learn/admin/materials" variant="outline">
-              Upload Materials
-            </ButtonLink>
-            <p className="text-xs uppercase tracking-[0.18em] font-bold text-slate-400">Role: {role}</p>
-          </div>
+          <LearningAdminToolbar current="activities" />
 
           {error ? (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 px-6 py-5 text-rose-900">{error}</div>
@@ -218,7 +227,7 @@ function AdminRegistrationsInner({ role }: { role: string }) {
               <p className="text-slate-600">No pending requests.</p>
               <p className="text-slate-500 text-sm mt-2">When students request enrollment, they appear here.</p>
               <div className="mt-6">
-                <ButtonLink to="/learn/activities" variant="outline">
+                <ButtonLink to="/activities" variant="outline">
                   View Activities
                 </ButtonLink>
               </div>
@@ -266,6 +275,15 @@ function AdminRegistrationsInner({ role }: { role: string }) {
                         >
                           Reject
                         </button>
+                        {isSuperAdmin ? (
+                          <button
+                            type="button"
+                            onClick={() => void deleteRegistration(p.id)}
+                            className="inline-flex h-10 items-center justify-center rounded-full border border-rose-200 px-6 text-[10px] font-semibold tracking-[0.14em] uppercase text-rose-700 hover:bg-rose-50 transition"
+                          >
+                            Delete
+                          </button>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -278,4 +296,3 @@ function AdminRegistrationsInner({ role }: { role: string }) {
     </div>
   )
 }
-

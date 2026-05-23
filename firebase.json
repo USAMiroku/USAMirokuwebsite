@@ -12,6 +12,43 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "redirects": [
+      {
+        "source": "/events",
+        "destination": "/activities",
+        "type": 301
+      },
+      {
+        "source": "/events/**",
+        "destination": "/activities/:splat",
+        "type": 301
+      },
+      {
+        "source": "/learn/activities",
+        "destination": "/activities",
+        "type": 301
+      },
+      {
+        "source": "/learn/activities/**",
+        "destination": "/activities/:splat",
+        "type": 301
+      },
+      {
+        "source": "/learn/centers/**",
+        "destination": "/activities/centers/:splat",
+        "type": 301
+      },
+      {
+        "source": "/learn/sessions/**",
+        "destination": "/activities",
+        "type": 301
+      },
+      {
+        "source": "/learn",
+        "destination": "/activities",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "**",

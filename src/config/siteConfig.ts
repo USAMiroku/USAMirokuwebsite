@@ -15,7 +15,7 @@ export type CenterConfig = {
   leadership?: CenterLeadership
 }
 
-export const siteUrl = (import.meta.env.VITE_SITE_URL ?? 'https://usa-mirokuwebsite.vercel.app').trim()
+export const siteUrl = (import.meta.env.VITE_SITE_URL ?? 'https://www.worldmessianic.org').trim()
 
 export const siteConfig = {
   organizationName: 'World Messianic Church of America / Miroku Association USA',
@@ -29,6 +29,16 @@ export const siteConfig = {
   },
   centers: [
     {
+      id: 'national-headquarters',
+      name: 'National Headquarters',
+      city: 'Long Island City',
+      state: 'New York',
+      address: '47-10 32nd Place, Suite 207, Long Island City, NY 11101',
+      phone: '+1 (305) 308-8830',
+      email: 'info@miroku.us',
+      schedule: 'By appointment.',
+    },
+    {
       id: 'boston-johrei-center',
       name: 'Boston Johrei Center',
       city: 'Boston',
@@ -37,7 +47,6 @@ export const siteConfig = {
       phone: '+1 (305) 308-8830',
       email: 'info@miroku.us',
       schedule: 'By appointment.',
-      leadership: { head: 'Center Head', assistant: 'Assistant' },
     },
     {
       id: 'los-angeles-johrei-center',
@@ -68,7 +77,6 @@ export const siteConfig = {
       phone: '+1 (305) 308-8830',
       email: 'info@miroku.us',
       schedule: 'By appointment.',
-      leadership: { head: 'Center Head', assistant: 'Assistant' },
     },
     {
       id: 'orlando-johrei-center',
@@ -82,20 +90,10 @@ export const siteConfig = {
     },
     {
       id: 'washington-dc',
-      name: 'Washington DC',
+      name: 'Washington, DC Group',
       city: 'Washington',
       state: 'DC',
       address: '',
-      phone: '+1 (305) 308-8830',
-      email: 'info@miroku.us',
-      schedule: 'By appointment.',
-    },
-    {
-      id: 'national-headquarters',
-      name: 'National Headquarters',
-      city: 'Long Island City',
-      state: 'New York',
-      address: '47-10 32nd Place, Suite 207, Long Island City, NY 11101',
       phone: '+1 (305) 308-8830',
       email: 'info@miroku.us',
       schedule: 'By appointment.',
@@ -105,6 +103,7 @@ export const siteConfig = {
     hasInternalRoute: true,
     internalPath: '/donate',
     externalFallbackUrl: 'https://www.miroku.us/donate',
+    sangetsuPaymentUrl: 'https://www.usasangetsu.org/payment.html',
   },
   social: {
     facebook: '',
