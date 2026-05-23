@@ -164,11 +164,9 @@ export default function Home() {
                   {t.home.heroKicker}
                 </p>
                 <p className="mt-7 text-[13px] uppercase tracking-[0.34em] text-white/72">{t.home.heroTitle}</p>
-                <h1 className="mt-2 max-w-2xl leading-[0.92] text-white">
-                  <span className="block text-5xl sm:text-6xl lg:text-7xl">{siteConfig.shortName}</span>
-                  <span className="mt-2 block text-[1.1rem] font-semibold uppercase tracking-[0.12em] text-white/68 sm:text-[1.2rem]">
-                    World Messianic Church of America
-                  </span>
+                <h1 className="mt-2 max-w-2xl leading-tight text-white">
+                  <span className="block text-4xl font-bold sm:text-5xl lg:text-[3.25rem]">{siteConfig.shortName}</span>
+                  <span className="block text-4xl font-bold sm:text-5xl lg:text-[3.25rem]">World Messianic Church of America</span>
                 </h1>
                 <p className="mt-7 max-w-2xl text-xl leading-9 text-white/86">{t.home.heroIntro}</p>
                 <p className="mt-4 max-w-2xl text-base leading-8 text-white/60">{supportCopy.heroPath}</p>
