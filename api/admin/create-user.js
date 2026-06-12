@@ -28,6 +28,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Center admin requires a managed center.' })
     }
 
+    let userId
+
     const { data: created, error: createError } = await admin.auth.admin.createUser({
       email,
       password,
@@ -37,13 +39,44 @@ export default async function handler(req, res) {
       },
     })
 
-    if (createError || !created.user) {
-      return res.status(400).json({ error: createError?.message || 'Could not create user.' })
+    if (createError) {
+      // If the user already exists in Supabase Auth, look them up and reuse their ID
+      const alreadyExists =
+        createError.message?.toLowerCase().includes('already been registered') ||
+        createError.message?.toLowerCase().includes('already exists')
+
+      if (!alreadyExists) {
+        return res.status(400).json({ error: createError.message || 'Could not create user.' })
+      }
+
+      // Find the existing auth user by email
+      const { data: listData, error: listError } = await admin.auth.admin.listUsers()
+      if (listError) {
+        return res.status(500).json({ error: 'Could not look up existing user.' })
+      }
+
+      const existingUser = listData.users.find((u) => u.email?.toLowerCase() === email)
+      if (!existingUser) {
+        return res.status(400).json({ error: 'User exists in authentication but could not be found. Please contact support.' })
+      }
+
+      userId = existingUser.id
+
+      // Update the password so the new credentials work
+      await admin.auth.admin.updateUserById(userId, {
+        password,
+        user_metadata: { full_name: fullName || undefined },
+      })
+    } else {
+      if (!created.user) {
+        return res.status(400).json({ error: 'Could not create user.' })
+      }
+      userId = created.user.id
     }
 
     const { error: profileError } = await admin.from('learning_profiles').upsert(
       {
-        user_id: created.user.id,
+        user_id: userId,
         email,
         full_name: fullName || null,
         role,
@@ -57,7 +90,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({
-      userId: created.user.id,
+      userId,
       email,
       role,
       managedCenterId: role === 'center_admin' ? managedCenterId : null,

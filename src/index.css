@@ -280,6 +280,201 @@
   gap: 1.5rem;
 }
 
+.special-service-sheet {
+  box-sizing: border-box;
+  color: #1f2933;
+  overflow: hidden;
+}
+
+.special-service-sheet *,
+.special-service-sheet *::before,
+.special-service-sheet *::after {
+  box-sizing: border-box;
+}
+
+.special-service-line-frame {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 20px;
+  overflow: hidden;
+  border-bottom: 1px solid #000;
+  background: transparent;
+}
+
+.special-service-textarea-frame {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: calc(var(--special-service-lines, 1) * 20px);
+  overflow: hidden;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 19px, #000 19px, #000 20px);
+  background-repeat: repeat-y;
+  background-size: 100% 20px;
+}
+
+.special-service-line {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 20px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 19px;
+  color: #111827;
+  outline: none;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.special-service-textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  resize: none;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 20px;
+  color: #111827;
+  outline: none;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.special-service-textarea-frame:focus-within {
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 19px, #2563eb 19px, #2563eb 20px);
+}
+
+.special-service-line-frame:focus-within {
+  border-bottom-color: #2563eb;
+}
+
+.special-service-static-line {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: 22px;
+  overflow: hidden;
+  border-bottom: 1px solid #000;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.special-service-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 65%) minmax(0, 35%);
+  gap: 1rem;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.special-service-bottom-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .special-service-bottom-fields {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 160px);
+  }
+}
+
+.pdf-print-only {
+  display: none;
+}
+
+.special-service-capturing .pdf-print-only {
+  display: block;
+}
+
+@page {
+  margin: 1.5cm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  body {
+    background-image: none !important;
+  }
+
+  .site-header,
+  footer,
+  .screen-only,
+  .cookie-consent,
+  .noise-subtle,
+  .floating-orb,
+  [data-ui='cookie-consent'],
+  [data-ui='site-footer'],
+  [data-ui='fixed-overlay'] {
+    display: none !important;
+  }
+
+  .pdf-print-only {
+    display: block !important;
+  }
+
+  .public-site,
+  .public-site main {
+    background: #fff !important;
+  }
+
+  .special-service-sheet {
+    box-shadow: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .special-service-line {
+    min-height: 16px;
+    height: 16px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    font-size: 12px !important;
+    line-height: 15px !important;
+  }
+
+  .special-service-line-frame {
+    height: 16px !important;
+    overflow: hidden !important;
+  }
+
+  .special-service-textarea-frame {
+    height: calc(var(--special-service-lines, 1) * 16px) !important;
+    overflow: hidden !important;
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 15px, #000 15px, #000 16px) !important;
+    background-size: 100% 16px !important;
+  }
+
+  .special-service-textarea {
+    font-size: 12px !important;
+    line-height: 16px !important;
+  }
+
+  .special-service-sheet p {
+    line-height: 1.35 !important;
+  }
+}
+
 @media (min-width: 1024px) {
   .public-hero {
     padding-top: 9.5rem;

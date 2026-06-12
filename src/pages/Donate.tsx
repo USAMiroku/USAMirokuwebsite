@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Section } from '../components/Section'
 import { ButtonLink } from '../components/ButtonLink'
@@ -6,6 +6,24 @@ import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../config/siteConfig'
 import { mainDonationTypes } from '../config/donationTypeOptions'
+
+type PayPalCardFieldsInstance = {
+  isEligible: () => boolean
+  NameField: () => { render: (selector: string) => void; setAttribute: (attr: string, value: string) => void }
+  NumberField: () => { render: (selector: string) => void }
+  ExpiryField: () => { render: (selector: string) => void }
+  CVVField: () => { render: (selector: string) => void }
+  submit: (options?: { contingencies?: string[] }) => Promise<void>
+}
+
+type PayPalSDK = {
+  CardFields?: (options: {
+    createOrder: () => Promise<string>
+    onApprove: (data: { orderID: string }) => Promise<void>
+    onError?: (err: unknown) => void
+    style?: Record<string, Record<string, string>>
+  }) => PayPalCardFieldsInstance
+}
 
 type FundType = 'donation' | 'sangetsu'
 
@@ -38,6 +56,16 @@ type Copy = {
   paymentButtonsTitle: string
   paypalOption: string
   debitCardOption: string
+  cardHint: string
+  cardFormTitle: string
+  payNow: string
+  processingCard: string
+  backToOptions: string
+  successTitle: string
+  successAction: string
+  errorTitle: string
+  cancelTitle: string
+  retryAction: string
   donationButton: string
   sangetsuTitle: string
   sangetsuDescription: string
@@ -127,24 +155,28 @@ function PaymentButtons({
   preparingLabel,
   paypalLabel,
   debitLabel,
+  cardHint,
   isSubmitting,
   disabled,
-  onClick,
+  onPayPalClick,
+  onCardClick,
 }: {
   sectionTitle: string
   preparingLabel: string
   paypalLabel: string
   debitLabel: string
+  cardHint: string
   isSubmitting: boolean
   disabled: boolean
-  onClick: () => void
+  onPayPalClick: () => void
+  onCardClick: () => void
 }) {
   return (
     <div className="space-y-3">
       <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">{sectionTitle}</p>
       <button
         type="button"
-        onClick={onClick}
+        onClick={onPayPalClick}
         disabled={disabled || isSubmitting}
         className="inline-flex h-12 w-full items-center justify-center rounded-lg bg-[#1475c4] px-6 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[#0f66ad] disabled:cursor-not-allowed disabled:opacity-70"
       >
@@ -152,12 +184,13 @@ function PaymentButtons({
       </button>
       <button
         type="button"
-        onClick={onClick}
+        onClick={onCardClick}
         disabled={disabled || isSubmitting}
         className="inline-flex h-12 w-full items-center justify-center rounded-lg bg-[#1f2937] px-6 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[#111827] disabled:cursor-not-allowed disabled:opacity-70"
       >
         {isSubmitting ? preparingLabel : debitLabel}
       </button>
+      <p className="text-[11px] leading-relaxed text-slate-500 text-center">{cardHint}</p>
     </div>
   )
 }
@@ -209,6 +242,16 @@ export default function Donate() {
           paymentButtonsTitle: 'Opciones de pago',
           paypalOption: 'Pagar con PayPal',
           debitCardOption: 'Tarjeta de débito o crédito',
+          cardHint: 'Ingrese los datos de su tarjeta directamente — no necesita una cuenta PayPal.',
+          cardFormTitle: 'Pago seguro con tarjeta',
+          payNow: 'Pagar',
+          processingCard: 'Procesando el pago...',
+          backToOptions: '← Volver a opciones de pago',
+          successTitle: '¡Gracias por su ofrenda!',
+          successAction: 'Hacer otra ofrenda',
+          errorTitle: 'No se pudo procesar el pago',
+          cancelTitle: 'El pago fue cancelado',
+          retryAction: 'Intentar de nuevo',
           donationButton: 'Preparando el pago por PayPal...',
           sangetsuTitle: 'Pagos relacionados con Sangetsu',
           sangetsuDescription: 'Los pagos y donaciones de Sangetsu continúan siendo gestionados en el sitio de USA Sangetsu, donde también se administran actividades, centros y registros.',
@@ -254,6 +297,16 @@ export default function Donate() {
             paymentButtonsTitle: 'Opções de pagamento',
             paypalOption: 'Pagar com PayPal',
             debitCardOption: 'Cartão de débito ou crédito',
+            cardHint: 'Insira os dados do cartão diretamente — não é necessária uma conta PayPal.',
+            cardFormTitle: 'Pagamento seguro com cartão',
+            payNow: 'Pagar',
+            processingCard: 'Processando pagamento...',
+            backToOptions: '← Voltar às opções de pagamento',
+            successTitle: 'Obrigado pela sua oferta!',
+            successAction: 'Fazer outra oferta',
+            errorTitle: 'Não foi possível processar o pagamento',
+            cancelTitle: 'O pagamento foi cancelado',
+            retryAction: 'Tentar novamente',
             donationButton: 'Preparando o pagamento pelo PayPal...',
             sangetsuTitle: 'Pagamentos relacionados à Sangetsu',
             sangetsuDescription: 'Os pagamentos e doações de Sangetsu continuam sendo tratados no site da USA Sangetsu, onde também são administradas atividades, centros e registros.',
@@ -298,6 +351,16 @@ export default function Donate() {
             paymentButtonsTitle: 'Payment options',
             paypalOption: 'Pay with PayPal',
             debitCardOption: 'Debit or Credit Card',
+            cardHint: 'Enter your card details directly — no PayPal account required.',
+            cardFormTitle: 'Secure card payment',
+            payNow: 'Pay',
+            processingCard: 'Processing payment...',
+            backToOptions: '← Back to payment options',
+            successTitle: 'Thank You for Your Offering',
+            successAction: 'Make Another Offering',
+            errorTitle: 'Payment Could Not Be Completed',
+            cancelTitle: 'Payment Was Cancelled',
+            retryAction: 'Try Again',
             donationButton: 'Preparing PayPal checkout...',
             sangetsuTitle: 'Sangetsu related payments',
             sangetsuDescription: 'Sangetsu payments and donations continue to be handled on the USA Sangetsu website, where activities, centers, and records are managed there directly.',
@@ -325,8 +388,14 @@ export default function Donate() {
   const [donationForm, setDonationForm] = useState<DonationFormState>(() =>
     initForm(donationTypeSuggestions[0] ?? 'Gratitude Offering'),
   )
+  const [donationFieldErrors, setDonationFieldErrors] = useState<Partial<Record<keyof DonationFormState, string>>>({})
   const [pendingFund, setPendingFund] = useState<FundType | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
+  const [cardMode, setCardMode] = useState<'hidden' | 'loading' | 'ready' | 'submitting'>('hidden')
+  const [cardPaymentError, setCardPaymentError] = useState<string | null>(null)
+  const formDataRef = useRef(donationForm)
+  const navigateRef = useRef(navigate)
+  const cardFieldsRef = useRef<PayPalCardFieldsInstance | null>(null)
 
   usePageMeta({
     title: `${t.donate.title} | ${t.brand}`,
@@ -385,15 +454,61 @@ export default function Donate() {
     void captureOrder()
   }, [captureOrderEndpoint, navigate, searchParams])
 
-  async function startCheckout(fundType: FundType, form: DonationFormState) {
-    setFormError(null)
+  // Keep refs in sync with latest values for use inside PayPal callbacks
+  useEffect(() => { formDataRef.current = donationForm }, [donationForm])
+  useEffect(() => { navigateRef.current = navigate }, [navigate])
 
-    const donorName = form.donorName.trim()
-    const donorEmail = form.donorEmail.trim()
-    const center = form.center.trim()
-    const centerId = centerIdByName.get(center) ?? null
-    const donationType = form.donationType.trim()
+  function updateDonationField(field: keyof DonationFormState, value: string) {
+    setDonationForm((previous) => ({ ...previous, [field]: value }))
+    setDonationFieldErrors((previous) => ({ ...previous, [field]: undefined }))
+    setFormError(null)
+  }
+
+  function validateDonationForm(form: DonationFormState) {
+    const requiredMessage =
+      language === 'es' ? 'Este campo es obligatorio.' : language === 'pt' ? 'Este campo é obrigatório.' : 'This field is required.'
+    const amountMessage =
+      language === 'es'
+        ? 'Ingrese un monto mayor que cero.'
+        : language === 'pt'
+          ? 'Informe um valor maior que zero.'
+          : 'Enter an amount greater than zero.'
+    const nextErrors: Partial<Record<keyof DonationFormState, string>> = {}
     const amount = Number(form.amount)
+
+    if (!form.center.trim()) nextErrors.center = requiredMessage
+    if (!form.donationType.trim()) nextErrors.donationType = requiredMessage
+    if (!form.donorName.trim()) nextErrors.donorName = requiredMessage
+    if (!Number.isFinite(amount) || amount <= 0) nextErrors.amount = amountMessage
+
+    setDonationFieldErrors(nextErrors)
+    return Object.keys(nextErrors).length === 0
+  }
+
+  // Render PayPal card fields into DOM containers once 'ready'
+  useEffect(() => {
+    if (cardMode !== 'ready' || !cardFieldsRef.current) return
+    const cf = cardFieldsRef.current
+    try {
+      const nameField = cf.NameField()
+      nameField.setAttribute('aria-required', 'true')
+      nameField.render('#paypal-card-name')
+      cf.NumberField().render('#paypal-card-number')
+      cf.ExpiryField().render('#paypal-card-expiry')
+      cf.CVVField().render('#paypal-card-cvv')
+    } catch (err) {
+      console.error('Card field render error:', err)
+    }
+  }, [cardMode])
+
+  async function openCardFields() {
+    setFormError(null)
+    setCardPaymentError(null)
+
+    const donorName = donationForm.donorName.trim()
+    const center = donationForm.center.trim()
+    const donationType = donationForm.donationType.trim()
+    const amount = Number(donationForm.amount)
 
     if (!donorName || !center || !donationType) {
       setFormError('Please fill Full Name, Johrei Center, and Type of Donation before continuing.')
@@ -404,6 +519,134 @@ export default function Donate() {
       setFormError('Please provide a valid amount greater than zero.')
       return
     }
+
+    setCardMode('loading')
+
+    try {
+      // Fetch the PayPal client ID from our API
+      const configRes = await fetch(`${donationApiBaseUrl}/api/paypal/client-id`)
+      const config = (await configRes.json().catch(() => null)) as { clientId?: string } | null
+      if (!configRes.ok || !config?.clientId) throw new Error('Payment setup failed. Please try again.')
+
+      // Load PayPal JS SDK if not already present
+      const paypalWindow = window as Window & { paypal?: PayPalSDK }
+      if (!paypalWindow.paypal) {
+        await new Promise<void>((resolve, reject) => {
+          const existing = document.querySelector('script[src*="paypal.com/sdk/js"]')
+          if (existing) {
+            const check = setInterval(() => {
+              if ((window as Window & { paypal?: PayPalSDK }).paypal) {
+                clearInterval(check)
+                resolve()
+              }
+            }, 100)
+            setTimeout(() => { clearInterval(check); reject(new Error('Payment SDK timed out.')) }, 10000)
+            return
+          }
+          const script = document.createElement('script')
+          script.src = `https://www.paypal.com/sdk/js?client-id=${config.clientId}&components=card-fields&currency=USD`
+          script.onload = () => resolve()
+          script.onerror = () => reject(new Error('Could not load the payment SDK.'))
+          document.head.appendChild(script)
+        })
+      }
+
+      const sdk = (window as Window & { paypal?: PayPalSDK }).paypal
+      if (!sdk?.CardFields) throw new Error('Card payment is not available right now. Please use the PayPal option.')
+
+      const cardFields = sdk.CardFields({
+        createOrder: async () => {
+          const form = formDataRef.current
+          const response = await fetch(createOrderEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fundType: 'donation',
+              donorName: form.donorName.trim(),
+              donorEmail: form.donorEmail.trim(),
+              center: form.center.trim(),
+              centerId: centerIdByName.get(form.center.trim()) ?? null,
+              donationType: form.donationType.trim(),
+              amount: Number(form.amount),
+              currency: 'USD',
+              fundingSource: 'card',
+            }),
+          })
+          const data = (await response.json().catch(() => null)) as { orderId?: string; error?: string } | null
+          if (!response.ok || !data?.orderId) throw new Error(data?.error ?? 'Could not start payment.')
+          return data.orderId
+        },
+
+        onApprove: async (data) => {
+          const response = await fetch(captureOrderEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: data.orderID, fundType: 'donation' }),
+          })
+          const result = (await response.json().catch(() => null)) as { error?: string; message?: string } | null
+          if (!response.ok) throw new Error(result?.error ?? 'Could not confirm payment.')
+          const next = new URLSearchParams()
+          next.set('status', 'success')
+          next.set('fund', 'donation')
+          if (result?.message) next.set('message', result.message)
+          navigateRef.current(`/donate?${next.toString()}`, { replace: true })
+        },
+
+        onError: (err: unknown) => {
+          console.error('PayPal card error:', err)
+          const message = err instanceof Error ? err.message : 'Payment failed. Please check your card details and try again.'
+          setCardPaymentError(message)
+          setCardMode('ready')
+        },
+
+        style: {
+          input: {
+            'font-size': '14px',
+            color: '#0f172a',
+            'font-family': 'system-ui, -apple-system, sans-serif',
+          },
+        },
+      })
+
+      if (!cardFields.isEligible()) {
+        setCardMode('hidden')
+        void startCheckout('donation', donationForm, 'card')
+        return
+      }
+
+      cardFieldsRef.current = cardFields
+      setCardMode('ready')
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Could not load the card payment form.'
+      setCardMode('hidden')
+      setFormError(message)
+    }
+  }
+
+  async function submitCardPayment() {
+    if (!cardFieldsRef.current || cardMode !== 'ready') return
+    setCardMode('submitting')
+    setCardPaymentError(null)
+    try {
+      await cardFieldsRef.current.submit({ contingencies: ['3D_SECURE'] })
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Payment could not be processed. Please try again.'
+      setCardPaymentError(message)
+      setCardMode('ready')
+    }
+  }
+
+  async function startCheckout(fundType: FundType, form: DonationFormState, fundingSource: 'paypal' | 'card' = 'paypal') {
+    setFormError(null)
+
+    if (!validateDonationForm(form)) return
+
+    const donorName = form.donorName.trim()
+    const donorEmail = form.donorEmail.trim()
+    const center = form.center.trim()
+    const centerId = centerIdByName.get(center) ?? null
+    const donationType = form.donationType.trim()
+    const amount = Number(form.amount)
 
     setPendingFund(fundType)
 
@@ -427,6 +670,7 @@ export default function Donate() {
           donationType,
           amount,
           currency: 'USD',
+          fundingSource,
         }),
       })
 
@@ -449,11 +693,94 @@ export default function Donate() {
   }
 
   const status = searchParams.get('status')
-  const statusFund = isFundType(searchParams.get('fund')) ? searchParams.get('fund') : null
   const statusMessage = searchParams.get('message')
   const isSuccess = status === 'success'
   const isCancelled = status === 'cancelled'
   const isError = status === 'error'
+
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen bg-sanctuary-100 text-deep-slate">
+        <section className="public-hero">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="public-eyebrow">{copy.heroKicker}</p>
+            <h1 className="public-title mx-auto">{copy.heroTitle}</h1>
+          </div>
+        </section>
+        <Section className="bg-white">
+          <div className="mx-auto max-w-lg py-16 text-center">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
+              <svg className="h-8 w-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="font-serif text-3xl text-deep-slate">{copy.successTitle}</h2>
+            <p className="mt-4 text-base leading-relaxed text-slate-600">
+              {statusMessage ?? 'Your donation was confirmed successfully.'}
+            </p>
+            <p className="mt-5 text-sm text-slate-500">{copy.gratitudeNotes[0]}</p>
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <button
+                type="button"
+                onClick={() => navigate('/donate', { replace: true })}
+                className="inline-flex h-12 items-center justify-center rounded-lg bg-deep-slate px-8 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-sage-600"
+              >
+                {copy.successAction}
+              </button>
+              <ButtonLink to="/" variant="outline">Home</ButtonLink>
+            </div>
+          </div>
+        </Section>
+      </div>
+    )
+  }
+
+  if (isCancelled || isError) {
+    return (
+      <div className="min-h-screen bg-sanctuary-100 text-deep-slate">
+        <section className="public-hero">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="public-eyebrow">{copy.heroKicker}</p>
+            <h1 className="public-title mx-auto">{copy.heroTitle}</h1>
+          </div>
+        </section>
+        <Section className="bg-white">
+          <div className="mx-auto max-w-lg py-16 text-center">
+            <div className={`mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full ${isError ? 'bg-rose-100' : 'bg-amber-100'}`}>
+              <svg
+                className={`h-8 w-8 ${isError ? 'text-rose-500' : 'text-amber-500'}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d={isError ? 'M6 18L18 6M6 6l12 12' : 'M12 9v4m0 4h.01'}
+                />
+              </svg>
+            </div>
+            <h2 className="font-serif text-2xl text-deep-slate">
+              {isError ? copy.errorTitle : copy.cancelTitle}
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-slate-600">
+              {statusMessage ?? (isError ? copy.error : copy.cancelled)}
+            </p>
+            <div className="mt-8">
+              <button
+                type="button"
+                onClick={() => navigate('/donate', { replace: true })}
+                className="inline-flex h-12 items-center justify-center rounded-lg bg-deep-slate px-8 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-sage-600"
+              >
+                {copy.retryAction}
+              </button>
+            </div>
+          </div>
+        </Section>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-sanctuary-100 text-deep-slate">
@@ -467,27 +794,6 @@ export default function Donate() {
 
       <Section className="bg-white">
         <div className="mx-auto max-w-6xl space-y-6">
-          {(isSuccess || isCancelled || isError) && (
-            <div
-              className={`rounded-2xl border px-5 py-4 text-sm ${
-                isSuccess
-                  ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
-                  : isCancelled
-                    ? 'border-amber-200 bg-amber-50 text-amber-900'
-                    : 'border-rose-200 bg-rose-50 text-rose-900'
-              }`}
-            >
-              {isSuccess && (
-                <p>
-                  {copy.success} {statusFund === 'sangetsu' ? 'Sangetsu' : copy.donationLabel}.{' '}
-                  {statusMessage ?? 'Thank you for your offering.'}
-                </p>
-              )}
-              {isCancelled && <p>{copy.cancelled}</p>}
-              {isError && <p>{copy.error} {statusMessage ?? 'Please try again or contact support.'}</p>}
-            </div>
-          )}
-
           {formError ? (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-900">
               {formError}
@@ -500,8 +806,11 @@ export default function Donate() {
                 <label className="block">
                   <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{copy.labels.center}</span>
                   <select
+                    id="donation-center"
                     value={donationForm.center}
-                    onChange={(event) => setDonationForm((previous) => ({ ...previous, center: event.target.value }))}
+                    onChange={(event) => updateDonationField('center', event.target.value)}
+                    aria-invalid={donationFieldErrors.center ? 'true' : undefined}
+                    aria-describedby={donationFieldErrors.center ? 'donation-center-error' : undefined}
                     className="mt-2 w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
                     required
                   >
@@ -512,6 +821,9 @@ export default function Donate() {
                       </option>
                     ))}
                   </select>
+                  {donationFieldErrors.center ? (
+                    <p id="donation-center-error" className="mt-2 text-xs font-medium text-rose-800">{donationFieldErrors.center}</p>
+                  ) : null}
                 </label>
               </StepCard>
 
@@ -519,8 +831,11 @@ export default function Donate() {
                 <label className="block">
                   <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{copy.labels.type}</span>
                   <select
+                    id="donation-type"
                     value={donationForm.donationType}
-                    onChange={(event) => setDonationForm((previous) => ({ ...previous, donationType: event.target.value }))}
+                    onChange={(event) => updateDonationField('donationType', event.target.value)}
+                    aria-invalid={donationFieldErrors.donationType ? 'true' : undefined}
+                    aria-describedby={donationFieldErrors.donationType ? 'donation-type-error' : undefined}
                     className="mt-2 w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
                     required
                   >
@@ -530,6 +845,9 @@ export default function Donate() {
                       </option>
                     ))}
                   </select>
+                  {donationFieldErrors.donationType ? (
+                    <p id="donation-type-error" className="mt-2 text-xs font-medium text-rose-800">{donationFieldErrors.donationType}</p>
+                  ) : null}
                 </label>
               </StepCard>
 
@@ -537,14 +855,20 @@ export default function Donate() {
                 <label className="block">
                   <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{copy.labels.amount}</span>
                   <input
+                    id="donation-amount"
                     type="number"
                     min="1"
                     step="0.01"
                     value={donationForm.amount}
-                    onChange={(event) => setDonationForm((previous) => ({ ...previous, amount: event.target.value }))}
+                    onChange={(event) => updateDonationField('amount', event.target.value)}
+                    aria-invalid={donationFieldErrors.amount ? 'true' : undefined}
+                    aria-describedby={donationFieldErrors.amount ? 'donation-amount-error' : undefined}
                     className="mt-2 w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
                     required
                   />
+                  {donationFieldErrors.amount ? (
+                    <p id="donation-amount-error" className="mt-2 text-xs font-medium text-rose-800">{donationFieldErrors.amount}</p>
+                  ) : null}
                 </label>
 
                 <div className="mt-4">
@@ -554,7 +878,7 @@ export default function Donate() {
                       <button
                         key={value}
                         type="button"
-                        onClick={() => setDonationForm((previous) => ({ ...previous, amount: String(value) }))}
+                        onClick={() => updateDonationField('amount', String(value))}
                         className={`rounded-full border px-4 py-2 text-sm transition ${
                           Number(donationForm.amount) === value
                             ? 'border-sage-600 bg-sage-600 text-white'
@@ -573,12 +897,18 @@ export default function Donate() {
                   <label className="block">
                     <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">{copy.labels.name}</span>
                     <input
+                      id="donation-donor-name"
                       type="text"
                       value={donationForm.donorName}
-                      onChange={(event) => setDonationForm((previous) => ({ ...previous, donorName: event.target.value }))}
+                      onChange={(event) => updateDonationField('donorName', event.target.value)}
+                      aria-invalid={donationFieldErrors.donorName ? 'true' : undefined}
+                      aria-describedby={donationFieldErrors.donorName ? 'donation-donor-name-error' : undefined}
                       className="mt-2 w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
                       required
                     />
+                    {donationFieldErrors.donorName ? (
+                      <p id="donation-donor-name-error" className="mt-2 text-xs font-medium text-rose-800">{donationFieldErrors.donorName}</p>
+                    ) : null}
                   </label>
 
                   <label className="block">
@@ -586,7 +916,7 @@ export default function Donate() {
                     <input
                       type="email"
                       value={donationForm.donorEmail}
-                      onChange={(event) => setDonationForm((previous) => ({ ...previous, donorEmail: event.target.value }))}
+                      onChange={(event) => updateDonationField('donorEmail', event.target.value)}
                       className="mt-2 w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white px-4 py-3 text-sm text-deep-slate outline-none transition focus:border-sage-600 focus:ring-2 focus:ring-sage-100"
                       placeholder="you@example.org"
                     />
@@ -597,18 +927,108 @@ export default function Donate() {
               <AcceptedCards copy={copy} />
 
               <div className="space-y-3">
-                <PaymentButtons
-                  sectionTitle={copy.paymentButtonsTitle}
-                  preparingLabel={copy.labels.preparing}
-                  paypalLabel={copy.paypalOption}
-                  debitLabel={copy.debitCardOption}
-                  isSubmitting={pendingFund === 'donation'}
-                  disabled={false}
-                  onClick={() => {
-                    void startCheckout('donation', donationForm)
-                  }}
-                />
-                <p className="text-xs text-center text-slate-500">Powered by PayPal</p>
+                {cardMode === 'hidden' ? (
+                  <>
+                    <PaymentButtons
+                      sectionTitle={copy.paymentButtonsTitle}
+                      preparingLabel={copy.labels.preparing}
+                      paypalLabel={copy.paypalOption}
+                      debitLabel={copy.debitCardOption}
+                      cardHint={copy.cardHint}
+                      isSubmitting={pendingFund === 'donation'}
+                      disabled={false}
+                      onPayPalClick={() => {
+                        void startCheckout('donation', donationForm, 'paypal')
+                      }}
+                      onCardClick={() => {
+                        void openCardFields()
+                      }}
+                    />
+                    <p className="text-xs text-center text-slate-500">Powered by PayPal</p>
+                  </>
+                ) : (
+                  <div className="space-y-4">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                      {copy.cardFormTitle}
+                    </p>
+
+                    {cardPaymentError && (
+                      <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">
+                        {cardPaymentError}
+                      </div>
+                    )}
+
+                    {cardMode === 'loading' && (
+                      <div className="flex items-center justify-center rounded-xl border border-[rgba(15,23,42,0.10)] bg-white py-8">
+                        <p className="text-sm text-slate-500">Loading secure card form…</p>
+                      </div>
+                    )}
+
+                    {(cardMode === 'ready' || cardMode === 'submitting') && (
+                      <div className="space-y-4">
+                        <div>
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Name on Card</p>
+                          <div
+                            id="paypal-card-name"
+                            className="mt-2 min-h-[46px] w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Card Number</p>
+                          <div
+                            id="paypal-card-number"
+                            className="mt-2 min-h-[46px] w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white"
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Expiry Date</p>
+                            <div
+                              id="paypal-card-expiry"
+                              className="mt-2 min-h-[46px] w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white"
+                            />
+                          </div>
+                          <div>
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Security Code</p>
+                            <div
+                              id="paypal-card-cvv"
+                              className="mt-2 min-h-[46px] w-full rounded-xl border border-[rgba(15,23,42,0.12)] bg-white"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {cardMode !== 'loading' && (
+                      <div className="space-y-2">
+                        <button
+                          type="button"
+                          onClick={() => void submitCardPayment()}
+                          disabled={cardMode === 'submitting'}
+                          className="inline-flex h-12 w-full items-center justify-center rounded-lg bg-[#1f2937] px-6 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[#111827] disabled:cursor-not-allowed disabled:opacity-70"
+                        >
+                          {cardMode === 'submitting'
+                            ? copy.processingCard
+                            : `${copy.payNow} $${donationForm.amount || '0'}`}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCardMode('hidden')
+                            setCardPaymentError(null)
+                            cardFieldsRef.current = null
+                          }}
+                          disabled={cardMode === 'submitting'}
+                          className="w-full py-1 text-center text-[11px] text-slate-500 transition hover:text-slate-700 disabled:opacity-50"
+                        >
+                          {copy.backToOptions}
+                        </button>
+                      </div>
+                    )}
+
+                    <p className="text-center text-xs text-slate-500">Powered by PayPal · Secure card processing</p>
+                  </div>
+                )}
               </div>
             </div>
 

@@ -18,6 +18,9 @@ const MeishuSamaLegacy = lazy(() => import('./pages/MeishuSamaLegacy'))
 const ParadiseOnEarth = lazy(() => import('./pages/ParadiseOnEarth'))
 const ResourceDetail = lazy(() => import('./pages/ResourceDetail'))
 const Resources = lazy(() => import('./pages/Resources'))
+const SpecialServiceForm = lazy(() => import('./pages/SpecialServiceForm'))
+const SpecialServices = lazy(() => import('./pages/SpecialServices'))
+const SpecialServicesThankYou = lazy(() => import('./pages/SpecialServices').then((module) => ({ default: module.SpecialServicesThankYou })))
 const TestimonialDetail = lazy(() => import('./pages/TestimonialDetail'))
 const Testimonials = lazy(() => import('./pages/Testimonials'))
 const LearningActivities = lazy(() => import('./learning/pages/LearningActivities'))
@@ -74,6 +77,9 @@ function App() {
           <Route path="events/:activityId" element={<LegacyActivityRedirect />} />
           <Route path="resources" element={<Resources />} />
           <Route path="resources/:id" element={<ResourceDetail />} />
+          <Route path="special-services" element={<SpecialServices />} />
+          <Route path="special-services/thank-you" element={<SpecialServicesThankYou />} />
+          <Route path="special-services/:serviceSlug" element={<SpecialServiceForm />} />
           <Route path="testimonials" element={<Testimonials />} />
           <Route path="testimonials/:id" element={<TestimonialDetail />} />
           <Route path="contact" element={<Contact />} />

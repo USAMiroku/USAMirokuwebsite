@@ -28,6 +28,7 @@ export default function Contact() {
     locationId: '',
     message: '',
   })
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ContactFormState, string>>>({})
 
   const locationLabel = language === 'en' ? 'Center' : 'Centro'
   const messageLabel = language === 'en' ? 'Message' : language === 'es' ? 'Mensaje' : 'Mensagem'
@@ -35,6 +36,8 @@ export default function Contact() {
   const pageLabel = language === 'en' ? 'National Office' : language === 'es' ? 'Oficina nacional' : 'Escritório nacional'
   const officeLabel = language === 'en' ? 'Office details' : language === 'es' ? 'Datos de oficina' : 'Dados do escritório'
   const recipientLabel = language === 'en' ? 'Messages go to' : language === 'es' ? 'Los mensajes se enviarán a' : 'As mensagens serão enviadas para'
+  const requiredMessage = language === 'en' ? 'This field is required.' : language === 'es' ? 'Este campo es obligatorio.' : 'Este campo é obrigatório.'
+  const emailMessage = language === 'en' ? 'Enter a valid email address.' : language === 'es' ? 'Ingrese un email válido.' : 'Digite um e-mail válido.'
 
   const selectedCenter = useMemo(
     () => activeCenters.find((entry) => entry.id === form.locationId) ?? null,
@@ -53,10 +56,23 @@ export default function Contact() {
 
   function updateField(field: keyof ContactFormState, value: string) {
     setForm((previous) => ({ ...previous, [field]: value }))
+    setFieldErrors((previous) => ({ ...previous, [field]: undefined }))
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const nextErrors: Partial<Record<keyof ContactFormState, string>> = {}
+
+    if (!form.name.trim()) nextErrors.name = requiredMessage
+    if (!form.email.trim()) {
+      nextErrors.email = requiredMessage
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      nextErrors.email = emailMessage
+    }
+    if (!form.message.trim()) nextErrors.message = requiredMessage
+
+    setFieldErrors(nextErrors)
+    if (Object.keys(nextErrors).length > 0) return
 
     const centerName = selectedCenter?.name ?? 'General Inquiry'
     const subject = encodeURIComponent(`Website Inquiry - ${centerName}`)
@@ -72,6 +88,8 @@ export default function Contact() {
     )
 
     window.location.href = `mailto:${mailtoRecipient}?cc=${cc}&subject=${subject}&body=${body}`
+    setForm({ name: '', email: '', locationId: '', message: '' })
+    setFieldErrors({})
   }
 
   return (
@@ -144,33 +162,42 @@ export default function Contact() {
               <p className="text-slate-600">{t.contact.intro}</p>
             </div>
 
-            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t.donate.fields.name}</label>
+                  <label htmlFor="contact-name" className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t.donate.fields.name}</label>
                   <input
+                    id="contact-name"
                     type="text"
                     value={form.name}
                     onChange={(event) => updateField('name', event.target.value)}
+                    aria-invalid={fieldErrors.name ? 'true' : undefined}
+                    aria-describedby={fieldErrors.name ? 'contact-name-error' : undefined}
                     className="h-12 w-full rounded-lg border border-[rgba(15,23,42,0.12)] bg-white px-4 outline-none transition-colors focus:border-sage-600"
                     required
                   />
+                  {fieldErrors.name ? <p id="contact-name-error" className="text-xs font-medium text-rose-800">{fieldErrors.name}</p> : null}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t.donate.fields.email}</label>
+                  <label htmlFor="contact-email" className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{t.donate.fields.email}</label>
                   <input
+                    id="contact-email"
                     type="email"
                     value={form.email}
                     onChange={(event) => updateField('email', event.target.value)}
+                    aria-invalid={fieldErrors.email ? 'true' : undefined}
+                    aria-describedby={fieldErrors.email ? 'contact-email-error' : undefined}
                     className="h-12 w-full rounded-lg border border-[rgba(15,23,42,0.12)] bg-white px-4 outline-none transition-colors focus:border-sage-600"
                     required
                   />
+                  {fieldErrors.email ? <p id="contact-email-error" className="text-xs font-medium text-rose-800">{fieldErrors.email}</p> : null}
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{locationLabel}</label>
+                <label htmlFor="contact-location" className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{locationLabel}</label>
                 <select
+                  id="contact-location"
                   value={form.locationId}
                   onChange={(event) => updateField('locationId', event.target.value)}
                   className="h-12 w-full rounded-lg border border-[rgba(15,23,42,0.12)] bg-white px-4 outline-none transition-colors focus:border-sage-600"
@@ -187,13 +214,17 @@ export default function Contact() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{messageLabel}</label>
+                <label htmlFor="contact-message" className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{messageLabel}</label>
                 <textarea
+                  id="contact-message"
                   value={form.message}
                   onChange={(event) => updateField('message', event.target.value)}
+                  aria-invalid={fieldErrors.message ? 'true' : undefined}
+                  aria-describedby={fieldErrors.message ? 'contact-message-error' : undefined}
                   className="min-h-[180px] w-full rounded-lg border border-[rgba(15,23,42,0.12)] bg-white p-4 outline-none transition-colors focus:border-sage-600"
                   required
                 />
+                {fieldErrors.message ? <p id="contact-message-error" className="text-xs font-medium text-rose-800">{fieldErrors.message}</p> : null}
               </div>
 
               <button

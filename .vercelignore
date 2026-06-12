@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+.vercel
+.git
+.playwright-mcp
+node_modules
+dist

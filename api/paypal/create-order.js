@@ -33,6 +33,7 @@ export default async function handler(req, res) {
     const donationType = sanitizeText(body.donationType, 80)
     const amount = parseAmount(body.amount)
     const currency = sanitizeText(body.currency || 'USD', 3).toUpperCase()
+    const fundingSource = body.fundingSource === 'card' ? 'card' : 'paypal'
 
     if (!donorName || !center || !donationType) {
       return res.status(400).json({ error: 'Missing required fields: donorName, center, and donationType.' })
@@ -61,7 +62,7 @@ export default async function handler(req, res) {
           reference_id: fundType.toUpperCase(),
           invoice_id: invoiceId,
           custom_id: customId,
-          description: `${donationType} | ${center}`.slice(0, 127),
+          description: `${donorName} | ${donationType} | ${center}`.slice(0, 127),
           amount: {
             currency_code: currency,
             value: amount,
@@ -74,7 +75,7 @@ export default async function handler(req, res) {
           },
           items: [
             {
-              name: donationType.slice(0, 127),
+              name: `${donorName} — ${donationType}`.slice(0, 127),
               description: `Donor: ${donorName}${donorEmail ? ` (${donorEmail})` : ''}`.slice(0, 127),
               quantity: '1',
               unit_amount: {
@@ -89,6 +90,7 @@ export default async function handler(req, res) {
       application_context: {
         brand_name: 'World Messianic Church',
         user_action: 'PAY_NOW',
+        landing_page: fundingSource === 'card' ? 'BILLING' : 'LOGIN',
         return_url: `${origin}/donate?fund=${fundType}`,
         cancel_url: `${origin}/donate?status=cancelled&fund=${fundType}`,
       },

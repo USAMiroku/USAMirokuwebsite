@@ -133,6 +133,9 @@ export default function LearningActivities() {
           viewEvent: 'Ver actividad',
           center: 'Centro',
           upcomingSessions: 'sesiones próximas',
+          specialServices: 'Ceremonias Especiales',
+          specialServicesBody: 'Acceda a formularios imprimibles para las ceremonias de oración.',
+          specialServicesAction: 'Abrir formularios',
         }
       : language === 'pt'
         ? {
@@ -143,6 +146,9 @@ export default function LearningActivities() {
             viewEvent: 'Ver atividade',
             center: 'Centro',
             upcomingSessions: 'sessões futuras',
+            specialServices: 'Cultos Especiais',
+            specialServicesBody: 'Acesse formulários imprimíveis para os cultos de oração.',
+            specialServicesAction: 'Abrir formulários',
           }
         : {
             title: 'Activities',
@@ -152,6 +158,9 @@ export default function LearningActivities() {
             viewEvent: 'View Activity',
             center: 'Center',
             upcomingSessions: 'upcoming sessions',
+            specialServices: 'Special Services',
+            specialServicesBody: 'Access printable prayer forms for special services.',
+            specialServicesAction: 'Open forms',
           }
 
   usePageMeta({
@@ -271,6 +280,22 @@ export default function LearningActivities() {
 
           {!isLoading && !error ? (
             <div className="grid gap-6 md:grid-cols-2">
+              <div className="flex flex-col rounded-3xl border border-[rgba(184,134,11,0.22)] bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ${TYPE_BADGE.event}`}>
+                    {formatTypeLabel('event', language)}
+                  </span>
+                </div>
+                <h2 className="mt-4 text-2xl font-serif text-deep-slate">{copy.specialServices}</h2>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{copy.specialServicesBody}</p>
+                <div className="mt-auto pt-4">
+                  <div className="mt-4 flex gap-3">
+                    <ButtonLink to="/special-services" variant="primary">
+                      {copy.specialServicesAction}
+                    </ButtonLink>
+                  </div>
+                </div>
+              </div>
               {sortedActivities.map((activity) => {
                 const center = activity.center_id
                   ? activeCenters.find((c) => c.id === activity.center_id)
