@@ -35,6 +35,13 @@ type DonationFormState = {
   amount: string
 }
 
+type ProcessingFeeConfig = {
+  supported: boolean
+  percent: number
+  fixed: number
+  currency: string
+}
+
 type Copy = {
   heroKicker: string
   heroTitle: string
@@ -71,6 +78,13 @@ type Copy = {
   sangetsuDescription: string
   sangetsuButton: string
   sangetsuFooter: string
+  coverFeeLabel: string
+  coverFeeDescription: string
+  paymentSummaryTitle: string
+  subtotalLabel: string
+  processingFeeLabel: string
+  totalLabel: string
+  feeUnavailable: string
   gratitudeTitle: string
   gratitudeBody: string
   gratitudeNotes: string[]
@@ -99,6 +113,33 @@ function initForm(defaultType: string): DonationFormState {
     center: '',
     donationType: defaultType,
     amount: '',
+  }
+}
+
+function formatUsd(value: number) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(Number.isFinite(value) ? value : 0)
+}
+
+function calculateCoveredFee(amount: number, config: ProcessingFeeConfig | null) {
+  if (!config?.supported || !Number.isFinite(amount) || amount <= 0 || config.percent <= 0) {
+    return {
+      baseAmount: Number.isFinite(amount) && amount > 0 ? amount : 0,
+      processingFee: 0,
+      totalAmount: Number.isFinite(amount) && amount > 0 ? amount : 0,
+    }
+  }
+
+  const totalCents = Math.ceil(((amount + config.fixed) / (1 - config.percent)) * 100)
+  const baseCents = Math.round(amount * 100)
+  const processingFeeCents = Math.max(0, totalCents - baseCents)
+
+  return {
+    baseAmount: baseCents / 100,
+    processingFee: processingFeeCents / 100,
+    totalAmount: totalCents / 100,
   }
 }
 
@@ -195,6 +236,66 @@ function PaymentButtons({
   )
 }
 
+function FeeCoverageControl({
+  copy,
+  feeConfig,
+  checked,
+  disabled,
+  subtotal,
+  processingFee,
+  total,
+  onChange,
+}: {
+  copy: Copy
+  feeConfig: ProcessingFeeConfig | null
+  checked: boolean
+  disabled: boolean
+  subtotal: number
+  processingFee: number
+  total: number
+  onChange: (checked: boolean) => void
+}) {
+  if (!feeConfig?.supported) {
+    return null
+  }
+
+  return (
+    <div className="rounded-[24px] border border-[rgba(15,23,42,0.10)] bg-sanctuary-50/70 p-5">
+      <label className="flex cursor-pointer items-start gap-3">
+        <input
+          type="checkbox"
+          checked={checked}
+          disabled={disabled}
+          onChange={(event) => onChange(event.target.checked)}
+          className="mt-1 h-4 w-4 rounded border-slate-300 accent-sage-600 disabled:cursor-not-allowed disabled:opacity-60"
+        />
+        <span>
+          <span className="block text-sm font-semibold text-deep-slate">{copy.coverFeeLabel}</span>
+          <span className="mt-1 block text-xs leading-relaxed text-slate-500">{copy.coverFeeDescription}</span>
+        </span>
+      </label>
+
+      <div className="mt-4 border-t border-[rgba(15,23,42,0.08)] pt-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">{copy.paymentSummaryTitle}</p>
+        <dl className="mt-3 space-y-2 text-sm">
+          <div className="flex items-center justify-between gap-4 text-slate-600">
+            <dt>{copy.subtotalLabel}</dt>
+            <dd>{formatUsd(subtotal)}</dd>
+          </div>
+          <div className="flex items-center justify-between gap-4 text-slate-600">
+            <dt>{copy.processingFeeLabel}</dt>
+            <dd>{formatUsd(checked ? processingFee : 0)}</dd>
+          </div>
+          <div className="flex items-center justify-between gap-4 border-t border-[rgba(15,23,42,0.08)] pt-2 font-semibold text-deep-slate">
+            <dt>{copy.totalLabel}</dt>
+            <dd>{formatUsd(checked ? total : subtotal)}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  )
+}
+
 export default function Donate() {
   const { t, language } = useTranslation()
   const [searchParams] = useSearchParams()
@@ -202,6 +303,7 @@ export default function Donate() {
   const donationApiBaseUrl = (import.meta.env.VITE_DONATION_API_BASE_URL ?? '').trim().replace(/\/$/, '')
   const createOrderEndpoint = `${donationApiBaseUrl}/api/paypal/create-order`
   const captureOrderEndpoint = `${donationApiBaseUrl}/api/paypal/capture-order`
+  const feeConfigEndpoint = `${donationApiBaseUrl}/api/paypal/fee-config`
   const sangetsuPaymentUrl = siteConfig.donate.sangetsuPaymentUrl
 
   const centerSuggestions = useMemo(() => {
@@ -257,6 +359,13 @@ export default function Donate() {
           sangetsuDescription: 'Los pagos y donaciones de Sangetsu continúan siendo gestionados en el sitio de USA Sangetsu, donde también se administran actividades, centros y registros.',
           sangetsuButton: 'Ir al pago de Sangetsu',
           sangetsuFooter: 'Use esta opción cuando el pago corresponda a clases, talleres, demostraciones, flores, exámenes u otros conceptos de Sangetsu.',
+          coverFeeLabel: 'Agregar la tarifa de procesamiento',
+          coverFeeDescription: 'El total se ajustará automáticamente para ayudar a cubrir la tarifa estimada de procesamiento de tarjeta.',
+          paymentSummaryTitle: 'Resumen del pago',
+          subtotalLabel: 'Monto',
+          processingFeeLabel: 'Tarifa estimada',
+          totalLabel: 'Total',
+          feeUnavailable: 'La opción para cubrir la tarifa no está disponible para este procesador.',
           gratitudeTitle: 'Su oferta de gratitud',
           gratitudeBody: 'Su generosidad apoya la misión de Miroku Association USA y ayuda a extender Johrei, el estudio espiritual, Sangetsu y las actividades comunitarias por todo Estados Unidos.',
           gratitudeNotes: [
@@ -312,6 +421,13 @@ export default function Donate() {
             sangetsuDescription: 'Os pagamentos e doações de Sangetsu continuam sendo tratados no site da USA Sangetsu, onde também são administradas atividades, centros e registros.',
             sangetsuButton: 'Ir para o pagamento Sangetsu',
             sangetsuFooter: 'Use esta opção quando o pagamento corresponder a aulas, workshops, demonstrações, flores, exames ou outros itens da Sangetsu.',
+            coverFeeLabel: 'Adicionar a taxa de processamento',
+            coverFeeDescription: 'O total será ajustado automaticamente para ajudar a cobrir a taxa estimada de processamento do cartão.',
+            paymentSummaryTitle: 'Resumo do pagamento',
+            subtotalLabel: 'Valor',
+            processingFeeLabel: 'Taxa estimada',
+            totalLabel: 'Total',
+            feeUnavailable: 'A opção para cobrir a taxa não está disponível para este processador.',
             gratitudeTitle: 'Sua oferta de gratidão',
             gratitudeBody: 'Sua generosidade apoia a missão da Miroku Association USA e ajuda a expandir o Johrei, o estudo espiritual, a Sangetsu e as atividades comunitárias por todos os Estados Unidos.',
             gratitudeNotes: [
@@ -366,6 +482,13 @@ export default function Donate() {
             sangetsuDescription: 'Sangetsu payments and donations continue to be handled on the USA Sangetsu website, where activities, centers, and records are managed there directly.',
             sangetsuButton: 'Go to Sangetsu Payment',
             sangetsuFooter: 'Use this option when the payment is for classes, workshops, demonstrations, flowers, exams, or other Sangetsu-related purposes.',
+            coverFeeLabel: 'Add the processing fee',
+            coverFeeDescription: 'The total will adjust automatically to help cover the estimated card processing fee.',
+            paymentSummaryTitle: 'Payment summary',
+            subtotalLabel: 'Amount',
+            processingFeeLabel: 'Estimated fee',
+            totalLabel: 'Total',
+            feeUnavailable: 'The fee-cover option is not available for this processor.',
             gratitudeTitle: 'Your Offering of Gratitude',
             gratitudeBody: 'Your generosity supports the mission of Miroku Association USA and helps extend Johrei, spiritual study, Sangetsu, and community activities across the United States.',
             gratitudeNotes: [
@@ -393,9 +516,15 @@ export default function Donate() {
   const [formError, setFormError] = useState<string | null>(null)
   const [cardMode, setCardMode] = useState<'hidden' | 'loading' | 'ready' | 'submitting'>('hidden')
   const [cardPaymentError, setCardPaymentError] = useState<string | null>(null)
+  const [feeConfig, setFeeConfig] = useState<ProcessingFeeConfig | null>(null)
+  const [coverProcessingFee, setCoverProcessingFee] = useState(false)
   const formDataRef = useRef(donationForm)
+  const coverProcessingFeeRef = useRef(coverProcessingFee)
   const navigateRef = useRef(navigate)
   const cardFieldsRef = useRef<PayPalCardFieldsInstance | null>(null)
+  const parsedAmount = Number(donationForm.amount)
+  const feeSummary = calculateCoveredFee(parsedAmount, feeConfig)
+  const payableTotal = coverProcessingFee ? feeSummary.totalAmount : feeSummary.baseAmount
 
   usePageMeta({
     title: `${t.donate.title} | ${t.brand}`,
@@ -456,7 +585,38 @@ export default function Donate() {
 
   // Keep refs in sync with latest values for use inside PayPal callbacks
   useEffect(() => { formDataRef.current = donationForm }, [donationForm])
+  useEffect(() => { coverProcessingFeeRef.current = coverProcessingFee }, [coverProcessingFee])
   useEffect(() => { navigateRef.current = navigate }, [navigate])
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadFeeConfig() {
+      try {
+        const response = await fetch(feeConfigEndpoint)
+        const data = (await response.json().catch(() => null)) as ProcessingFeeConfig | null
+        if (!isMounted) return
+
+        if (response.ok && data?.supported && data.currency === 'USD') {
+          setFeeConfig(data)
+        } else {
+          setFeeConfig({ supported: false, percent: 0, fixed: 0, currency: 'USD' })
+          setCoverProcessingFee(false)
+        }
+      } catch {
+        if (isMounted) {
+          setFeeConfig({ supported: false, percent: 0, fixed: 0, currency: 'USD' })
+          setCoverProcessingFee(false)
+        }
+      }
+    }
+
+    void loadFeeConfig()
+
+    return () => {
+      isMounted = false
+    }
+  }, [feeConfigEndpoint])
 
   function updateDonationField(field: keyof DonationFormState, value: string) {
     setDonationForm((previous) => ({ ...previous, [field]: value }))
@@ -570,6 +730,7 @@ export default function Donate() {
               amount: Number(form.amount),
               currency: 'USD',
               fundingSource: 'card',
+              coverProcessingFee: coverProcessingFeeRef.current,
             }),
           })
           const data = (await response.json().catch(() => null)) as { orderId?: string; error?: string } | null
@@ -650,11 +811,6 @@ export default function Donate() {
 
     setPendingFund(fundType)
 
-    if (fundType === 'sangetsu') {
-      window.location.assign(sangetsuPaymentUrl)
-      return
-    }
-
     try {
       const response = await fetch(createOrderEndpoint, {
         method: 'POST',
@@ -671,6 +827,7 @@ export default function Donate() {
           amount,
           currency: 'USD',
           fundingSource,
+          coverProcessingFee,
         }),
       })
 
@@ -926,6 +1083,17 @@ export default function Donate() {
 
               <AcceptedCards copy={copy} />
 
+              <FeeCoverageControl
+                copy={copy}
+                feeConfig={feeConfig}
+                checked={coverProcessingFee}
+                disabled={cardMode === 'submitting' || pendingFund !== null}
+                subtotal={feeSummary.baseAmount}
+                processingFee={feeSummary.processingFee}
+                total={feeSummary.totalAmount}
+                onChange={setCoverProcessingFee}
+              />
+
               <div className="space-y-3">
                 {cardMode === 'hidden' ? (
                   <>
@@ -1009,7 +1177,7 @@ export default function Donate() {
                         >
                           {cardMode === 'submitting'
                             ? copy.processingCard
-                            : `${copy.payNow} $${donationForm.amount || '0'}`}
+                            : `${copy.payNow} ${formatUsd(payableTotal)}`}
                         </button>
                         <button
                           type="button"

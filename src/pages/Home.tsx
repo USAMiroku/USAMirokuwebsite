@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
+import { books } from '../data/books'
 
 const sacredScenes = [
   {
@@ -84,6 +85,7 @@ export default function Home() {
   const { t, language } = useTranslation()
   const donateHref = resolveDonateHref()
   const isInternalDonate = donateHref.startsWith('/')
+  const featuredBooks = books.filter((book) => book.status === 'available').slice(0, 3)
 
   usePageMeta({
     title: t.brand,
@@ -108,6 +110,15 @@ export default function Home() {
             donate: 'Donar',
             contact: 'Contactarnos',
           },
+          books: {
+            kicker: 'Libros y ebooks',
+            title: 'Teachings of Meishu-sama',
+            body: 'Explore la colección impresa de las enseñanzas de Meishu-sama para estudio, reflexión y crecimiento espiritual. Las ediciones digitales están en preparación.',
+            printCta: 'Ver libros',
+            ebookCta: 'Ebooks',
+            ebookNote: 'Ebooks para Kindle y Apple Books próximamente.',
+            available: 'Disponible ahora',
+          },
         }
       : language === 'pt'
         ? {
@@ -126,6 +137,15 @@ export default function Home() {
               donate: 'Doar',
               contact: 'Contato',
             },
+            books: {
+              kicker: 'Livros e ebooks',
+              title: 'Teachings of Meishu-sama',
+              body: 'Explore a coleção impressa dos ensinamentos de Meishu-sama para estudo, reflexão e crescimento espiritual. As edições digitais estão em preparação.',
+              printCta: 'Ver livros',
+              ebookCta: 'Ebooks',
+              ebookNote: 'Ebooks para Kindle e Apple Books em breve.',
+              available: 'Disponivel agora',
+            },
           }
         : {
             heroPath: 'Choose your path: receive Johrei, contact the association, or support the mission.',
@@ -143,21 +163,28 @@ export default function Home() {
               donate: 'Donate',
               contact: 'Contact Us',
             },
+            books: {
+              kicker: 'Books and Ebooks',
+              title: 'Teachings of Meishu-sama',
+              body: "Explore the print collection of Meishu-sama's teachings for study, reflection, and spiritual growth. Digital editions are being prepared.",
+              printCta: 'View Books',
+              ebookCta: 'Ebooks',
+              ebookNote: 'Kindle and Apple Books editions coming soon.',
+              available: 'Available Now',
+            },
           }
 
   return (
     <div className="min-h-screen bg-[#f8f4eb] text-deep-slate">
       <section className="border-b border-[rgba(15,23,42,0.06)]">
         <div
-          className="min-h-screen overflow-hidden"
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, rgba(18,26,27,0.84) 0%, rgba(18,26,27,0.58) 42%, rgba(18,26,27,0.22) 100%), url('/images/johrei-group.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
+          className="home-hero-illuminated relative isolate min-h-screen overflow-hidden"
         >
-          <div className="mx-auto grid min-h-screen max-w-7xl gap-8 px-6 pb-10 pt-32 md:px-10 lg:grid-cols-[1.2fr_0.68fr] lg:px-12 lg:pb-12 lg:pt-28">
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(132deg,transparent_0%,transparent_48%,rgba(255,236,177,0.16)_60%,rgba(255,255,255,0.24)_72%,transparent_88%)]" />
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_72%_42%,rgba(255,242,206,0.24)_0%,rgba(255,225,160,0.14)_30%,transparent_62%)]" />
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(255,250,238,0.08)_0%,transparent_42%,rgba(18,26,27,0.18)_100%)]" />
+
+          <div className="relative z-10 mx-auto grid min-h-screen max-w-7xl gap-8 px-6 pb-10 pt-32 md:px-10 lg:grid-cols-[1.2fr_0.68fr] lg:px-12 lg:pb-12 lg:pt-28">
             <div className="flex min-h-[32rem] flex-col justify-end">
               <div className="max-w-3xl">
                 <p className="mt-4 text-[13px] uppercase tracking-[0.34em] text-white/72">{t.home.heroTitle}</p>
@@ -257,6 +284,49 @@ export default function Home() {
               </HomeLink>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section id="books-promo" className="border-b border-[rgba(15,23,42,0.05)] bg-white px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(420px,1.06fr)] lg:items-center">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{supportCopy.books.kicker}</p>
+            <h2 className="mt-4 max-w-xl text-4xl leading-none text-[#314343] md:text-6xl">{supportCopy.books.title}</h2>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-500">{supportCopy.books.body}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <HomeLink to="/books#available-book" tone="gold" className="books-promo-print-link">
+                {supportCopy.books.printCta}
+              </HomeLink>
+              <Link
+                to="/books#ebooks"
+                className="books-promo-ebook-link inline-flex h-11 items-center justify-center rounded-full border border-[rgba(15,23,42,0.12)] bg-white px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-deep-slate transition-colors hover:bg-[#f4ecdf]"
+              >
+                {supportCopy.books.ebookCta}
+              </Link>
+            </div>
+            <p className="mt-5 text-sm leading-7 text-slate-500">{supportCopy.books.ebookNote}</p>
+          </div>
+
+          <div className="grid gap-3 min-[520px]:grid-cols-3">
+            {featuredBooks.map((book) => (
+              <Link
+                key={book.id}
+                to="/books#available-book"
+                className="group rounded-[22px] border border-[rgba(15,23,42,0.06)] bg-[#fbf7ef] p-3 shadow-[0_24px_60px_-48px_rgba(60,52,39,0.28)] transition-transform duration-300 hover:-translate-y-1"
+              >
+                <img
+                  src={book.coverImage}
+                  alt={`${book.title}, ${book.subtitle} cover`}
+                  className="aspect-[0.62] w-full rounded-[16px] object-cover shadow-[0_22px_44px_-30px_rgba(15,23,42,0.58)]"
+                  loading="lazy"
+                />
+                <div className="px-1 pb-1 pt-4">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#8d6b26]">{supportCopy.books.available}</p>
+                  <h3 className="mt-2 text-2xl leading-none text-[#314343]">{book.subtitle}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

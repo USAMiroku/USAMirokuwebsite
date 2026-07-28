@@ -43,17 +43,6 @@ create policy website_donations_admin_select
   for select
   to authenticated
   using (
-    exists (
-      select 1
-      from public.learning_profiles lp
-      where lp.user_id = auth.uid()
-        and lp.role in ('super_admin', 'admin', 'instructor')
-    )
-    or exists (
-      select 1
-      from public.learning_profiles lp
-      where lp.user_id = auth.uid()
-        and lp.role = 'center_admin'
-        and lp.managed_center_id = website_donations.center_id
-    )
+    public.learning_is_super_admin()
+    or public.learning_can_manage_center(website_donations.center_id)
   );

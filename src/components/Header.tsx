@@ -50,6 +50,7 @@ function PublicHeader() {
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/activities', label: t.nav.activities },
+    { to: '/books', label: t.nav.books },
     { to: '/locations', label: t.nav.locations },
     { to: '/contact', label: t.nav.contact },
   ]
@@ -176,6 +177,7 @@ function LearningHeader() {
   const navLinks = [
     { to: '/', label: t.nav.home },
     { to: '/activities', label: t.nav.activities },
+    { to: '/books', label: t.nav.books },
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/meishu-sama', label: t.nav.meishuSama },

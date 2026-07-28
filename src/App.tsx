@@ -4,6 +4,7 @@ import './App.css'
 import { Layout } from './components/Layout'
 
 const About = lazy(() => import('./pages/About'))
+const Books = lazy(() => import('./pages/Books'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Donate = lazy(() => import('./pages/Donate'))
 const FAQ = lazy(() => import('./pages/FAQ'))
@@ -62,6 +63,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
+          <Route path="books" element={<Books />} />
           <Route path="johrei" element={<Johrei />} />
           <Route path="meishu-sama" element={<MeishuSama />} />
           <Route path="meishu-sama/legacy" element={<MeishuSamaLegacy />} />

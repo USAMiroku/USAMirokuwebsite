@@ -14,6 +14,7 @@ export type TranslationContent = {
     locations: string
     events: string
     activities: string
+    books: string
     resources: string
     testimonials: string
     contact: string
@@ -222,6 +223,7 @@ export const translations: Record<string, TranslationContent> = {
       locations: 'Locations',
       events: 'Events',
       activities: 'Activities',
+      books: 'Books',
       resources: 'Resources',
       testimonials: 'Testimonials',
       contact: 'Contact',
@@ -685,6 +687,7 @@ export const translations: Record<string, TranslationContent> = {
       locations: 'Centros',
       events: 'Eventos',
       activities: 'Actividades',
+      books: 'Libros',
       resources: 'Recursos',
       testimonials: 'Testimonios',
       contact: 'Contacto',
@@ -1147,6 +1150,7 @@ export const translations: Record<string, TranslationContent> = {
       locations: 'Centros',
       events: 'Eventos',
       activities: 'Atividades',
+      books: 'Livros',
       resources: 'Recursos',
       testimonials: 'Testemunhos',
       contact: 'Contato',

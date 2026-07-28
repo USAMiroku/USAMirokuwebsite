@@ -26,6 +26,28 @@ function getRoleFromString(value: string | null | undefined): LearningRole | nul
   return null
 }
 
+async function fetchLearningProfile(accessToken: string): Promise<{ role: LearningRole; managedCenterId: string | null }> {
+  const response = await fetch('/api/learning/profile', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+  const result = (await response.json().catch(() => ({}))) as {
+    role?: string
+    managedCenterId?: string | null
+    error?: string
+  }
+
+  if (!response.ok) {
+    throw new Error(result.error || 'Could not load profile.')
+  }
+
+  return {
+    role: getRoleFromString(result.role) ?? 'student',
+    managedCenterId: result.managedCenterId ?? null,
+  }
+}
+
 export function LearningAuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<User | null>(null)
@@ -88,62 +110,33 @@ export function LearningAuthProvider({ children }: { children: React.ReactNode }
         return
       }
 
-      const { data: profileData, error: profileError } = await assertSupabaseConfigured()
-        .from('learning_profiles')
-        .select('role,managed_center_id')
-        .eq('user_id', user.id)
-        .maybeSingle()
-
-      // Create profile if it doesn't exist (first-time sign-in).
-      if (!profileData && !profileError) {
-        await assertSupabaseConfigured().from('learning_profiles').insert({
-          user_id: user.id,
-          role: 'student',
-          email: user.email ?? null,
-          full_name: (user.user_metadata?.full_name as string | undefined) ?? null,
-        })
-      } else if (profileError) {
-        // Try upsert as fallback (e.g. race condition).
-        await assertSupabaseConfigured().from('learning_profiles').upsert(
-          {
-            user_id: user.id,
-            role: 'student',
-            email: user.email ?? null,
-            full_name: (user.user_metadata?.full_name as string | undefined) ?? null,
-          },
-          { onConflict: 'user_id' },
-        )
-      } else {
-        const existingRole = getRoleFromString(profileData?.role) ?? 'student'
-        const existingManagedCenterId = profileData?.managed_center_id ?? null
-        await assertSupabaseConfigured().from('learning_profiles').upsert(
-          {
-            user_id: user.id,
-            role: existingRole,
-            managed_center_id: existingManagedCenterId,
-            email: user.email ?? null,
-            full_name: (user.user_metadata?.full_name as string | undefined) ?? null,
-          },
-          { onConflict: 'user_id' },
-        )
+      if (!session?.access_token) {
+        setRole(null)
+        setManagedCenterId(null)
+        return
       }
 
-      const { data: profileData2 } = await assertSupabaseConfigured()
-        .from('learning_profiles')
-        .select('role,managed_center_id')
-        .eq('user_id', user.id)
-        .maybeSingle()
+      let profile: Awaited<ReturnType<typeof fetchLearningProfile>>
+      try {
+        profile = await fetchLearningProfile(session.access_token)
+      } catch (error) {
+        console.error('[learning-auth] Could not load profile', error)
+        if (!isMounted) return
+        setRole(null)
+        setManagedCenterId(null)
+        return
+      }
 
       if (!isMounted) return
-      setRole(getRoleFromString(profileData2?.role ?? null))
-      setManagedCenterId(profileData2?.managed_center_id ?? null)
+      setRole(profile.role)
+      setManagedCenterId(profile.managedCenterId)
     }
 
     void syncRoleAndProfile()
     return () => {
       isMounted = false
     }
-  }, [user])
+  }, [session?.access_token, user])
 
   const value = useMemo<LearningAuthContextValue>(
     () => ({

@@ -14,6 +14,9 @@ const FUND_ENV = {
   },
 }
 
+const DEFAULT_PROCESSING_FEE_PERCENT = 0.0289
+const DEFAULT_PROCESSING_FEE_FIXED = 0.29
+
 export function isFundType(value) {
   return value === 'donation' || value === 'sangetsu'
 }
@@ -86,6 +89,46 @@ export function parseAmount(value) {
   }
 
   return amount.toFixed(2)
+}
+
+function parseOptionalNumber(value, fallback) {
+  if (value === undefined || value === null || value === '') return fallback
+  const parsed = Number(value)
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback
+}
+
+export function getProcessingFeeConfig() {
+  const enabledValue = String(process.env.PAYPAL_PROCESSING_FEE_COVER_ENABLED ?? 'true').toLowerCase()
+  const percent = parseOptionalNumber(process.env.PAYPAL_PROCESSING_FEE_PERCENT, DEFAULT_PROCESSING_FEE_PERCENT)
+  const fixed = parseOptionalNumber(process.env.PAYPAL_PROCESSING_FEE_FIXED, DEFAULT_PROCESSING_FEE_FIXED)
+
+  return {
+    supported: enabledValue !== 'false' && percent > 0,
+    percent,
+    fixed,
+    currency: 'USD',
+  }
+}
+
+export function calculateCoveredProcessingFee(amount, config = getProcessingFeeConfig()) {
+  const baseAmount = Number(amount)
+  if (!config.supported || !Number.isFinite(baseAmount) || baseAmount <= 0) {
+    return {
+      baseAmount: parseAmount(baseAmount) ?? '0.00',
+      processingFee: '0.00',
+      totalAmount: parseAmount(baseAmount) ?? '0.00',
+    }
+  }
+
+  const totalCents = Math.ceil(((baseAmount + config.fixed) / (1 - config.percent)) * 100)
+  const baseCents = Math.round(baseAmount * 100)
+  const feeCents = Math.max(0, totalCents - baseCents)
+
+  return {
+    baseAmount: (baseCents / 100).toFixed(2),
+    processingFee: (feeCents / 100).toFixed(2),
+    totalAmount: (totalCents / 100).toFixed(2),
+  }
 }
 
 export function buildCustomId({ donorName, center, centerId, donationType, fundType }) {

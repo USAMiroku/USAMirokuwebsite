@@ -1,8 +1,10 @@
 import {
   buildCustomId,
   buildInvoiceId,
+  calculateCoveredProcessingFee,
   extractPayPalError,
   getAccessToken,
+  getProcessingFeeConfig,
   getRequestOrigin,
   isFundType,
   parseAmount,
@@ -34,6 +36,7 @@ export default async function handler(req, res) {
     const amount = parseAmount(body.amount)
     const currency = sanitizeText(body.currency || 'USD', 3).toUpperCase()
     const fundingSource = body.fundingSource === 'card' ? 'card' : 'paypal'
+    const coverProcessingFee = body.coverProcessingFee === true
 
     if (!donorName || !center || !donationType) {
       return res.status(400).json({ error: 'Missing required fields: donorName, center, and donationType.' })
@@ -47,6 +50,15 @@ export default async function handler(req, res) {
     const origin = getRequestOrigin(req)
 
     const invoiceId = buildInvoiceId(fundType)
+    const feeConfig = getProcessingFeeConfig()
+    const feeDetails =
+      fundType === 'donation' && coverProcessingFee && feeConfig.supported && currency === feeConfig.currency
+        ? calculateCoveredProcessingFee(amount, feeConfig)
+        : {
+            baseAmount: amount,
+            processingFee: '0.00',
+            totalAmount: amount,
+          }
     const customId = buildCustomId({
       donorName,
       center,
@@ -65,12 +77,20 @@ export default async function handler(req, res) {
           description: `${donorName} | ${donationType} | ${center}`.slice(0, 127),
           amount: {
             currency_code: currency,
-            value: amount,
+            value: feeDetails.totalAmount,
             breakdown: {
               item_total: {
                 currency_code: currency,
                 value: amount,
               },
+              ...(Number(feeDetails.processingFee) > 0
+                ? {
+                    handling: {
+                      currency_code: currency,
+                      value: feeDetails.processingFee,
+                    },
+                  }
+                : {}),
             },
           },
           items: [
@@ -126,7 +146,7 @@ export default async function handler(req, res) {
         centerId,
         centerName: center,
         donationType,
-        amount,
+        amount: feeDetails.totalAmount,
         currency,
         customId,
         orderPayload: orderResponse.data,

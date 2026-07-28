@@ -3,7 +3,7 @@ import { Section } from '../../components/Section'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { LearningAdminToolbar } from '../components/LearningAdminToolbar'
 import { RequireSuperAdmin } from '../components/LearningRouteGuards'
-import { supabase } from '../lib/supabaseClient'
+import { useLearningAuth } from '../context/LearningAuthContext'
 import { type ManagedCenter, useManagedCenters } from '../../organization/centers'
 
 type EditableCenter = ManagedCenter
@@ -42,10 +42,13 @@ export default function LearningAdminOrganization() {
 
 function LearningAdminOrganizationInner() {
   const { centers, isLoading } = useManagedCenters()
+  const { session } = useLearningAuth()
   const [centerList, setCenterList] = useState<EditableCenter[]>([])
   const [editing, setEditing] = useState<EditableCenter>(blankCenter)
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
+  const [isSaving, setIsSaving] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   useEffect(() => {
     setCenterList(centers)
@@ -66,8 +69,10 @@ function LearningAdminOrganizationInner() {
   }
 
   async function handleSave() {
-    if (!supabase) {
-      setError('Supabase is not configured.')
+    if (isSaving) return
+
+    if (!session?.access_token) {
+      setError('Your admin session expired. Please sign in again.')
       return
     }
 
@@ -97,81 +102,78 @@ function LearningAdminOrganizationInner() {
       display_order: editing.displayOrder,
     }
 
-    const { error: saveError } = await supabase.from('organization_centers').upsert(payload)
-    if (saveError) {
-      setError(saveError.message)
-      return
+    setIsSaving(true)
+    try {
+      const response = await fetch('/api/admin/organization-centers', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+      const result = (await response.json().catch(() => ({}))) as {
+        center?: EditableCenter
+        error?: string
+        requestId?: string
+      }
+
+      if (!response.ok || !result.center) {
+        const suffix = result.requestId ? ` (Request ${result.requestId})` : ''
+        setError(`${result.error || 'Could not save center.'}${suffix}`)
+        return
+      }
+
+      const savedCenter = result.center
+      setCenterList((current) => {
+        const next = current.some((center) => center.id === savedCenter.id)
+          ? current.map((center) => (center.id === savedCenter.id ? savedCenter : center))
+          : [...current, savedCenter]
+
+        return [...next].sort((a, b) => a.displayOrder - b.displayOrder || a.name.localeCompare(b.name))
+      })
+      setEditing(savedCenter)
+      setMessage('Center or group saved.')
+    } finally {
+      setIsSaving(false)
     }
-
-    setCenterList((current) => {
-      const next = current.some((center) => center.id === payload.id)
-        ? current.map((center) =>
-            center.id === payload.id
-              ? {
-                  ...editing,
-                  id: payload.id,
-                  slug: payload.slug,
-                  name: payload.name,
-                  city: payload.city,
-                  state: payload.state,
-                  address: payload.address,
-                  phone: payload.phone,
-                  email: payload.email,
-                  schedule: payload.schedule ?? undefined,
-                  notes: payload.notes ?? undefined,
-                  isActive: payload.is_active,
-                  displayOrder: payload.display_order,
-                  leadership: {
-                    head: payload.leadership_head ?? undefined,
-                    assistant: payload.leadership_assistant ?? undefined,
-                  },
-                }
-              : center,
-          )
-        : [
-            ...current,
-            {
-              ...editing,
-              id: payload.id,
-              slug: payload.slug,
-              name: payload.name,
-              city: payload.city,
-              state: payload.state,
-              address: payload.address,
-              phone: payload.phone,
-              email: payload.email,
-              schedule: payload.schedule ?? undefined,
-              notes: payload.notes ?? undefined,
-              isActive: payload.is_active,
-              displayOrder: payload.display_order,
-              leadership: {
-                head: payload.leadership_head ?? undefined,
-                assistant: payload.leadership_assistant ?? undefined,
-              },
-            },
-          ]
-
-      return [...next].sort((a, b) => a.displayOrder - b.displayOrder || a.name.localeCompare(b.name))
-    })
-    setMessage('Center or group saved.')
   }
 
   async function handleDelete(centerId: string) {
-    if (!supabase) {
-      setError('Supabase is not configured.')
+    if (deletingId) return
+
+    if (!session?.access_token) {
+      setError('Your admin session expired. Please sign in again.')
       return
     }
     if (!window.confirm('Delete this center or group?')) return
 
-    const { error: deleteError } = await supabase.from('organization_centers').delete().eq('id', centerId)
-    if (deleteError) {
-      setError(deleteError.message)
-      return
-    }
+    setError(null)
+    setMessage(null)
+    setDeletingId(centerId)
+    try {
+      const response = await fetch('/api/admin/organization-centers', {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: centerId }),
+      })
+      const result = (await response.json().catch(() => ({}))) as { error?: string; requestId?: string }
 
-    setCenterList((current) => current.filter((center) => center.id !== centerId))
-    setMessage('Center or group removed.')
-    if (editing.id === centerId) setEditing(blankCenter)
+      if (!response.ok) {
+        const suffix = result.requestId ? ` (Request ${result.requestId})` : ''
+        setError(`${result.error || 'Could not delete center.'}${suffix}`)
+        return
+      }
+
+      setCenterList((current) => current.filter((center) => center.id !== centerId))
+      setMessage('Center or group removed.')
+      if (editing.id === centerId) setEditing(blankCenter)
+    } finally {
+      setDeletingId(null)
+    }
   }
 
   return (
@@ -229,9 +231,10 @@ function LearningAdminOrganizationInner() {
                         <button
                           type="button"
                           onClick={() => void handleDelete(center.id)}
+                          disabled={deletingId === center.id}
                           className="inline-flex h-9 items-center justify-center rounded-full border border-rose-200 px-4 text-[10px] font-semibold uppercase text-rose-700 hover:bg-rose-50"
                         >
-                          Delete
+                          {deletingId === center.id ? 'Deleting...' : 'Delete'}
                         </button>
                       </div>
                     </div>
@@ -314,9 +317,10 @@ function LearningAdminOrganizationInner() {
               <button
                 type="button"
                 onClick={() => void handleSave()}
+                disabled={isSaving}
                 className="inline-flex h-10 items-center justify-center rounded-full bg-divine-gold px-6 text-[10px] font-semibold uppercase text-white hover:bg-[#9e730a]"
               >
-                Save
+                {isSaving ? 'Saving...' : 'Save'}
               </button>
               <button
                 type="button"
