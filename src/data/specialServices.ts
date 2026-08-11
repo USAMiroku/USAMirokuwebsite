@@ -88,6 +88,8 @@ export const specialServiceFormUiCopy: Record<
   {
     centerLabel: string
     centerPlaceholder: string
+    recipientLabel: string
+    recipientEmailLabel: string
     fullName: string
     date: string
     print: string
@@ -105,17 +107,19 @@ export const specialServiceFormUiCopy: Record<
   }
 > = {
   en: {
-    centerLabel: 'Select your Johrei Center:',
-    centerPlaceholder: 'Choose a Johrei Center',
+    centerLabel: 'Where would you like to send this form?',
+    centerPlaceholder: 'Choose the receiving Johrei Center',
+    recipientLabel: 'Form recipient',
+    recipientEmailLabel: 'Email',
     fullName: 'Full name',
     date: 'Date',
     print: 'Print form',
     send: 'Send form',
     sending: 'Preparing PDF...',
-    selectCenterError: 'Please select your Johrei Center.',
+    selectCenterError: 'Please choose where you would like to send this form.',
     nameError: 'Please enter your full name.',
     pdfError: 'Could not prepare the PDF. Please try again.',
-    helper: 'Send form prepares a PDF on this device. Nothing is submitted automatically; you must finish sharing or sending it in your email application.',
+    helper: 'To keep this service simple and free, Send form prepares a PDF on this device. The website does not submit it automatically. Confirm the recipient above, then finish sharing or sending it in your email application.',
     shareText: 'Completed prayer form for {recipient}. Please choose your email application, address the message to {recipient}, and complete sending.',
     shareComplete: 'The PDF was passed to your chosen application for {recipient}. The website did not submit it automatically—please complete sending in that application.',
     shareCanceled: 'Sharing was canceled. Nothing was sent. Select Send form when you are ready to try again.',
@@ -123,17 +127,19 @@ export const specialServiceFormUiCopy: Record<
     emailBody: 'Please find my completed special-service prayer form attached.\n\nIMPORTANT: Attach the downloaded PDF named {filename} before sending this email.',
   },
   pt: {
-    centerLabel: 'Selecione seu Centro Johrei:',
-    centerPlaceholder: 'Escolha um Centro Johrei',
+    centerLabel: 'Para onde você deseja enviar este formulário?',
+    centerPlaceholder: 'Escolha o Centro Johrei destinatário',
+    recipientLabel: 'Destinatário do formulário',
+    recipientEmailLabel: 'E-mail',
     fullName: 'Nome completo',
     date: 'Data',
     print: 'Imprimir formulário',
     send: 'Enviar formulário',
     sending: 'Preparando PDF...',
-    selectCenterError: 'Selecione seu Centro Johrei.',
+    selectCenterError: 'Escolha para onde deseja enviar este formulário.',
     nameError: 'Digite seu nome completo.',
     pdfError: 'Não foi possível preparar o PDF. Tente novamente.',
-    helper: 'Enviar formulário prepara um PDF neste dispositivo. Nada é enviado automaticamente; você deve concluir o compartilhamento ou o envio no seu aplicativo de e-mail.',
+    helper: 'Para manter este serviço simples e gratuito, Enviar formulário prepara um PDF neste dispositivo. O site não o envia automaticamente. Confirme o destinatário acima e conclua o compartilhamento ou o envio no seu aplicativo de e-mail.',
     shareText: 'Formulário de oração preenchido para {recipient}. Escolha seu aplicativo de e-mail, envie a mensagem para {recipient} e conclua o envio.',
     shareComplete: 'O PDF foi transferido para o aplicativo escolhido para {recipient}. O site não o enviou automaticamente — conclua o envio nesse aplicativo.',
     shareCanceled: 'O compartilhamento foi cancelado. Nada foi enviado. Selecione Enviar formulário quando estiver pronto para tentar novamente.',
@@ -141,17 +147,19 @@ export const specialServiceFormUiCopy: Record<
     emailBody: 'Segue em anexo meu formulário de oração preenchido para o culto especial.\n\nIMPORTANTE: Anexe o PDF baixado chamado {filename} antes de enviar este e-mail.',
   },
   es: {
-    centerLabel: 'Seleccione su Centro Johrei:',
-    centerPlaceholder: 'Elija un Centro Johrei',
+    centerLabel: '¿A dónde desea enviar este formulario?',
+    centerPlaceholder: 'Elija el Centro Johrei destinatario',
+    recipientLabel: 'Destinatario del formulario',
+    recipientEmailLabel: 'Correo electrónico',
     fullName: 'Nombre completo',
     date: 'Fecha',
     print: 'Imprimir formulario',
     send: 'Enviar formulario',
     sending: 'Preparando PDF...',
-    selectCenterError: 'Seleccione su Centro Johrei.',
+    selectCenterError: 'Elija a dónde desea enviar este formulario.',
     nameError: 'Ingrese su nombre completo.',
     pdfError: 'No se pudo preparar el PDF. Inténtelo de nuevo.',
-    helper: 'Enviar formulario prepara un PDF en este dispositivo. Nada se envía automáticamente; debe terminar de compartirlo o enviarlo en su aplicación de correo.',
+    helper: 'Para mantener este servicio sencillo y gratuito, Enviar formulario prepara un PDF en este dispositivo. El sitio web no lo envía automáticamente. Confirme el destinatario arriba y termine de compartirlo o enviarlo en su aplicación de correo.',
     shareText: 'Formulario de oración completado para {recipient}. Elija su aplicación de correo, dirija el mensaje a {recipient} y complete el envío.',
     shareComplete: 'El PDF fue transferido a la aplicación elegida para {recipient}. El sitio web no lo envió automáticamente; complete el envío en esa aplicación.',
     shareCanceled: 'Se canceló el uso compartido. No se envió nada. Seleccione Enviar formulario cuando esté listo para intentarlo de nuevo.',

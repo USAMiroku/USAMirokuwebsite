@@ -459,7 +459,7 @@ export default function SpecialServiceForm() {
                 id="johrei-center"
                 required
                 aria-invalid={fieldErrors.center ? 'true' : undefined}
-                aria-describedby={fieldErrors.center ? 'johrei-center-error' : undefined}
+                aria-describedby={fieldErrors.center ? 'johrei-center-error' : selectedCenter ? 'form-recipient' : undefined}
                 value={selectedCenterEmail}
                 onChange={(event) => {
                   setSelectedCenterEmail(event.target.value)
@@ -478,6 +478,15 @@ export default function SpecialServiceForm() {
                 <p id="johrei-center-error" className="mt-2 text-xs font-medium text-rose-800">
                   {fieldErrors.center}
                 </p>
+              ) : null}
+              {selectedCenter ? (
+                <div id="form-recipient" className="mt-3 rounded-lg border border-[rgba(141,107,38,0.22)] bg-sanctuary-100 px-4 py-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-sage-600">{ui.recipientLabel}</p>
+                  <p className="mt-1 font-serif text-lg text-deep-slate">{selectedCenter.name}</p>
+                  <p className="mt-1 text-sm text-slate-600">
+                    {ui.recipientEmailLabel}: <span className="font-semibold text-deep-slate break-all">{selectedCenter.email}</span>
+                  </p>
+                </div>
               ) : null}
             </div>
 
