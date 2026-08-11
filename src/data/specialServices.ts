@@ -56,7 +56,7 @@ export const specialServicesLandingCopy: Record<
     intro: 'Please select a service below to access the prayer form.',
     description:
       'Special Services prayer forms for World Messianic Church of America / Miroku Association USA in English, Portuguese, and Spanish.',
-    thankYou: 'Your prayer form has been submitted. Thank you.',
+    thankYou: 'Your prayer form is ready. Please complete sending it in your email or sharing application; the website did not submit it automatically.',
     donate: 'Donate',
     back: 'Back to Special Services',
     openForm: 'Open form',
@@ -66,7 +66,7 @@ export const specialServicesLandingCopy: Record<
     intro: 'Selecione um culto abaixo para acessar o formulário de oração.',
     description:
       'Formulários de oração dos Cultos Especiais da World Messianic Church of America / Miroku Association USA em inglês, português e espanhol.',
-    thankYou: 'Seu formulário de oração foi enviado. Obrigado.',
+    thankYou: 'Seu formulário de oração está pronto. Conclua o envio no seu aplicativo de e-mail ou compartilhamento; o site não o enviou automaticamente.',
     donate: 'Doar',
     back: 'Voltar para Cultos Especiais',
     openForm: 'Abrir formulário',
@@ -76,7 +76,7 @@ export const specialServicesLandingCopy: Record<
     intro: 'Seleccione una ceremonia a continuación para acceder al formulario de oración.',
     description:
       'Formularios de oración de Ceremonias Especiales de World Messianic Church of America / Miroku Association USA en inglés, portugués y español.',
-    thankYou: 'Su formulario de oración ha sido enviado. Gracias.',
+    thankYou: 'Su formulario de oración está listo. Complete el envío en su aplicación de correo o de uso compartido; el sitio web no lo envió automáticamente.',
     donate: 'Donar',
     back: 'Volver a Ceremonias Especiales',
     openForm: 'Abrir formulario',
@@ -96,8 +96,12 @@ export const specialServiceFormUiCopy: Record<
     selectCenterError: string
     nameError: string
     pdfError: string
-    submitError: string
     helper: string
+    shareText: string
+    shareComplete: string
+    shareCanceled: string
+    downloadInstructions: string
+    emailBody: string
   }
 > = {
   en: {
@@ -107,12 +111,16 @@ export const specialServiceFormUiCopy: Record<
     date: 'Date',
     print: 'Print form',
     send: 'Send form',
-    sending: 'Sending...',
+    sending: 'Preparing PDF...',
     selectCenterError: 'Please select your Johrei Center.',
     nameError: 'Please enter your full name.',
     pdfError: 'Could not prepare the PDF. Please try again.',
-    submitError: 'Could not send the form. Please try again.',
-    helper: 'Print or send this completed form to your Johrei Center.',
+    helper: 'Send form prepares a PDF on this device. Nothing is submitted automatically; you must finish sharing or sending it in your email application.',
+    shareText: 'Completed prayer form for {recipient}. Please choose your email application, address the message to {recipient}, and complete sending.',
+    shareComplete: 'The PDF was passed to your chosen application for {recipient}. The website did not submit it automatically—please complete sending in that application.',
+    shareCanceled: 'Sharing was canceled. Nothing was sent. Select Send form when you are ready to try again.',
+    downloadInstructions: 'The PDF {filename} was downloaded and an email draft to {recipient} was opened. Attach the downloaded PDF, then complete sending in your email application. The website did not submit the form automatically.',
+    emailBody: 'Please find my completed special-service prayer form attached.\n\nIMPORTANT: Attach the downloaded PDF named {filename} before sending this email.',
   },
   pt: {
     centerLabel: 'Selecione seu Centro Johrei:',
@@ -121,12 +129,16 @@ export const specialServiceFormUiCopy: Record<
     date: 'Data',
     print: 'Imprimir formulário',
     send: 'Enviar formulário',
-    sending: 'Enviando...',
+    sending: 'Preparando PDF...',
     selectCenterError: 'Selecione seu Centro Johrei.',
     nameError: 'Digite seu nome completo.',
     pdfError: 'Não foi possível preparar o PDF. Tente novamente.',
-    submitError: 'Não foi possível enviar o formulário. Tente novamente.',
-    helper: 'Imprima ou envie este formulário preenchido para seu Centro Johrei.',
+    helper: 'Enviar formulário prepara um PDF neste dispositivo. Nada é enviado automaticamente; você deve concluir o compartilhamento ou o envio no seu aplicativo de e-mail.',
+    shareText: 'Formulário de oração preenchido para {recipient}. Escolha seu aplicativo de e-mail, envie a mensagem para {recipient} e conclua o envio.',
+    shareComplete: 'O PDF foi transferido para o aplicativo escolhido para {recipient}. O site não o enviou automaticamente — conclua o envio nesse aplicativo.',
+    shareCanceled: 'O compartilhamento foi cancelado. Nada foi enviado. Selecione Enviar formulário quando estiver pronto para tentar novamente.',
+    downloadInstructions: 'O PDF {filename} foi baixado e um rascunho de e-mail para {recipient} foi aberto. Anexe o PDF baixado e conclua o envio no seu aplicativo de e-mail. O site não enviou o formulário automaticamente.',
+    emailBody: 'Segue em anexo meu formulário de oração preenchido para o culto especial.\n\nIMPORTANTE: Anexe o PDF baixado chamado {filename} antes de enviar este e-mail.',
   },
   es: {
     centerLabel: 'Seleccione su Centro Johrei:',
@@ -135,12 +147,16 @@ export const specialServiceFormUiCopy: Record<
     date: 'Fecha',
     print: 'Imprimir formulario',
     send: 'Enviar formulario',
-    sending: 'Enviando...',
+    sending: 'Preparando PDF...',
     selectCenterError: 'Seleccione su Centro Johrei.',
     nameError: 'Ingrese su nombre completo.',
     pdfError: 'No se pudo preparar el PDF. Inténtelo de nuevo.',
-    submitError: 'No se pudo enviar el formulario. Inténtelo de nuevo.',
-    helper: 'Imprima o envíe este formulario completo a su Centro Johrei.',
+    helper: 'Enviar formulario prepara un PDF en este dispositivo. Nada se envía automáticamente; debe terminar de compartirlo o enviarlo en su aplicación de correo.',
+    shareText: 'Formulario de oración completado para {recipient}. Elija su aplicación de correo, dirija el mensaje a {recipient} y complete el envío.',
+    shareComplete: 'El PDF fue transferido a la aplicación elegida para {recipient}. El sitio web no lo envió automáticamente; complete el envío en esa aplicación.',
+    shareCanceled: 'Se canceló el uso compartido. No se envió nada. Seleccione Enviar formulario cuando esté listo para intentarlo de nuevo.',
+    downloadInstructions: 'El PDF {filename} se descargó y se abrió un borrador de correo para {recipient}. Adjunte el PDF descargado y complete el envío en su aplicación de correo. El sitio web no envió el formulario automáticamente.',
+    emailBody: 'Adjunto encontrará mi formulario de oración completado para la ceremonia especial.\n\nIMPORTANTE: Adjunte el PDF descargado llamado {filename} antes de enviar este correo.',
   },
 }
 

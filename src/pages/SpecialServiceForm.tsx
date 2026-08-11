@@ -1,7 +1,7 @@
 import { type CSSProperties, useMemo, useRef, useState } from 'react'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { useTranslation } from '../context/TranslationContext'
 import {
@@ -107,22 +107,10 @@ function LinedTextarea({
   )
 }
 
-function splitTextareaLines(value: string) {
-  return value
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-}
-
-function sanitizeFilenamePart(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-}
-
 export default function SpecialServiceForm() {
   const { serviceSlug } = useParams<{ serviceSlug: string }>()
   const service = getSpecialService(serviceSlug)
   const { language } = useTranslation()
-  const navigate = useNavigate()
   const formRef = useRef<HTMLDivElement | null>(null)
   const [selectedCenterEmail, setSelectedCenterEmail] = useState('')
   const [fullName, setFullName] = useState('')
@@ -134,6 +122,7 @@ export default function SpecialServiceForm() {
   )
   const [fieldErrors, setFieldErrors] = useState<{ center?: string; fullName?: string }>({})
   const [error, setError] = useState('')
+  const [sendNotice, setSendNotice] = useState('')
   const [isSending, setIsSending] = useState(false)
 
   const copy = service?.copy[language]
@@ -170,10 +159,11 @@ export default function SpecialServiceForm() {
     setFieldErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) return false
     setError('')
+    setSendNotice('')
     return true
   }
 
-  async function generatePdfBase64() {
+  async function generatePdfBlob() {
     if (!formRef.current) {
       throw new Error('Missing form.')
     }
@@ -298,12 +288,27 @@ export default function SpecialServiceForm() {
       }
     }
 
-    const dataUri = pdf.output('datauristring')
-    const base64 = dataUri.split(',')[1] ?? ''
-    if (!base64) {
+    const blob = pdf.output('blob')
+    if (!blob.size) {
       throw new Error('Empty PDF.')
     }
-    return base64
+    return blob
+  }
+
+  function downloadPdf(file: File) {
+    const downloadUrl = URL.createObjectURL(file)
+    const link = document.createElement('a')
+    link.href = downloadUrl
+    link.download = file.name
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000)
+  }
+
+  function openEmailDraft(recipient: string, subject: string, filename: string) {
+    const body = encodeURIComponent(ui.emailBody.replace('{filename}', filename))
+    window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${body}`
   }
 
   async function handleSend() {
@@ -312,56 +317,51 @@ export default function SpecialServiceForm() {
 
     setIsSending(true)
     setError('')
+    setSendNotice('')
 
     try {
-      const contentBase64 = await generatePdfBase64()
+      const pdfBlob = await generatePdfBlob()
+      const pdfFile = new File([pdfBlob], activeService.pdfFilename, { type: 'application/pdf' })
       const subject = `Prayer Form - ${activeService.apiServiceName} - ${selectedCenter.name}`
-      const response = await fetch('/api/submit-special-service-prayer-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          serviceName: activeService.apiServiceName,
-          language,
-          centerName: selectedCenter.name,
-          centerEmail: selectedCenter.email,
-          subject,
-          fields: {
-            name: fullName,
-            date,
-            section1: splitTextareaLines(section1),
-            section2: splitTextareaLines(section2),
-            ancestors,
-          },
-          pdf: {
-            filename: `${sanitizeFilenamePart(activeService.slug)}-form.pdf`,
-            contentBase64,
-          },
-        }),
-      })
 
-      const responseText = await response.text()
-      let result: { error?: string } = {}
+      let canShareFile = false
       try {
-        result = responseText ? JSON.parse(responseText) : {}
+        canShareFile = typeof navigator.share === 'function'
+          && typeof navigator.canShare === 'function'
+          && navigator.canShare({ files: [pdfFile] })
       } catch {
-        result = {}
-      }
-      if (!response.ok) {
-        const statusDetail = response.status ? ` (${response.status})` : ''
-        throw new Error(result.error || `${ui.submitError}${statusDetail}`)
+        canShareFile = false
       }
 
-      setFullName('')
-      setDate('')
-      setSelectedCenterEmail('')
-      setSection1('')
-      setSection2('')
-      setAncestors(Array.from({ length: 15 }, () => ({ name: '', relationship: '' })))
-      setFieldErrors({})
-      setError('')
-      navigate('/special-services/thank-you')
+      if (canShareFile) {
+        try {
+          await navigator.share({
+            files: [pdfFile],
+            title: subject,
+            text: ui.shareText.replaceAll('{recipient}', selectedCenter.email),
+          })
+          setSendNotice(ui.shareComplete.replace('{recipient}', selectedCenter.email))
+        } catch (shareError) {
+          if (shareError instanceof DOMException && shareError.name === 'AbortError') {
+            setSendNotice(ui.shareCanceled)
+            return
+          }
+          downloadPdf(pdfFile)
+          setSendNotice(ui.downloadInstructions
+            .replace('{filename}', pdfFile.name)
+            .replace('{recipient}', selectedCenter.email))
+          openEmailDraft(selectedCenter.email, subject, pdfFile.name)
+        }
+      } else {
+        downloadPdf(pdfFile)
+        setSendNotice(ui.downloadInstructions
+          .replace('{filename}', pdfFile.name)
+          .replace('{recipient}', selectedCenter.email))
+        openEmailDraft(selectedCenter.email, subject, pdfFile.name)
+      }
     } catch (sendError) {
-      setError(sendError instanceof Error ? sendError.message : ui.submitError)
+      console.error('Could not prepare the special-service PDF.', sendError)
+      setError(ui.pdfError)
     } finally {
       setIsSending(false)
     }
@@ -513,6 +513,11 @@ export default function SpecialServiceForm() {
 
         <div className="screen-only mt-5">
           <p className="text-sm text-slate-500">{ui.helper}</p>
+          {sendNotice ? (
+            <p role="status" className="mt-3 rounded-lg border border-sage-200 bg-sage-50 px-4 py-3 text-sm leading-relaxed text-deep-slate">
+              {sendNotice}
+            </p>
+          ) : null}
           {error ? <p className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">{error}</p> : null}
           <div className="mt-4 flex flex-wrap gap-3">
             <button

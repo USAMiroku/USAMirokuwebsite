@@ -40,6 +40,8 @@ function PublicHeader() {
   }, [routeLocation.pathname])
 
   useEffect(() => {
+    // Route changes are an external navigation event; close any menu left open on the previous page.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMobileMenuOpen(false)
   }, [routeLocation.pathname])
 

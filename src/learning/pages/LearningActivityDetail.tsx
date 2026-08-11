@@ -147,6 +147,7 @@ export default function LearningActivityDetail() {
   const [materials, setMaterials] = useState<Material[]>([])
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [pageLoadedAt] = useState(() => Date.now())
 
   const copy =
     language === 'es'
@@ -328,9 +329,8 @@ export default function LearningActivityDetail() {
   }, [activityId, copy.notConfigured])
 
   const upcomingSessions = useMemo(() => {
-    const now = Date.now()
-    return sessions.filter((s) => s.start_time && new Date(s.start_time).getTime() >= now)
-  }, [sessions])
+    return sessions.filter((s) => s.start_time && new Date(s.start_time).getTime() >= pageLoadedAt)
+  }, [pageLoadedAt, sessions])
 
   const eventMaterials = materials.filter((m) => m.session_id === null)
 

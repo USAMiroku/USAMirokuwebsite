@@ -29,6 +29,7 @@ export default function Contact() {
     message: '',
   })
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof ContactFormState, string>>>({})
+  const [sendNotice, setSendNotice] = useState('')
 
   const locationLabel = language === 'en' ? 'Center' : 'Centro'
   const messageLabel = language === 'en' ? 'Message' : language === 'es' ? 'Mensaje' : 'Mensagem'
@@ -36,6 +37,16 @@ export default function Contact() {
   const pageLabel = language === 'en' ? 'National Office' : language === 'es' ? 'Oficina nacional' : 'Escritório nacional'
   const officeLabel = language === 'en' ? 'Office details' : language === 'es' ? 'Datos de oficina' : 'Dados do escritório'
   const recipientLabel = language === 'en' ? 'Messages go to' : language === 'es' ? 'Los mensajes se enviarán a' : 'As mensagens serão enviadas para'
+  const emailHandoffNotice = language === 'en'
+    ? 'Your email application will open with a prepared draft. The website does not send the message automatically—you must review it and press Send in your email application.'
+    : language === 'es'
+      ? 'Su aplicación de correo se abrirá con un borrador preparado. El sitio web no envía el mensaje automáticamente; debe revisarlo y pulsar Enviar en su aplicación de correo.'
+      : 'Seu aplicativo de e-mail será aberto com um rascunho preparado. O site não envia a mensagem automaticamente — você deve revisá-la e pressionar Enviar no aplicativo de e-mail.'
+  const emailOpenedNotice = language === 'en'
+    ? 'The email draft was opened. Nothing was sent automatically; complete sending in your email application.'
+    : language === 'es'
+      ? 'Se abrió el borrador de correo. Nada se envió automáticamente; complete el envío en su aplicación de correo.'
+      : 'O rascunho de e-mail foi aberto. Nada foi enviado automaticamente; conclua o envio no seu aplicativo de e-mail.'
   const requiredMessage = language === 'en' ? 'This field is required.' : language === 'es' ? 'Este campo es obligatorio.' : 'Este campo é obrigatório.'
   const emailMessage = language === 'en' ? 'Enter a valid email address.' : language === 'es' ? 'Ingrese un email válido.' : 'Digite um e-mail válido.'
 
@@ -88,8 +99,8 @@ export default function Contact() {
     )
 
     window.location.href = `mailto:${mailtoRecipient}?cc=${cc}&subject=${subject}&body=${body}`
-    setForm({ name: '', email: '', locationId: '', message: '' })
     setFieldErrors({})
+    setSendNotice(emailOpenedNotice)
   }
 
   return (
@@ -237,6 +248,12 @@ export default function Contact() {
               <p className="text-xs text-slate-500 leading-relaxed">
                 {recipientLabel}: <span className="font-semibold text-deep-slate">{mailtoRecipient}</span>
               </p>
+              <p className="text-xs leading-relaxed text-slate-500">{emailHandoffNotice}</p>
+              {sendNotice ? (
+                <p role="status" className="rounded-lg border border-sage-200 bg-sage-50 px-4 py-3 text-sm leading-relaxed text-deep-slate">
+                  {sendNotice}
+                </p>
+              ) : null}
             </form>
           </div>
         </div>

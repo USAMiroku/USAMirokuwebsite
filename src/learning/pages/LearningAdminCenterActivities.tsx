@@ -137,6 +137,8 @@ function AdminCenterActivitiesInner() {
 
   useEffect(() => {
     if (managedCenterId) {
+      // The managed-center assignment arrives from auth context and must reset both center selectors.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedCenterId(managedCenterId)
       setNewCenterId(managedCenterId)
     }
