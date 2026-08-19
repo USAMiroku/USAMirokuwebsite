@@ -3,6 +3,7 @@ import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
 import { books } from '../data/books'
+import { grantContent } from '../data/grantContent'
 
 const sacredScenes = [
   {
@@ -86,6 +87,7 @@ export default function Home() {
   const donateHref = resolveDonateHref()
   const isInternalDonate = donateHref.startsWith('/')
   const featuredBooks = books.filter((book) => book.status === 'available').slice(0, 3)
+  const grantCopy = grantContent[language]
 
   usePageMeta({
     title: t.brand,
@@ -189,8 +191,8 @@ export default function Home() {
               <div className="max-w-3xl">
                 <p className="mt-4 text-[13px] uppercase tracking-[0.34em] text-white/72">{t.home.heroTitle}</p>
                 <h1 className="mt-2 max-w-2xl leading-tight text-white">
-                  <span className="block text-4xl font-bold sm:text-5xl lg:text-[3.25rem]">World Messianic Church of America</span>
                   <span className="block text-4xl font-bold sm:text-5xl lg:text-[3.25rem]">{siteConfig.shortName}</span>
+                  <span className="mt-2 block text-2xl font-semibold sm:text-3xl lg:text-[2.25rem]">World Messianic Church of America</span>
                 </h1>
                 <p className="mt-7 max-w-2xl text-xl leading-9 text-white/86">{t.home.heroIntro}</p>
                 <p className="mt-4 max-w-2xl text-base leading-8 text-white/60">{supportCopy.heroPath}</p>
@@ -243,6 +245,22 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-white px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <article className="rounded-[30px] border border-[rgba(15,23,42,0.06)] bg-[#fffdfa] p-8 md:p-10">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600">{grantCopy.whoTitle}</p>
+            <h2 className="mt-4 text-4xl leading-tight text-[#314343] md:text-5xl">Miroku Association USA</h2>
+            <p className="mt-6 text-lg leading-8 text-slate-600">{grantCopy.who}</p>
+            <p className="mt-4 text-base leading-8 text-slate-500">{grantCopy.welcome}</p>
+          </article>
+          <article className="rounded-[30px] bg-[#294341] p-8 text-white md:p-10">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/65">{grantCopy.missionTitle}</p>
+            <p className="mt-5 text-xl leading-9 text-white/82">{grantCopy.mission}</p>
+            <div className="mt-8"><HomeLink to="/community-programs" tone="gold">{grantCopy.programsNav}</HomeLink></div>
+          </article>
         </div>
       </section>
 

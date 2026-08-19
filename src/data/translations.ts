@@ -210,7 +210,7 @@ export type TranslationContent = {
 
 export const translations: Record<string, TranslationContent> = {
   en: {
-    brand: 'World Messianic Church of America / Miroku Association USA',
+    brand: 'Miroku Association USA / World Messianic Church of America',
     tagline: 'Discover Johrei and a path of gratitude',
     nav: {
       home: 'Home',
@@ -245,8 +245,8 @@ export const translations: Record<string, TranslationContent> = {
     home: {
       heroTitle: 'Welcome to',
       heroIntro: 'Creating a World of Health, Prosperity, and Peace Through the Power of Johrei.',
-      heroKicker: 'World Messianic Church of America / Miroku Association USA',
-      heroSubtitle: 'World Messianic Church of America / Miroku Association USA',
+      heroKicker: 'Miroku Association USA / World Messianic Church of America',
+      heroSubtitle: 'Miroku Association USA / World Messianic Church of America',
       heroButtons: { findCenter: 'Visit a Center', firstVisit: 'Explore USA Units' },
       stats: [
         { label: 'Locations', value: 'USA-wide' },
@@ -265,7 +265,7 @@ export const translations: Record<string, TranslationContent> = {
       johreiCta: 'Experience Johrei',
       whatIsJohrei: {
         title: 'Johrei',
-        body: 'Johrei is a transmission of Divine Light that dissolves spiritual clouds and elevates the soul. It purifies the spiritual body, which in turn removes impurities from the blood (the materialized spirit).',
+        body: 'Johrei is a prayer-based spiritual practice central to our faith tradition. It is offered without charge as spiritual support, reflection, and personal spiritual development.',
       },
       vision: {
         kicker: 'The Three Pillars',
@@ -344,7 +344,7 @@ export const translations: Record<string, TranslationContent> = {
     },
     about: {
       title: 'About the World Messianic Church',
-      body: 'World Messianic Church of America / Miroku Association USA is dedicated to the establishment of Paradise on Earth through spiritual purification, service, and beauty.',
+      body: 'Miroku Association USA, known through its religious activities as World Messianic Church of America, is dedicated to the establishment of Paradise on Earth through spiritual support, service, and beauty.',
       kicker: 'About',
       mission: {
         title: 'Mission',
@@ -372,7 +372,7 @@ export const translations: Record<string, TranslationContent> = {
       },
       leadership: {
         title: 'Participation',
-        body: 'As a registered Canadian charity, we are committed to transparency, accountability, and service.',
+        body: 'As a U.S. 501(c)(3) nonprofit public charity, we are committed to transparency, accountability, and service.',
       },
     },
     johrei: {
@@ -382,7 +382,7 @@ export const translations: Record<string, TranslationContent> = {
       kicker: 'Core Practice',
       vision: {
         title: 'The Spiritual Precedes the Physical',
-        body: 'Johrei purifies the spiritual body first. As spiritual clouds dissolve, impurities are removed from the blood, understood as the materialized form of spirit. This process restores natural health and raises human consciousness.',
+        body: 'Johrei is a prayer-based spiritual practice through which participants seek purification of the spirit, inner reflection, and greater harmony.',
       },
       whatIs: {
         title: 'Definition',
@@ -393,7 +393,7 @@ export const translations: Record<string, TranslationContent> = {
         },
         effect: {
           title: 'Relationship Between Spirit and Blood',
-          body: 'As the spirit is purified, blood impurities are naturally resolved. This is the spiritual-physical mechanism at the center of Johrei teaching.',
+          body: 'In our faith tradition, spiritual purification is understood as a path toward clarity, gratitude, and inner balance.',
         },
         goal: {
           title: 'Elevation of Consciousness',
@@ -431,7 +431,7 @@ export const translations: Record<string, TranslationContent> = {
             'Elevates intelligence and personality.',
             'Strengthens people to face life’s challenges.',
             'Expands the aura, offering protection from misfortune.',
-            'Promotes physical and spiritual health.',
+            'Encourages spiritual reflection and inner harmony.',
             'Helps people perceive abundance and opportunities more clearly.',
             'Encourages serenity and peace.',
             'Strengthens gratitude and altruism.',
@@ -603,7 +603,7 @@ export const translations: Record<string, TranslationContent> = {
         ],
       },
       contact: {
-        title: 'Contact World Messianic Church of America / Miroku Association USA',
+        title: 'Contact Miroku Association USA / World Messianic Church of America',
         intro: 'Reach the national office or local centres using the details below.',
         labels: {
           email: 'Email',
@@ -674,7 +674,7 @@ export const translations: Record<string, TranslationContent> = {
     notFound: 'Content not found.',
   },
   es: {
-    brand: 'World Messianic Church of America / Miroku Association USA',
+    brand: 'Miroku Association USA / World Messianic Church of America',
     tagline: 'Descubre el Johrei y un camino de gratitud',
     nav: {
       home: 'Inicio',
@@ -709,8 +709,8 @@ export const translations: Record<string, TranslationContent> = {
     home: {
       heroTitle: 'Bienvenidos a',
       heroIntro: 'Construyendo un mundo de salud, prosperidad y paz a través del poder del Johrei.',
-      heroKicker: 'World Messianic Church of America / Miroku Association USA',
-      heroSubtitle: 'World Messianic Church of America / Miroku Association USA',
+      heroKicker: 'Miroku Association USA / World Messianic Church of America',
+      heroSubtitle: 'Miroku Association USA / World Messianic Church of America',
       heroButtons: { findCenter: 'Visitar un centro', firstVisit: 'Explorar unidades EE.UU.' },
       stats: [
         { label: 'Ubicaciones', value: 'En todo EE.UU.' },
@@ -729,7 +729,7 @@ export const translations: Record<string, TranslationContent> = {
       johreiCta: 'Experimenta el Johrei',
       whatIsJohrei: {
         title: 'Johrei',
-        body: 'El Johrei es una transmisión de Luz Divina que disuelve las nubes espirituales y eleva el alma. Purifica el cuerpo espiritual, lo que a su vez elimina las impurezas de la sangre (el espíritu materializado).',
+        body: 'Johrei es una práctica espiritual basada en la oración y central en nuestra tradición de fe. Se ofrece gratuitamente como apoyo espiritual, reflexión y desarrollo personal.',
       },
       vision: {
         kicker: 'Los tres pilares',
@@ -808,7 +808,7 @@ export const translations: Record<string, TranslationContent> = {
     },
     about: {
       title: 'Acerca de la Iglesia Mesiánica Universal',
-      body: 'La World Messianic Church of America / Miroku Association USA está dedicada al establecimiento del Paraíso en la Tierra mediante la purificación espiritual, el servicio y la belleza.',
+      body: 'Miroku Association USA, conocida por sus actividades religiosas como World Messianic Church of America, está dedicada al establecimiento del Paraíso en la Tierra mediante el apoyo espiritual, el servicio y la belleza.',
       kicker: 'Quiénes somos',
       mission: {
         title: 'Misión',
@@ -845,7 +845,7 @@ export const translations: Record<string, TranslationContent> = {
       kicker: 'Práctica central',
       vision: {
         title: 'Lo espiritual precede a lo físico',
-        body: 'El Johrei purifica primero el cuerpo espiritual. A medida que las nubes espirituales se disuelven, las impurezas son eliminadas de la sangre, entendida como la forma materializada del espíritu. Este proceso restaura la salud natural y eleva la conciencia humana.',
+        body: 'Johrei es una práctica espiritual basada en la oración mediante la cual los participantes buscan purificación del espíritu, reflexión interior y mayor armonía.',
       },
       whatIs: {
         title: 'Definición',
@@ -856,7 +856,7 @@ export const translations: Record<string, TranslationContent> = {
         },
         effect: {
           title: 'Relación entre espíritu y sangre',
-          body: 'A medida que el espíritu se purifica, las impurezas de la sangre se resuelven naturalmente. Este es el mecanismo espiritual-físico en el centro de la enseñanza del Johrei.',
+          body: 'En nuestra tradición de fe, la purificación espiritual se entiende como un camino hacia la claridad, la gratitud y el equilibrio interior.',
         },
         goal: {
           title: 'Elevación de la conciencia',
@@ -1068,7 +1068,7 @@ export const translations: Record<string, TranslationContent> = {
         ],
       },
       contact: {
-        title: 'Contactar a la World Messianic Church of America / Miroku Association USA',
+        title: 'Contactar a Miroku Association USA / World Messianic Church of America',
         intro: 'Comunícate con la oficina nacional o los centros locales usando la información a continuación.',
         labels: {
           email: 'Correo electrónico',
@@ -1137,7 +1137,7 @@ export const translations: Record<string, TranslationContent> = {
     notFound: 'Contenido no encontrado.',
   },
   pt: {
-    brand: 'World Messianic Church of America / Miroku Association USA',
+    brand: 'Miroku Association USA / World Messianic Church of America',
     tagline: 'Descubra o Johrei e um caminho de gratidão',
     nav: {
       home: 'Início',
@@ -1172,8 +1172,8 @@ export const translations: Record<string, TranslationContent> = {
     home: {
       heroTitle: 'Bem-vindos à',
       heroIntro: 'Construindo um mundo de saúde, prosperidade e paz através do poder do Johrei.',
-      heroKicker: 'World Messianic Church of America / Miroku Association USA',
-      heroSubtitle: 'World Messianic Church of America / Miroku Association USA',
+      heroKicker: 'Miroku Association USA / World Messianic Church of America',
+      heroSubtitle: 'Miroku Association USA / World Messianic Church of America',
       heroButtons: { findCenter: 'Visitar um centro', firstVisit: 'Explorar unidades EUA' },
       stats: [
         { label: 'Localizações', value: 'Em todo EUA' },
@@ -1192,7 +1192,7 @@ export const translations: Record<string, TranslationContent> = {
       johreiCta: 'Experiencie o Johrei',
       whatIsJohrei: {
         title: 'Johrei',
-        body: 'O Johrei é uma transmissão de Luz Divina que dissolve as nuvens espirituais e eleva a alma. Ele purifica o corpo espiritual, o que por sua vez remove as impurezas do sangue (o espírito materializado).',
+        body: 'O Johrei é uma prática espiritual baseada na oração e central em nossa tradição de fé. É oferecido gratuitamente como apoio espiritual, reflexão e desenvolvimento pessoal.',
       },
       vision: {
         kicker: 'Os três pilares',
@@ -1271,7 +1271,7 @@ export const translations: Record<string, TranslationContent> = {
     },
     about: {
       title: 'Sobre a Igreja Messiânica Mundial',
-      body: 'A World Messianic Church of America / Miroku Association USA é dedicada ao estabelecimento do Paraíso na Terra por meio da purificação espiritual, do serviço e da beleza.',
+      body: 'A Miroku Association USA, conhecida por suas atividades religiosas como World Messianic Church of America, dedica-se ao estabelecimento do Paraíso na Terra por meio do apoio espiritual, do serviço e da beleza.',
       kicker: 'Sobre nós',
       mission: {
         title: 'Missão',
@@ -1308,7 +1308,7 @@ export const translations: Record<string, TranslationContent> = {
       kicker: 'Prática central',
       vision: {
         title: 'O espiritual precede o físico',
-        body: 'O Johrei purifica primeiro o corpo espiritual. À medida que as nuvens espirituais se dissolvem, as impurezas são removidas do sangue, compreendido como a forma materializada do espírito. Esse processo restaura a saúde natural e eleva a consciência humana.',
+        body: 'O Johrei é uma prática espiritual baseada na oração, por meio da qual os participantes buscam purificação do espírito, reflexão interior e maior harmonia.',
       },
       whatIs: {
         title: 'Definição',
@@ -1319,7 +1319,7 @@ export const translations: Record<string, TranslationContent> = {
         },
         effect: {
           title: 'Relação entre espírito e sangue',
-          body: 'À medida que o espírito se purifica, as impurezas do sangue se resolvem naturalmente. Esse é o mecanismo espiritual-físico central no ensinamento do Johrei.',
+          body: 'Em nossa tradição de fé, a purificação espiritual é compreendida como um caminho para clareza, gratidão e equilíbrio interior.',
         },
         goal: {
           title: 'Elevação da consciência',
@@ -1531,7 +1531,7 @@ export const translations: Record<string, TranslationContent> = {
         ],
       },
       contact: {
-        title: 'Contatar a World Messianic Church of America / Miroku Association USA',
+        title: 'Contatar a Miroku Association USA / World Messianic Church of America',
         intro: 'Entre em contato com o escritório nacional ou os centros locais usando as informações abaixo.',
         labels: {
           email: 'E-mail',

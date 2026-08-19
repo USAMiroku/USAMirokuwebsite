@@ -157,7 +157,7 @@ export default function Events() {
   usePageMeta({
     title: `${t.events.title} | ${siteConfig.organizationName}`,
     description:
-      'Upcoming events, monthly appreciation services, study sessions, and center gatherings at World Messianic Church of America / Miroku Association USA.',
+      'Upcoming events, monthly appreciation services, study sessions, and center gatherings at Miroku Association USA / World Messianic Church of America.',
   })
 
   useEffect(() => {

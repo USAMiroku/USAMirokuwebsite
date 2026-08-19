@@ -3,9 +3,10 @@ import { Card } from '../components/Card'
 import { Section } from '../components/Section'
 import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
+import { healthDisclosure } from '../data/grantContent'
 
 export default function Johrei() {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
 
   usePageMeta({
     title: `${t.johrei.title} | ${t.brand}`,
@@ -42,6 +43,10 @@ export default function Johrei() {
           </div>
         </div>
       </section>
+
+      <div className="mx-auto max-w-5xl px-6 pt-10">
+        <p className="rounded-2xl border border-[rgba(141,107,38,0.2)] bg-white px-6 py-5 text-sm font-medium leading-7 text-deep-slate">{healthDisclosure[language]}</p>
+      </div>
 
       <Section className="bg-white">
         <div className="mx-auto max-w-5xl rounded-[32px] paper-panel p-8 md:p-10">

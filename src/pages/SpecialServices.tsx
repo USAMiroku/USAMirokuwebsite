@@ -9,7 +9,7 @@ export default function SpecialServices() {
   const copy = specialServicesLandingCopy[language]
 
   usePageMeta({
-    title: `${copy.title} | World Messianic Church of America | Miroku Association USA`,
+    title: `${copy.title} | Miroku Association USA | World Messianic Church of America`,
     description: copy.description,
   })
 
@@ -53,7 +53,7 @@ export function SpecialServicesThankYou() {
   const copy = specialServicesLandingCopy[language]
 
   usePageMeta({
-    title: `${copy.title} | World Messianic Church of America | Miroku Association USA`,
+    title: `${copy.title} | Miroku Association USA | World Messianic Church of America`,
     description: copy.description,
   })
 

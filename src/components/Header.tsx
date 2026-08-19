@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation as useRouteLocation } from 'react-router-dom
 import { useTranslation } from '../context/TranslationContext'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
 import { LanguageToggle } from './LanguageToggle'
+import { grantContent } from '../data/grantContent'
 
 function DonateButton({ className, onClick }: { className: string; onClick?: () => void }) {
   const { t } = useTranslation()
@@ -24,7 +25,7 @@ function DonateButton({ className, onClick }: { className: string; onClick?: () 
 }
 
 function PublicHeader() {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const routeLocation = useRouteLocation()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -52,6 +53,7 @@ function PublicHeader() {
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/activities', label: t.nav.activities },
+    { to: '/community-programs', label: grantContent[language].programsNav },
     { to: '/books', label: t.nav.books },
     { to: '/locations', label: t.nav.locations },
     { to: '/contact', label: t.nav.contact },
@@ -74,10 +76,10 @@ function PublicHeader() {
             </div>
             <div className="min-w-0 leading-[1.25]">
               <span className="block text-[10px] font-extrabold uppercase tracking-[0.1em] text-deep-slate">
-                World Messianic Church of America
+                Miroku Association USA
               </span>
               <span className="block text-[9.5px] font-semibold uppercase tracking-[0.08em] text-slate-500">
-                Miroku Association USA
+                World Messianic Church of America
               </span>
             </div>
           </Link>
@@ -159,7 +161,7 @@ function PublicHeader() {
 }
 
 function LearningHeader() {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const routeLocation = useRouteLocation()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -179,6 +181,7 @@ function LearningHeader() {
   const navLinks = [
     { to: '/', label: t.nav.home },
     { to: '/activities', label: t.nav.activities },
+    { to: '/community-programs', label: grantContent[language].programsNav },
     { to: '/books', label: t.nav.books },
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },

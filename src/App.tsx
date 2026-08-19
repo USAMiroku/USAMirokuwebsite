@@ -6,6 +6,7 @@ import { Layout } from './components/Layout'
 const About = lazy(() => import('./pages/About'))
 const Books = lazy(() => import('./pages/Books'))
 const Contact = lazy(() => import('./pages/Contact'))
+const CommunityPrograms = lazy(() => import('./pages/CommunityPrograms'))
 const Donate = lazy(() => import('./pages/Donate'))
 const FAQ = lazy(() => import('./pages/FAQ'))
 const FirstVisit = lazy(() => import('./pages/FirstVisit'))
@@ -85,6 +86,7 @@ function App() {
           <Route path="testimonials" element={<Testimonials />} />
           <Route path="testimonials/:id" element={<TestimonialDetail />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="community-programs" element={<CommunityPrograms />} />
           <Route path="donate" element={<Donate />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="guidelines-2026" element={<Guidelines2026 />} />

@@ -18,10 +18,10 @@ export type CenterConfig = {
 export const siteUrl = (import.meta.env.VITE_SITE_URL ?? 'https://www.worldmessianic.org').trim()
 
 export const siteConfig = {
-  organizationName: 'World Messianic Church of America / Miroku Association USA',
+  organizationName: 'Miroku Association USA / World Messianic Church of America',
   shortName: 'Miroku Association USA',
   seoDescription:
-    'Explore Johrei, Meishu-sama teachings, community life, and gratitude offerings with the World Messianic Church of America / Miroku Association USA.',
+    'Miroku Association USA, known through its religious activities as World Messianic Church of America, is a 501(c)(3) public charity serving communities across the United States.',
   hq: {
     address: '47-10 32nd Place, Suite 207, Long Island City, NY 11101',
     phone: '+1 (305) 308-8830',

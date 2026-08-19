@@ -1,6 +1,7 @@
 import { Link, useLocation as useRouteLocation } from 'react-router-dom'
 import { useTranslation } from '../context/TranslationContext'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
+import { grantContent, nonprofitStatement } from '../data/grantContent'
 
 function FooterDonateLink({ className }: { className: string }) {
   const { t } = useTranslation()
@@ -22,13 +23,14 @@ function FooterDonateLink({ className }: { className: string }) {
 }
 
 function PublicFooter() {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
 
   const links = [
     { to: '/', label: t.nav.home },
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/activities', label: t.nav.activities },
+    { to: '/community-programs', label: grantContent[language].programsNav },
     { to: '/locations', label: t.nav.locations },
     { to: '/contact', label: t.nav.contact },
   ]
@@ -65,8 +67,8 @@ function PublicFooter() {
             <div className="mt-4 space-y-3 text-sm text-white/82">
               <p>
                 Website:{' '}
-                <a href="https://miroku.us" target="_blank" rel="noreferrer" className="underline-offset-2 hover:underline">
-                  miroku.us
+                <a href="https://www.worldmessianic.org" className="underline-offset-2 hover:underline">
+                  worldmessianic.org
                 </a>
               </p>
               <p>
@@ -86,9 +88,10 @@ function PublicFooter() {
         </div>
 
         <div className="mt-8 flex flex-col gap-4 border-t border-white/12 pt-6 text-[11px] uppercase tracking-[0.18em] text-white/62 md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} World Messianic Church of America</p>
-          <p>Miroku Association USA</p>
+          <p>© {new Date().getFullYear()} Miroku Association USA</p>
+          <p>World Messianic Church of America</p>
         </div>
+        <p className="mt-5 border-t border-white/12 pt-5 text-xs leading-6 text-white/72">{nonprofitStatement[language]}</p>
       </div>
     </footer>
   )
@@ -100,6 +103,7 @@ function LearningFooter() {
   const links = [
     { to: '/', label: t.nav.home },
     { to: '/activities', label: t.nav.activities },
+    { to: '/community-programs', label: grantContent[language].programsNav },
     { to: '/about', label: t.nav.about },
     { to: '/johrei', label: t.nav.aboutJohrei },
     { to: '/meishu-sama', label: t.nav.meishuSama },
@@ -204,6 +208,7 @@ function LearningFooter() {
             </Link>
           </div>
         </div>
+        <p className="mt-6 text-center text-xs font-normal normal-case leading-6 text-slate-500">{nonprofitStatement[language]}</p>
       </div>
     </footer>
   )

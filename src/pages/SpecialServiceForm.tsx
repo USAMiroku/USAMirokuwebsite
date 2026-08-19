@@ -133,9 +133,9 @@ export default function SpecialServiceForm() {
   )
 
   usePageMeta({
-    title: copy ? `${copy.title} | World Messianic Church of America | Miroku Association USA` : 'Special Services',
+    title: copy ? `${copy.title} | Miroku Association USA | World Messianic Church of America` : 'Special Services',
     description: copy
-      ? `${copy.title} prayer form for World Messianic Church of America / Miroku Association USA. Available in English, Portuguese, and Spanish.`
+      ? `${copy.title} prayer form for Miroku Association USA / World Messianic Church of America. Available in English, Portuguese, and Spanish.`
       : undefined,
   })
 
@@ -375,9 +375,9 @@ export default function SpecialServiceForm() {
         <div ref={formRef} className="special-service-sheet bg-white px-7 py-7 shadow-[0_24px_70px_-52px_rgba(15,23,42,0.32)] md:px-10">
           <header className="flex items-start justify-between gap-4 border-b-2 border-deep-slate pb-3">
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="World Messianic Church of America" className="h-8 w-8 rounded-full object-cover" />
+              <img src="/logo.png" alt="Miroku Association USA" className="h-8 w-8 rounded-full object-cover" />
               <p className="max-w-[13rem] text-[11.5px] font-medium leading-tight text-deep-slate">
-                World Messianic Church of America
+                Miroku Association USA<br /><span className="text-[9px] text-slate-500">World Messianic Church of America</span>
               </p>
             </div>
             <p className="max-w-[15rem] text-right text-[9.5px] font-bold uppercase leading-snug tracking-[1.4px] text-deep-slate">

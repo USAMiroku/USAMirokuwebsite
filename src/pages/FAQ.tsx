@@ -3,6 +3,7 @@ import { Card } from '../components/Card'
 import { Section } from '../components/Section'
 import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
+import { healthDisclosure } from '../data/grantContent'
 
 const faqItemsEn = [
   {
@@ -53,6 +54,7 @@ export default function FAQ() {
   const { t, language } = useTranslation()
 
   const faqs = language === 'es' ? faqItemsEs : language === 'pt' ? faqItemsPt : faqItemsEn
+  const medicalQuestion = language === 'es' ? '¿Johrei sustituye la atención médica?' : language === 'pt' ? 'O Johrei substitui os cuidados médicos?' : 'Does Johrei replace medical care?'
 
   const copy =
     language === 'es'
@@ -112,6 +114,9 @@ export default function FAQ() {
               <p className="text-base leading-relaxed text-slate-600">{faq.a}</p>
             </Card>
           ))}
+          <Card title={medicalQuestion} eyebrow={`0${faqs.length + 1}`}>
+            <p className="text-base leading-relaxed text-slate-600">{healthDisclosure[language]}</p>
+          </Card>
         </div>
       </Section>
 

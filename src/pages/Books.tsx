@@ -88,7 +88,7 @@ function EbookStoreAction({
 
 export default function Books() {
   usePageMeta({
-    title: 'Books | World Messianic Church of America / Miroku Association USA',
+    title: 'Books | Miroku Association USA / World Messianic Church of America',
     description: 'Purchase and learn about the Teachings of Meishu-sama book collection.',
   })
 

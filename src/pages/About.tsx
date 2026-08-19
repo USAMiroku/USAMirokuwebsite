@@ -4,9 +4,11 @@ import { Card } from '../components/Card'
 import { Section } from '../components/Section'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../config/siteConfig'
+import { grantContent, nonprofitStatement } from '../data/grantContent'
 
 export default function About() {
   const { language } = useTranslation()
+  const grantCopy = grantContent[language]
 
   const copy =
     language === 'es'
@@ -61,7 +63,7 @@ export default function About() {
           }
         : {
             kicker: 'About',
-            title: `Welcome to ${siteConfig.organizationName}`,
+            title: `Welcome to ${siteConfig.shortName}`,
             intro:
               'A spiritual movement dedicated to the establishment of Paradise on Earth through health, prosperity, peace, and the refinement of the human heart.',
             core: 'Core Orientation',
@@ -69,7 +71,7 @@ export default function About() {
               'Founded in 1935 by Meishu-sama, the church guides people toward a life where truth, virtue, and beauty are practiced rather than merely admired.',
             story: [
               'The World Messianic Church is a spiritual movement dedicated to the establishment of Paradise on Earth: a world defined by health, prosperity, and peace. Founded in 1935 by Meishu-sama (Mokichi Okada), we serve as a midwife to world civilization, guiding humanity through the transition from the Age of Night into the Daylight Age.',
-              'Our path is built upon three pillars: Truth, Virtue, and Beauty. Through the practice of Johrei, the transmission of Divine Light, we seek to dissolve the spiritual clouds that are understood to be the root cause of illness and conflict. By purifying the spirit, we restore balance to the body and the world around us.',
+              'Our path is built upon three pillars: Truth, Virtue, and Beauty. Through Johrei, study, art, nature, and service, we seek spiritual refinement and greater harmony in everyday life.',
               'In the United States, we welcome all to experience this transformation. Whether through Johrei, the study of sacred teachings, or the appreciation of art and nature, our mission is to help every individual awaken to their divine nature and contribute to a civilization of light.',
             ],
             started: 'Getting Started',
@@ -195,6 +197,13 @@ export default function About() {
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
+        </div>
+      </Section>
+
+      <Section className="section-wash border-y border-[rgba(141,107,38,0.12)]">
+        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2">
+          <Card title={grantCopy.whoTitle}><p className="text-base leading-8 text-slate-600">{grantCopy.who}</p><p className="mt-4 text-base leading-8 text-slate-600">{grantCopy.welcome}</p></Card>
+          <Card title={grantCopy.missionTitle}><p className="text-base leading-8 text-slate-600">{grantCopy.mission}</p><p className="mt-5 rounded-2xl bg-sanctuary-100 p-5 text-sm leading-7 text-deep-slate">{nonprofitStatement[language]}</p></Card>
         </div>
       </Section>
 

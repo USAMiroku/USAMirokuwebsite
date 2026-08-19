@@ -55,7 +55,7 @@ export const specialServicesLandingCopy: Record<
     title: 'Special Services',
     intro: 'Please select a service below to access the prayer form.',
     description:
-      'Special Services prayer forms for World Messianic Church of America / Miroku Association USA in English, Portuguese, and Spanish.',
+      'Special Services prayer forms for Miroku Association USA / World Messianic Church of America in English, Portuguese, and Spanish.',
     thankYou: 'Your prayer form is ready. Please complete sending it in your email or sharing application; the website did not submit it automatically.',
     donate: 'Donate',
     back: 'Back to Special Services',
@@ -65,7 +65,7 @@ export const specialServicesLandingCopy: Record<
     title: 'Cultos Especiais',
     intro: 'Selecione um culto abaixo para acessar o formulário de oração.',
     description:
-      'Formulários de oração dos Cultos Especiais da World Messianic Church of America / Miroku Association USA em inglês, português e espanhol.',
+      'Formulários de oração dos Cultos Especiais da Miroku Association USA / World Messianic Church of America em inglês, português e espanhol.',
     thankYou: 'Seu formulário de oração está pronto. Conclua o envio no seu aplicativo de e-mail ou compartilhamento; o site não o enviou automaticamente.',
     donate: 'Doar',
     back: 'Voltar para Cultos Especiais',
@@ -75,7 +75,7 @@ export const specialServicesLandingCopy: Record<
     title: 'Ceremonias Especiales',
     intro: 'Seleccione una ceremonia a continuación para acceder al formulario de oración.',
     description:
-      'Formularios de oración de Ceremonias Especiales de World Messianic Church of America / Miroku Association USA en inglés, portugués y español.',
+      'Formularios de oración de Ceremonias Especiales de Miroku Association USA / World Messianic Church of America en inglés, portugués y español.',
     thankYou: 'Su formulario de oración está listo. Complete el envío en su aplicación de correo o de uso compartido; el sitio web no lo envió automáticamente.',
     donate: 'Donar',
     back: 'Volver a Ceremonias Especiales',

@@ -166,7 +166,7 @@ export default function LearningActivities() {
   usePageMeta({
     title: `${copy.title} | World Messianic Church of America`,
     description:
-      'Find special services, seminars, study sessions, and community gatherings at World Messianic Church of America / Miroku Association USA.',
+      'Find special services, seminars, study sessions, and community gatherings at Miroku Association USA / World Messianic Church of America.',
   })
 
   useEffect(() => {
