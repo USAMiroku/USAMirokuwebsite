@@ -1,5 +1,6 @@
 -- Community Program photo gallery for the public website.
--- Public visitors may read published rows and images. Only super admins may manage them.
+-- Public visitors may read published rows and images. Center admins may contribute
+-- photos only to their assigned center; super admins retain full curation control.
 
 create table if not exists public.community_program_photos (
   id uuid primary key default gen_random_uuid(),
@@ -13,6 +14,7 @@ create table if not exists public.community_program_photos (
     'spiritual-support',
     'women-and-girls-leadership'
   )),
+  center_id text,
   storage_path text not null unique,
   alt_text text not null check (char_length(alt_text) between 3 and 240),
   caption text check (caption is null or char_length(caption) <= 500),
@@ -23,6 +25,12 @@ create table if not exists public.community_program_photos (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.community_program_photos
+  add column if not exists center_id text;
+
+create index if not exists community_program_photos_center_id_idx
+  on public.community_program_photos (center_id);
 
 create unique index if not exists community_program_photos_one_featured
   on public.community_program_photos (program_key)
@@ -44,7 +52,19 @@ drop policy if exists community_program_photos_authenticated_read on public.comm
 create policy community_program_photos_authenticated_read
   on public.community_program_photos for select
   to authenticated
-  using (is_published or public.learning_is_super_admin());
+  using (is_published or public.learning_is_super_admin() or public.learning_is_center_admin());
+
+drop policy if exists community_program_photos_center_admin_insert on public.community_program_photos;
+create policy community_program_photos_center_admin_insert
+  on public.community_program_photos for insert
+  to authenticated
+  with check (
+    public.learning_is_center_admin()
+    and public.learning_can_manage_center(center_id)
+    and created_by = (select auth.uid())
+    and is_published
+    and not is_featured
+  );
 
 drop policy if exists community_program_photos_super_admin_insert on public.community_program_photos;
 create policy community_program_photos_super_admin_insert
@@ -91,7 +111,16 @@ drop policy if exists community_program_images_super_admin_insert on storage.obj
 create policy community_program_images_super_admin_insert
   on storage.objects for insert
   to authenticated
-  with check (bucket_id = 'community-programs' and public.learning_is_super_admin());
+  with check (
+    bucket_id = 'community-programs'
+    and (
+      public.learning_is_super_admin()
+      or (
+        public.learning_is_center_admin()
+        and public.learning_can_manage_center((storage.foldername(name))[1])
+      )
+    )
+  );
 
 drop policy if exists community_program_images_super_admin_update on storage.objects;
 create policy community_program_images_super_admin_update

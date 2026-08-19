@@ -16,6 +16,7 @@ export type CommunityProgramKey = (typeof communityProgramKeys)[number]
 export type CommunityProgramPhoto = {
   id: string
   program_key: CommunityProgramKey
+  center_id: string | null
   storage_path: string
   alt_text: string
   caption: string | null

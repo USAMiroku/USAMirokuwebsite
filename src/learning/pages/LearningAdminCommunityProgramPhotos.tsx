@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Section } from '../../components/Section'
 import { communityProgramKeys, COMMUNITY_PROGRAMS_BUCKET, isCommunityProgramKey, type CommunityProgramKey, type CommunityProgramPhoto } from '../../data/communityProgramPhotos'
 import { grantContent } from '../../data/grantContent'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { LearningAdminToolbar } from '../components/LearningAdminToolbar'
-import { RequireSuperAdmin } from '../components/LearningRouteGuards'
+import { RequireProgramPhotoContributor } from '../components/LearningRouteGuards'
+import { useLearningAuth } from '../context/LearningAuthContext'
 import { assertSupabaseConfigured, supabase } from '../lib/supabaseClient'
+import { useManagedCenters } from '../../organization/centers'
 
 const MAX_SOURCE_BYTES = 12 * 1024 * 1024
 const MAX_OUTPUT_DIMENSION = 2000
@@ -43,13 +45,16 @@ async function optimizeImage(file: File): Promise<Blob> {
 
 export default function LearningAdminCommunityProgramPhotos() {
   usePageMeta({ title: 'Admin | Community Program Photos', description: 'Manage public Community Program photographs.' })
-  return <RequireSuperAdmin><CommunityProgramPhotosAdmin /></RequireSuperAdmin>
+  return <RequireProgramPhotoContributor><CommunityProgramPhotosAdmin /></RequireProgramPhotoContributor>
 }
 
 function CommunityProgramPhotosAdmin() {
+  const { isSuperAdmin, managedCenterId } = useLearningAuth()
+  const { activeCenters } = useManagedCenters()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [photos, setPhotos] = useState<EditablePhoto[]>([])
   const [programKey, setProgramKey] = useState<CommunityProgramKey>(communityProgramKeys[0])
+  const [uploadCenterId, setUploadCenterId] = useState('')
   const [altText, setAltText] = useState('')
   const [caption, setCaption] = useState('')
   const [file, setFile] = useState<File | null>(null)
@@ -60,8 +65,14 @@ function CommunityProgramPhotosAdmin() {
   const [notice, setNotice] = useState<string | null>(null)
 
   const programLabels = useMemo(() => new Map(communityProgramKeys.map((key, index) => [key, grantContent.en.programs[index][0]])), [])
+  const centerLabels = useMemo(() => new Map(activeCenters.map((center) => [center.id, center.name])), [activeCenters])
 
-  async function loadPhotos() {
+  useEffect(() => {
+    if (managedCenterId) setUploadCenterId(managedCenterId)
+    else if (isSuperAdmin && activeCenters.length > 0 && !uploadCenterId) setUploadCenterId(activeCenters[0].id)
+  }, [activeCenters, isSuperAdmin, managedCenterId, uploadCenterId])
+
+  const loadPhotos = useCallback(async () => {
     if (!supabase) {
       setError('Supabase is not configured.')
       setIsLoading(false)
@@ -69,27 +80,30 @@ function CommunityProgramPhotosAdmin() {
     }
     const client = supabase
     setIsLoading(true)
-    const { data, error: loadError } = await client
+    let query = client
       .from('community_program_photos')
-      .select('id,program_key,storage_path,alt_text,caption,display_order,is_featured,is_published,created_at')
+      .select('id,program_key,center_id,storage_path,alt_text,caption,display_order,is_featured,is_published,created_at')
       .order('program_key')
       .order('display_order')
       .order('created_at')
+    if (!isSuperAdmin && managedCenterId) query = query.eq('center_id', managedCenterId)
+    const { data, error: loadError } = await query
     if (loadError) setError(loadError.message)
     else setPhotos((data ?? []).filter((photo): photo is CommunityProgramPhoto => isCommunityProgramKey(photo.program_key)).map((photo) => ({
       ...photo,
       url: client.storage.from(COMMUNITY_PROGRAMS_BUCKET).getPublicUrl(photo.storage_path).data.publicUrl,
     })))
     setIsLoading(false)
-  }
+  }, [isSuperAdmin, managedCenterId])
 
-  useEffect(() => { void loadPhotos() }, [])
+  useEffect(() => { void loadPhotos() }, [loadPhotos])
 
   async function handleUpload(event: React.FormEvent) {
     event.preventDefault()
     setError(null)
     setNotice(null)
     if (!file) return setError('Choose a photograph first.')
+    if (!uploadCenterId) return setError('This account must be assigned to a center before uploading photographs.')
     if (altText.trim().length < 3) return setError('Add a short description for visitors using screen readers.')
     if (!hasPermission) return setError('Confirm that the organization has permission to publish this photograph.')
 
@@ -99,7 +113,7 @@ function CommunityProgramPhotosAdmin() {
       const client = assertSupabaseConfigured()
       const optimized = await optimizeImage(file)
       const nextOrder = Math.max(-1, ...photos.filter((photo) => photo.program_key === programKey).map((photo) => photo.display_order)) + 1
-      uploadedPath = `${programKey}/${crypto.randomUUID()}.webp`
+      uploadedPath = `${uploadCenterId}/${programKey}/${crypto.randomUUID()}.webp`
       const { error: uploadError } = await client.storage.from(COMMUNITY_PROGRAMS_BUCKET).upload(uploadedPath, optimized, {
         contentType: 'image/webp',
         cacheControl: '31536000',
@@ -107,9 +121,10 @@ function CommunityProgramPhotosAdmin() {
       })
       if (uploadError) throw uploadError
 
-      const shouldFeature = !photos.some((photo) => photo.program_key === programKey && photo.is_featured)
+      const shouldFeature = isSuperAdmin && !photos.some((photo) => photo.program_key === programKey && photo.is_featured)
       const { error: insertError } = await client.from('community_program_photos').insert({
         program_key: programKey,
+        center_id: uploadCenterId,
         storage_path: uploadedPath,
         alt_text: altText.trim(),
         caption: caption.trim() || null,
@@ -192,9 +207,12 @@ function CommunityProgramPhotosAdmin() {
       {error ? <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-6 py-4 text-rose-900">{error}</div> : null}
       {notice ? <div role="status" className="rounded-2xl border border-sage-200 bg-sage-50 px-6 py-4 text-sage-900">{notice}</div> : null}
 
+      {!isSuperAdmin ? <div className="rounded-2xl border border-sage-200 bg-sage-50 px-6 py-4 text-sm leading-6 text-sage-900">You can view and add published photographs only for <strong>{centerLabels.get(managedCenterId ?? '') ?? 'your assigned center'}</strong>. Featured-image selection, editing, hiding, ordering, and deletion are managed by the national super administrator.</div> : null}
+
       <form onSubmit={handleUpload} className="rounded-[30px] border border-[rgba(141,107,38,0.2)] bg-sanctuary-100 p-6 shadow-sm md:p-8">
         <h2 className="text-3xl font-serif">Upload a photograph</h2>
         <div className="mt-6 grid gap-5 md:grid-cols-2">
+          <label className="block text-sm font-semibold">Center or location<select value={uploadCenterId} onChange={(event) => setUploadCenterId(event.target.value)} disabled={!isSuperAdmin} required className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-normal disabled:bg-slate-100">{!uploadCenterId ? <option value="">Select a center</option> : null}{activeCenters.map((center) => <option key={center.id} value={center.id}>{center.name}</option>)}</select></label>
           <label className="block"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Program</span><select value={programKey} onChange={(event) => setProgramKey(event.target.value as CommunityProgramKey)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3">{communityProgramKeys.map((key) => <option key={key} value={key}>{programLabels.get(key)}</option>)}</select></label>
           <label className="block"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Photograph</span><input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => setFile(event.target.files?.[0] ?? null)} className="mt-2 block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" required /></label>
           <label className="block"><span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Image description (required)</span><input value={altText} onChange={(event) => setAltText(event.target.value)} maxLength={240} placeholder="Example: Volunteers arranging flowers during a community workshop" className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3" required /></label>
@@ -210,11 +228,13 @@ function CommunityProgramPhotosAdmin() {
           const programPhotos = photos.filter((photo) => photo.program_key === key)
           return <section key={key} aria-labelledby={`photos-${key}`}><div className="flex items-end justify-between gap-4"><h2 id={`photos-${key}`} className="text-3xl font-serif">{programLabels.get(key)}</h2><span className="text-sm text-slate-500">{programPhotos.length} photo{programPhotos.length === 1 ? '' : 's'}</span></div>
             {isLoading ? <p className="mt-4 text-slate-500">Loading photographs…</p> : programPhotos.length === 0 ? <p className="mt-4 rounded-2xl border border-dashed border-slate-200 px-5 py-6 text-slate-500">No photographs uploaded yet.</p> : <div className="mt-5 grid gap-6 lg:grid-cols-2">{programPhotos.map((photo) => <article key={photo.id} className="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm"><img src={photo.url} alt={photo.alt_text} className="aspect-[16/9] w-full object-cover" /><div className="space-y-4 p-5">
-              <div className="flex flex-wrap gap-2">{photo.is_featured ? <span className="rounded-full bg-divine-gold px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Featured</span> : null}{!photo.is_published ? <span className="rounded-full bg-slate-200 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-700">Hidden</span> : null}</div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500">Description<input value={photo.alt_text} maxLength={240} onChange={(event) => updateLocal(photo.id, { alt_text: event.target.value })} className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm font-normal normal-case tracking-normal text-deep-slate" /></label>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500">Caption<input value={photo.caption ?? ''} maxLength={500} onChange={(event) => updateLocal(photo.id, { caption: event.target.value })} className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm font-normal normal-case tracking-normal text-deep-slate" /></label>
-              <div className="grid gap-4 sm:grid-cols-2"><label className="block text-xs font-semibold uppercase tracking-wider text-slate-500">Display order<input type="number" min="0" value={photo.display_order} onChange={(event) => updateLocal(photo.id, { display_order: Number(event.target.value) })} className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" /></label><label className="flex items-center gap-3 self-end rounded-xl border border-slate-200 px-4 py-3 text-sm"><input type="checkbox" checked={photo.is_published} onChange={(event) => updateLocal(photo.id, { is_published: event.target.checked })} /> Published</label></div>
-              <div className="flex flex-wrap gap-3"><button type="button" onClick={() => void savePhoto(photo)} className="rounded-full bg-sage-700 px-5 py-2 text-xs font-semibold text-white">Save</button>{!photo.is_featured ? <button type="button" onClick={() => void setFeatured(photo)} className="rounded-full border border-divine-gold px-5 py-2 text-xs font-semibold text-amber-800">Make featured</button> : null}<button type="button" onClick={() => void deletePhoto(photo)} className="rounded-full border border-rose-200 px-5 py-2 text-xs font-semibold text-rose-700">Delete</button></div>
+              <div className="flex flex-wrap gap-2">{isSuperAdmin && photo.center_id ? <span className="rounded-full bg-sage-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-sage-800">{centerLabels.get(photo.center_id) ?? photo.center_id}</span> : null}{photo.is_featured ? <span className="rounded-full bg-divine-gold px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Featured</span> : null}{!photo.is_published ? <span className="rounded-full bg-slate-200 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-700">Hidden</span> : null}</div>
+              {isSuperAdmin ? <>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500">Description<input value={photo.alt_text} maxLength={240} onChange={(event) => updateLocal(photo.id, { alt_text: event.target.value })} className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm font-normal normal-case tracking-normal text-deep-slate" /></label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500">Caption<input value={photo.caption ?? ''} maxLength={500} onChange={(event) => updateLocal(photo.id, { caption: event.target.value })} className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm font-normal normal-case tracking-normal text-deep-slate" /></label>
+                <div className="grid gap-4 sm:grid-cols-2"><label className="block text-xs font-semibold uppercase tracking-wider text-slate-500">Display order<input type="number" min="0" value={photo.display_order} onChange={(event) => updateLocal(photo.id, { display_order: Number(event.target.value) })} className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm" /></label><label className="flex items-center gap-3 self-end rounded-xl border border-slate-200 px-4 py-3 text-sm"><input type="checkbox" checked={photo.is_published} onChange={(event) => updateLocal(photo.id, { is_published: event.target.checked })} /> Published</label></div>
+                <div className="flex flex-wrap gap-3"><button type="button" onClick={() => void savePhoto(photo)} className="rounded-full bg-sage-700 px-5 py-2 text-xs font-semibold text-white">Save</button>{!photo.is_featured ? <button type="button" onClick={() => void setFeatured(photo)} className="rounded-full border border-divine-gold px-5 py-2 text-xs font-semibold text-amber-800">Make featured</button> : null}<button type="button" onClick={() => void deletePhoto(photo)} className="rounded-full border border-rose-200 px-5 py-2 text-xs font-semibold text-rose-700">Delete</button></div>
+              </> : <div className="space-y-2 text-sm leading-6 text-slate-600"><p><span className="font-semibold text-deep-slate">Description:</span> {photo.alt_text}</p>{photo.caption ? <p><span className="font-semibold text-deep-slate">Caption:</span> {photo.caption}</p> : null}</div>}
             </div></article>)}</div>}
           </section>
         })}

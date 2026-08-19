@@ -15,7 +15,7 @@ const SECTION_LABELS: Record<AdminSection, string> = {
 
 export function LearningAdminToolbar({ current }: { current: AdminSection }) {
   const navigate = useNavigate()
-  const { role, isSuperAdmin, signOut } = useLearningAuth()
+  const { role, isSuperAdmin, isCenterAdmin, signOut } = useLearningAuth()
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [signOutError, setSignOutError] = useState<string | null>(null)
 
@@ -25,10 +25,13 @@ export function LearningAdminToolbar({ current }: { current: AdminSection }) {
     { key: 'materials', to: '/admin/materials', label: SECTION_LABELS.materials },
   ]
 
+  if (isSuperAdmin || isCenterAdmin) {
+    links.push({ key: 'program-photos', to: '/admin/program-photos', label: SECTION_LABELS['program-photos'] })
+  }
+
   if (isSuperAdmin) {
     links.push(
       { key: 'organization', to: '/admin/organization', label: SECTION_LABELS.organization },
-      { key: 'program-photos', to: '/admin/program-photos', label: SECTION_LABELS['program-photos'] },
       { key: 'users', to: '/admin/users', label: SECTION_LABELS.users },
     )
   }

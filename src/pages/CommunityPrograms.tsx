@@ -32,7 +32,7 @@ export default function CommunityPrograms() {
       const client = supabase
       const { data, error } = await client
         .from('community_program_photos')
-        .select('id,program_key,storage_path,alt_text,caption,display_order,is_featured,is_published,created_at')
+        .select('id,program_key,center_id,storage_path,alt_text,caption,display_order,is_featured,is_published,created_at')
         .eq('is_published', true)
         .order('display_order', { ascending: true })
         .order('created_at', { ascending: true })

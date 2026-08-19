@@ -84,3 +84,23 @@ export function RequireSuperAdmin({ children }: { children: ReactNode }) {
 
   return <>{children}</>
 }
+
+export function RequireProgramPhotoContributor({ children }: { children: ReactNode }) {
+  const location = useLocation()
+  const { session, isAuthLoading, isSuperAdmin, isCenterAdmin } = useLearningAuth()
+
+  if (isAuthLoading) {
+    return <div className="min-h-[60vh] flex items-center justify-center"><p className="text-slate-600">Loading...</p></div>
+  }
+
+  if (!session) {
+    const next = `${location.pathname}${location.search}`
+    return <Navigate to={`/admin?next=${encodeURIComponent(next)}`} replace />
+  }
+
+  if (!isSuperAdmin && !isCenterAdmin) {
+    return <div className="min-h-[60vh] flex items-center justify-center"><div className="max-w-xl px-6 text-center space-y-4"><h1 className="text-3xl font-serif text-deep-slate">Not authorized</h1><p className="text-slate-600">This page is available to super admins and center admins only.</p></div></div>
+  }
+
+  return <>{children}</>
+}
