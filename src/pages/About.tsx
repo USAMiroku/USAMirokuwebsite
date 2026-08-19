@@ -202,8 +202,8 @@ export default function About() {
 
       <Section className="section-wash border-y border-[rgba(141,107,38,0.12)]">
         <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2">
-          <Card title={grantCopy.whoTitle}><p className="text-base leading-8 text-slate-600">{grantCopy.who}</p><p className="mt-4 text-base leading-8 text-slate-600">{grantCopy.welcome}</p></Card>
-          <Card title={grantCopy.missionTitle}><p className="text-base leading-8 text-slate-600">{grantCopy.mission}</p><p className="mt-5 rounded-2xl bg-sanctuary-100 p-5 text-sm leading-7 text-deep-slate">{nonprofitStatement[language]}</p></Card>
+          <Card title={grantCopy.whoTitle}><p className="text-base leading-8 text-slate-600">{grantCopy.who}</p><p className="mt-4 text-base leading-8 text-slate-600">{grantCopy.welcome}</p><p className="mt-5 rounded-2xl border border-[rgba(141,107,38,0.2)] bg-sanctuary-100 p-5 text-base font-medium leading-7 text-deep-slate">{nonprofitStatement[language]}</p></Card>
+          <Card title={grantCopy.missionTitle}><p className="text-base leading-8 text-slate-600">{grantCopy.mission}</p></Card>
         </div>
       </Section>
 

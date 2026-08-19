@@ -92,7 +92,7 @@ function PublicFooter() {
           <p>© {new Date().getFullYear()} Miroku Association USA</p>
           <p>World Messianic Church of America</p>
         </div>
-        <p className="mt-5 border-t border-white/12 pt-5 text-xs leading-6 text-white/72">{nonprofitStatement[language]}</p>
+        <p className="mt-5 rounded-2xl border border-white/20 bg-white/10 px-5 py-4 text-sm font-medium leading-7 text-white md:text-base">{nonprofitStatement[language]}</p>
       </div>
     </footer>
   )
@@ -210,7 +210,7 @@ function LearningFooter() {
             </Link>
           </div>
         </div>
-        <p className="mt-6 text-center text-xs font-normal normal-case leading-6 text-slate-500">{nonprofitStatement[language]}</p>
+        <p className="mx-auto mt-6 max-w-4xl rounded-2xl border border-[rgba(141,107,38,0.2)] bg-sanctuary-100 px-5 py-4 text-center text-sm font-medium normal-case leading-7 text-deep-slate md:text-base">{nonprofitStatement[language]}</p>
       </div>
     </footer>
   )

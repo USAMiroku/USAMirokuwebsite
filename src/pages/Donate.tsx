@@ -6,6 +6,7 @@ import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { siteConfig } from '../config/siteConfig'
 import { mainDonationTypes } from '../config/donationTypeOptions'
+import { nonprofitStatement } from '../data/grantContent'
 
 type PayPalCardFieldsInstance = {
   isEligible: () => boolean
@@ -951,6 +952,10 @@ export default function Donate() {
 
       <Section className="bg-white">
         <div className="mx-auto max-w-6xl space-y-6">
+          <aside className="rounded-2xl border border-[rgba(141,107,38,0.2)] bg-[#fffaf0] px-5 py-4 text-center shadow-[0_12px_30px_rgba(141,107,38,0.08)] md:px-8">
+            <p className="text-sm leading-7 text-slate-700">{nonprofitStatement[language]}</p>
+          </aside>
+
           {formError ? (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-900">
               {formError}
