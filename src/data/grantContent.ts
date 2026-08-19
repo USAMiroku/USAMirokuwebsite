@@ -14,7 +14,7 @@ export const healthDisclosure: Record<Language, string> = {
 
 export const grantContent = {
   en: {
-    programsNav: 'Community Programs', whoTitle: 'Who We Are', missionTitle: 'Our Mission',
+    programsNav: 'Community Programs', whoTitle: 'What Is Miroku Association USA?', missionTitle: 'Our Mission',
     who: 'Miroku Association USA, also known through its religious activities as World Messianic Church of America, is a nonprofit public charity dedicated to helping create healthier, more harmonious communities. Rooted in the teachings of Mokichi Okada, we serve individuals and families through spiritual support, education, leadership development, arts and beauty, nature and natural farming, volunteer service, and community activities.',
     welcome: 'Our programs encourage personal growth, gratitude, service to others, respect for nature, and the creation of a more peaceful and beautiful world. People of all backgrounds are welcome to learn about and participate in our activities.',
     mission: 'Miroku Association USA works to support the spiritual and personal development of individuals, strengthen communities, encourage service to others, promote appreciation for art and beauty, and foster a respectful relationship with nature. Inspired by our faith tradition, we seek to contribute to a healthier, more peaceful, and harmonious world.',
@@ -31,7 +31,7 @@ export const grantContent = {
     ],
   },
   es: {
-    programsNav: 'Programas Comunitarios', whoTitle: 'Quiénes somos', missionTitle: 'Nuestra misión',
+    programsNav: 'Programas Comunitarios', whoTitle: '¿Qué es Miroku Association USA?', missionTitle: 'Nuestra misión',
     who: 'Miroku Association USA, conocida a través de sus actividades religiosas como World Messianic Church of America, es una organización benéfica pública sin fines de lucro dedicada a contribuir a comunidades más saludables y armoniosas. Arraigados en las enseñanzas de Mokichi Okada, servimos a personas y familias mediante apoyo espiritual, educación, desarrollo de liderazgo, arte y belleza, naturaleza y agricultura natural, voluntariado y actividades comunitarias.',
     welcome: 'Nuestros programas fomentan el crecimiento personal, la gratitud, el servicio a los demás, el respeto por la naturaleza y la creación de un mundo más pacífico y bello. Personas de todos los orígenes son bienvenidas.',
     mission: 'Miroku Association USA apoya el desarrollo espiritual y personal, fortalece comunidades, fomenta el servicio, promueve el aprecio por el arte y la belleza y cultiva una relación respetuosa con la naturaleza. Inspirados por nuestra tradición de fe, buscamos contribuir a un mundo más saludable, pacífico y armonioso.',
@@ -48,7 +48,7 @@ export const grantContent = {
     ],
   },
   pt: {
-    programsNav: 'Programas Comunitários', whoTitle: 'Quem somos', missionTitle: 'Nossa missão',
+    programsNav: 'Programas Comunitários', whoTitle: 'O que é a Miroku Association USA?', missionTitle: 'Nossa missão',
     who: 'A Miroku Association USA, conhecida por meio de suas atividades religiosas como World Messianic Church of America, é uma organização beneficente pública sem fins lucrativos dedicada a contribuir para comunidades mais saudáveis e harmoniosas. Fundamentados nos ensinamentos de Mokichi Okada, servimos pessoas e famílias por meio de apoio espiritual, educação, desenvolvimento de liderança, arte e beleza, natureza e agricultura natural, voluntariado e atividades comunitárias.',
     welcome: 'Nossos programas incentivam o crescimento pessoal, a gratidão, o serviço ao próximo, o respeito pela natureza e a criação de um mundo mais pacífico e belo. Pessoas de todas as origens são bem-vindas.',
     mission: 'A Miroku Association USA apoia o desenvolvimento espiritual e pessoal, fortalece comunidades, incentiva o serviço ao próximo, promove a apreciação da arte e da beleza e cultiva uma relação respeitosa com a natureza. Inspirados por nossa tradição de fé, buscamos contribuir para um mundo mais saudável, pacífico e harmonioso.',
