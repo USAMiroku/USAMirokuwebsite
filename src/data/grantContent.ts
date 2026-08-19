@@ -28,6 +28,7 @@ export const grantContent = {
       ['Nature & Natural Farming', 'Educational activities encourage respect for nature, gardening, natural farming, and thoughtful awareness of the relationship among people, food, and the environment.'],
       ['Volunteer Service', 'Participants can serve through charitable, educational, cultural, environmental, spiritual, and community activities.'],
       ['Spiritual Support', 'Johrei is a prayer-based spiritual practice central to our faith tradition. It is offered without charge as a form of spiritual support, reflection, and personal spiritual development.'],
+      ['Women and Girls Creative Leadership and Community Connection', 'Creative, educational, and community-centered activities offer women and girls opportunities to strengthen confidence, develop leadership skills, share their talents, and build supportive relationships across generations.'],
     ],
   },
   es: {
@@ -45,6 +46,7 @@ export const grantContent = {
       ['Naturaleza y agricultura natural', 'Las actividades educativas fomentan el respeto por la naturaleza, la jardinería, la agricultura natural y una relación consciente entre personas, alimentos y medio ambiente.'],
       ['Servicio voluntario', 'Los participantes pueden servir mediante actividades benéficas, educativas, culturales, ambientales, espirituales y comunitarias.'],
       ['Apoyo espiritual', 'Johrei es una práctica espiritual basada en la oración y central en nuestra tradición de fe. Se ofrece gratuitamente como apoyo espiritual, reflexión y desarrollo personal.'],
+      ['Liderazgo creativo y conexión comunitaria para mujeres y niñas', 'Actividades creativas, educativas y comunitarias ofrecen a mujeres y niñas oportunidades para fortalecer la confianza, desarrollar habilidades de liderazgo, compartir sus talentos y construir relaciones de apoyo entre generaciones.'],
     ],
   },
   pt: {
@@ -62,6 +64,7 @@ export const grantContent = {
       ['Natureza e agricultura natural', 'Atividades educativas promovem respeito pela natureza, jardinagem, agricultura natural e consciência da relação entre pessoas, alimentos e meio ambiente.'],
       ['Serviço voluntário', 'Os participantes podem servir em atividades beneficentes, educacionais, culturais, ambientais, espirituais e comunitárias.'],
       ['Apoio espiritual', 'Johrei é uma prática espiritual baseada na oração e central em nossa tradição de fé. É oferecido gratuitamente como apoio espiritual, reflexão e desenvolvimento pessoal.'],
+      ['Liderança criativa e conexão comunitária para mulheres e meninas', 'Atividades criativas, educativas e comunitárias oferecem a mulheres e meninas oportunidades para fortalecer a confiança, desenvolver habilidades de liderança, compartilhar seus talentos e construir relações de apoio entre gerações.'],
     ],
   },
 } as const
