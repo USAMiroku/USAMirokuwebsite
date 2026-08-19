@@ -372,7 +372,7 @@ export const translations: Record<string, TranslationContent> = {
       },
       leadership: {
         title: 'Participation',
-        body: 'As a U.S. 501(c)(3) nonprofit public charity, we are committed to transparency, accountability, and service.',
+        body: 'As a U.S. 501(C)(3) nonprofit public charity, we are committed to transparency, accountability, and service.',
       },
     },
     johrei: {

@@ -1,9 +1,9 @@
 import type { Language } from '../types'
 
 export const nonprofitStatement: Record<Language, string> = {
-  en: 'Miroku Association USA is a nonprofit public charity recognized by the Internal Revenue Service as tax-exempt under Section 501(c)(3) of the Internal Revenue Code. Contributions are tax-deductible to the extent permitted by law.',
-  es: 'Miroku Association USA es una organización benéfica pública sin fines de lucro reconocida por el Servicio de Impuestos Internos como exenta de impuestos conforme a la Sección 501(c)(3) del Código de Rentas Internas. Las contribuciones son deducibles de impuestos en la medida permitida por la ley.',
-  pt: 'A Miroku Association USA é uma organização beneficente pública sem fins lucrativos reconhecida pelo Internal Revenue Service como isenta de impostos nos termos da Seção 501(c)(3) do Código da Receita Federal. As contribuições são dedutíveis de impostos na medida permitida por lei.',
+  en: 'Miroku Association USA is a nonprofit public charity recognized by the Internal Revenue Service as tax-exempt under Section 501(C)(3) of the Internal Revenue Code. Contributions are tax-deductible to the extent permitted by law.',
+  es: 'Miroku Association USA es una organización benéfica pública sin fines de lucro reconocida por el Servicio de Impuestos Internos como exenta de impuestos conforme a la Sección 501(C)(3) del Código de Rentas Internas. Las contribuciones son deducibles de impuestos en la medida permitida por la ley.',
+  pt: 'A Miroku Association USA é uma organização beneficente pública sem fins lucrativos reconhecida pelo Internal Revenue Service como isenta de impostos nos termos da Seção 501(C)(3) do Código da Receita Federal. As contribuições são dedutíveis de impostos na medida permitida por lei.',
 }
 
 export const healthDisclosure: Record<Language, string> = {
