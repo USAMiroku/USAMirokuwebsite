@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLearningAuth } from '../context/LearningAuthContext'
 
-type AdminSection = 'donations' | 'activities' | 'organization' | 'materials' | 'users'
+type AdminSection = 'donations' | 'activities' | 'organization' | 'materials' | 'program-photos' | 'users'
 
 const SECTION_LABELS: Record<AdminSection, string> = {
   donations: 'Donations',
   activities: 'Activities',
   organization: 'Centers & Groups',
   materials: 'Event Downloads',
+  'program-photos': 'Program Photos',
   users: 'Admin Users',
 }
 
@@ -27,6 +28,7 @@ export function LearningAdminToolbar({ current }: { current: AdminSection }) {
   if (isSuperAdmin) {
     links.push(
       { key: 'organization', to: '/admin/organization', label: SECTION_LABELS.organization },
+      { key: 'program-photos', to: '/admin/program-photos', label: SECTION_LABELS['program-photos'] },
       { key: 'users', to: '/admin/users', label: SECTION_LABELS.users },
     )
   }

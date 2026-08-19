@@ -31,6 +31,7 @@ const LearningAdminDonations = lazy(() => import('./learning/pages/LearningAdmin
 const LearningAdminCenterActivities = lazy(() => import('./learning/pages/LearningAdminCenterActivities'))
 const LearningAdminOrganization = lazy(() => import('./learning/pages/LearningAdminOrganization'))
 const LearningAdminMaterialsUpload = lazy(() => import('./learning/pages/LearningAdminMaterialsUpload'))
+const LearningAdminCommunityProgramPhotos = lazy(() => import('./learning/pages/LearningAdminCommunityProgramPhotos'))
 const LearningAdminUsers = lazy(() => import('./learning/pages/LearningAdminUsers'))
 const LearningCenterActivities = lazy(() => import('./learning/pages/LearningCenterActivities'))
 const LearningResetPassword = lazy(() => import('./learning/pages/LearningResetPassword'))
@@ -109,6 +110,7 @@ function App() {
           <Route path="admin/centers" element={<LearningAdminCenterActivities />} />
           <Route path="admin/organization" element={<LearningAdminOrganization />} />
           <Route path="admin/materials" element={<LearningAdminMaterialsUpload />} />
+          <Route path="admin/program-photos" element={<LearningAdminCommunityProgramPhotos />} />
           <Route path="admin/users" element={<LearningAdminUsers />} />
           <Route path="learn/admin" element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="learn/admin/registrations" element={<Navigate to="/admin/activities" replace />} />
@@ -116,6 +118,7 @@ function App() {
           <Route path="learn/admin/centers" element={<Navigate to="/admin/activities" replace />} />
           <Route path="learn/admin/organization" element={<Navigate to="/admin/organization" replace />} />
           <Route path="learn/admin/materials" element={<Navigate to="/admin/materials" replace />} />
+          <Route path="learn/admin/program-photos" element={<Navigate to="/admin/program-photos" replace />} />
           <Route path="learn/admin/users" element={<Navigate to="/admin/users" replace />} />
           <Route path="*" element={<Home />} />
         </Route>
