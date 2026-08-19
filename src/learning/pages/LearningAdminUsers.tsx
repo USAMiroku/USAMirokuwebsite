@@ -39,6 +39,7 @@ function LearningAdminUsersInner() {
   const [isLoading, setIsLoading] = useState(true)
   const [creating, setCreating] = useState(false)
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null)
+  const [resettingUserId, setResettingUserId] = useState<string | null>(null)
 
   const [newEmail, setNewEmail] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -203,6 +204,32 @@ function LearningAdminUsersInner() {
     }
   }
 
+  async function handleSendPasswordReset(profile: ProfileRow) {
+    if (!supabase) {
+      setError('Supabase is not configured.')
+      return
+    }
+    if (!profile.email) {
+      setError('This profile does not have an email address for password recovery.')
+      return
+    }
+
+    setResettingUserId(profile.user_id)
+    setError(null)
+    setMessage(null)
+
+    try {
+      const redirectTo = `${window.location.origin}/reset-password`
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(profile.email, { redirectTo })
+      if (resetError) throw resetError
+      setMessage(`Password-reset email sent to ${profile.email}. The administrator must open the secure link and choose a new password.`)
+    } catch (resetError) {
+      setError(resetError instanceof Error ? resetError.message : 'Could not send the password-reset email.')
+    } finally {
+      setResettingUserId(null)
+    }
+  }
+
   return (
     <div className="relative min-h-screen bg-sanctuary-100 text-deep-slate">
       <div className="noise-subtle" />
@@ -269,7 +296,9 @@ function LearningAdminUsersInner() {
                   profile={profile}
                   centers={activeCenters}
                   onSave={updateProfile}
+                  onSendPasswordReset={handleSendPasswordReset}
                   onDelete={handleDeleteUser}
+                  isSendingPasswordReset={resettingUserId === profile.user_id}
                   isDeleting={deletingUserId === profile.user_id}
                 />
               ))}
@@ -285,13 +314,17 @@ function UserProfileCard({
   profile,
   centers,
   onSave,
+  onSendPasswordReset,
   onDelete,
+  isSendingPasswordReset,
   isDeleting,
 }: {
   profile: ProfileRow
   centers: ReturnType<typeof useManagedCenters>['activeCenters']
   onSave: (profile: ProfileRow, nextRole: string, nextManagedCenterId: string | null) => Promise<void>
+  onSendPasswordReset: (profile: ProfileRow) => Promise<void>
   onDelete: (profile: ProfileRow) => Promise<void>
+  isSendingPasswordReset: boolean
   isDeleting: boolean
 }) {
   const [role, setRole] = useState<(typeof ROLE_OPTIONS)[number]>(
@@ -304,7 +337,7 @@ function UserProfileCard({
       <p className="text-lg font-serif text-deep-slate">{profile.full_name || profile.email || profile.user_id}</p>
       <p className="mt-1 text-sm text-slate-500">{profile.email || profile.user_id}</p>
 
-      <div className="mt-4 grid gap-3 md:grid-cols-[0.8fr_1fr_auto_auto]">
+      <div className="mt-4 grid gap-3 md:grid-cols-2">
         <select value={role} onChange={(e) => setRole(e.target.value as (typeof ROLE_OPTIONS)[number])} className="rounded-xl border border-[rgba(184,134,11,0.22)] px-4 py-3 text-sm">
           {ROLE_OPTIONS.map((option) => (
             <option key={option} value={option}>{option}</option>
@@ -316,21 +349,31 @@ function UserProfileCard({
             <option key={center.id} value={center.id}>{center.name}</option>
           ))}
         </select>
-        <button
-          type="button"
-          onClick={() => void onSave(profile, role, role === 'center_admin' ? managedCenterId || null : null)}
-          className="inline-flex h-10 items-center justify-center rounded-full border border-sage-600 px-5 text-[10px] font-semibold uppercase text-sage-700 hover:bg-sage-50"
-        >
-          Save
-        </button>
-        <button
-          type="button"
-          onClick={() => void onDelete(profile)}
-          disabled={isDeleting}
-          className="inline-flex h-10 items-center justify-center rounded-full border border-rose-200 px-5 text-[10px] font-semibold uppercase text-rose-700 hover:bg-rose-50 disabled:opacity-60"
-        >
-          {isDeleting ? 'Deleting...' : 'Delete'}
-        </button>
+        <div className="flex flex-wrap gap-3 md:col-span-2">
+          <button
+            type="button"
+            onClick={() => void onSave(profile, role, role === 'center_admin' ? managedCenterId || null : null)}
+            className="inline-flex h-10 items-center justify-center rounded-full border border-sage-600 px-5 text-[10px] font-semibold uppercase text-sage-700 hover:bg-sage-50"
+          >
+            Save Access
+          </button>
+          <button
+            type="button"
+            onClick={() => void onSendPasswordReset(profile)}
+            disabled={isSendingPasswordReset || !profile.email}
+            className="inline-flex h-10 items-center justify-center rounded-full border border-divine-gold px-5 text-[10px] font-semibold uppercase text-amber-800 hover:bg-amber-50 disabled:opacity-60"
+          >
+            {isSendingPasswordReset ? 'Sending...' : 'Send Password Reset'}
+          </button>
+          <button
+            type="button"
+            onClick={() => void onDelete(profile)}
+            disabled={isDeleting}
+            className="inline-flex h-10 items-center justify-center rounded-full border border-rose-200 px-5 text-[10px] font-semibold uppercase text-rose-700 hover:bg-rose-50 disabled:opacity-60"
+          >
+            {isDeleting ? 'Deleting...' : 'Delete'}
+          </button>
+        </div>
       </div>
       {!ROLE_OPTIONS.includes(profile.role as (typeof ROLE_OPTIONS)[number]) ? (
         <p className="mt-3 text-xs text-slate-500">
