@@ -30,7 +30,7 @@ export default function LocationDetail() {
   const assistantLabel =
     language === 'en' ? 'Assistant' : language === 'es' ? 'Asistente' : 'Assistente'
   const activitiesLabel =
-    language === 'en' ? 'Center Activities' : language === 'es' ? 'Actividades del centro' : 'Atividades do centro'
+    language === 'en' ? 'Center Events' : language === 'es' ? 'Eventos del centro' : 'Eventos do centro'
   const loadingLabel = language === 'en' ? 'Loading...' : language === 'es' ? 'Cargando...' : 'Carregando...'
   const fallbackActivities =
     language === 'en'
@@ -188,13 +188,13 @@ export default function LocationDetail() {
 
             <div className="mt-6 flex flex-wrap gap-3">
               <ButtonLink to={`/activities/centers/${location.id}`} variant="primary">
-                {language === 'en' ? 'Open Center Activities' : language === 'es' ? 'Abrir actividades del centro' : 'Abrir atividades do centro'}
+                {language === 'en' ? 'Open Center Events' : language === 'es' ? 'Abrir eventos del centro' : 'Abrir eventos do centro'}
               </ButtonLink>
               <Link
                 to="/activities"
                 className="inline-flex h-11 items-center justify-center rounded-full border border-[rgba(141,107,38,0.22)] px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-deep-slate transition-all hover:-translate-y-0.5 hover:bg-sage-mist"
               >
-                Activities
+                Events Calendar
               </Link>
             </div>
           </Card>

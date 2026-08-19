@@ -83,7 +83,7 @@ export default function Locations() {
             pageTitle: 'Centers and Groups Across the United States',
             intro: 'Find a nearby center to receive Johrei, connect with the community, and explore local activities.',
             visitCenter: 'Visit Center',
-            viewSessions: 'View Activities',
+            viewSessions: 'View Events Calendar',
             regionalCircle: 'Regional gathering circle',
             firstVisitKicker: 'First Visit',
             firstVisitTitle: 'What to Expect on Your First Visit',
@@ -132,7 +132,7 @@ export default function Locations() {
                 {copy.contactCenter}
               </ButtonLink>
               <ButtonLink to="/activities" variant="outline">
-                Activities
+                Events Calendar
               </ButtonLink>
             </div>
           </div>

@@ -152,13 +152,13 @@ export default function LearningActivityDetail() {
   const copy =
     language === 'es'
       ? {
-          metaTitle: 'Actividades | Detalle',
+          metaTitle: 'Calendario de Eventos | Detalle',
           metaDescription: 'Horario, materiales y detalles públicos de la actividad.',
           notConfigured:
             'La aplicación de aprendizaje no está configurada. Agregue las variables de entorno de Supabase.',
           offering: 'Actividad',
           loading: 'Cargando...',
-          backToActivities: 'Volver a actividades',
+          backToActivities: 'Volver al calendario de eventos',
           noSessions: 'Las fechas se anunciarán pronto.',
           noSessionsBody:
             'Vuelva pronto o contacte al centro para conocer las próximas fechas.',
@@ -182,13 +182,13 @@ export default function LearningActivityDetail() {
         }
       : language === 'pt'
         ? {
-            metaTitle: 'Atividades | Detalhes',
+            metaTitle: 'Calendário de Eventos | Detalhes',
             metaDescription: 'Horários, materiais e detalhes públicos da atividade.',
             notConfigured:
               'O aplicativo de aprendizado não está configurado. Adicione as variáveis de ambiente do Supabase.',
             offering: 'Atividade',
             loading: 'Carregando...',
-            backToActivities: 'Voltar para atividades',
+            backToActivities: 'Voltar ao calendário de eventos',
             noSessions: 'As datas serão anunciadas em breve.',
             noSessionsBody: 'Volte em breve ou entre em contato com o centro para saber as próximas datas.',
             session: 'Sessão',
@@ -210,12 +210,12 @@ export default function LearningActivityDetail() {
             viewLocations: 'Ver locais',
           }
         : {
-            metaTitle: 'Activities | Detail',
+            metaTitle: 'Events Calendar | Detail',
             metaDescription: 'Schedule, downloads, and public activity details.',
             notConfigured: 'Learning app is not configured. Add Supabase env vars to enable activities.',
             offering: 'Activity',
             loading: 'Loading...',
-            backToActivities: 'Back to Activities',
+            backToActivities: 'Back to Events Calendar',
             noSessions: 'Dates will be announced soon.',
             noSessionsBody: 'Check back soon or contact the center for upcoming dates.',
             session: 'Session',

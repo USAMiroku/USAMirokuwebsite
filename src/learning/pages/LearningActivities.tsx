@@ -5,6 +5,7 @@ import { usePageMeta } from '../../hooks/usePageMeta'
 import { supabase } from '../lib/supabaseClient'
 import { useManagedCenters } from '../../organization/centers'
 import { useTranslation } from '../../context/TranslationContext'
+import { AnnualEventsCalendar } from '../components/AnnualEventsCalendar'
 
 type Activity = {
   id: string
@@ -126,11 +127,12 @@ export default function LearningActivities() {
   const copy =
     language === 'es'
       ? {
-          title: 'Actividades',
-          eyebrow: 'Explorar',
-          noEventsTitle: 'Aún no se han agregado actividades.',
+          title: 'Calendario de Eventos',
+          eyebrow: 'Eventos de Miroku Association USA',
+          metaDescription: 'Calendario anual, servicios, clases, seminarios y eventos comunitarios de Miroku Association USA en Estados Unidos.',
+          noEventsTitle: 'Aún no se han agregado eventos dinámicos.',
           noEventsBody: 'Vuelva pronto para ver servicios especiales, seminarios y sesiones de estudio.',
-          viewEvent: 'Ver actividad',
+          viewEvent: 'Ver evento',
           center: 'Centro',
           upcomingSessions: 'sesiones próximas',
           specialServices: 'Ceremonias Especiales',
@@ -139,11 +141,12 @@ export default function LearningActivities() {
         }
       : language === 'pt'
         ? {
-            title: 'Atividades',
-            eyebrow: 'Explorar',
-            noEventsTitle: 'Ainda não foram adicionadas atividades.',
+            title: 'Calendário de Eventos',
+            eyebrow: 'Eventos da Miroku Association USA',
+            metaDescription: 'Calendário anual, cultos, aulas, seminários e eventos comunitários da Miroku Association USA nos Estados Unidos.',
+            noEventsTitle: 'Ainda não foram adicionados eventos dinâmicos.',
             noEventsBody: 'Volte em breve para ver cultos especiais, seminários e sessões de estudo.',
-            viewEvent: 'Ver atividade',
+            viewEvent: 'Ver evento',
             center: 'Centro',
             upcomingSessions: 'sessões futuras',
             specialServices: 'Cultos Especiais',
@@ -151,11 +154,12 @@ export default function LearningActivities() {
             specialServicesAction: 'Abrir formulários',
           }
         : {
-            title: 'Activities',
-            eyebrow: 'Browse',
-            noEventsTitle: 'No activities have been added yet.',
+            title: 'Events Calendar',
+            eyebrow: 'Miroku Association USA Events',
+            metaDescription: 'Annual calendar, services, classes, seminars, and community events from Miroku Association USA across the United States.',
+            noEventsTitle: 'No additional live events have been added yet.',
             noEventsBody: 'Check back soon for special services, seminars, and study sessions.',
-            viewEvent: 'View Activity',
+            viewEvent: 'View Event',
             center: 'Center',
             upcomingSessions: 'upcoming sessions',
             specialServices: 'Special Services',
@@ -164,9 +168,8 @@ export default function LearningActivities() {
           }
 
   usePageMeta({
-    title: `${copy.title} | World Messianic Church of America`,
-    description:
-      'Find special services, seminars, study sessions, and community gatherings at Miroku Association USA / World Messianic Church of America.',
+    title: `${copy.title} | Miroku Association USA`,
+    description: copy.metaDescription,
   })
 
   useEffect(() => {
@@ -259,6 +262,7 @@ export default function LearningActivities() {
 
       <Section className="bg-white">
         <div className="max-w-6xl mx-auto px-6 space-y-10">
+          <AnnualEventsCalendar language={language} />
           {error ? (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 px-6 py-5 text-rose-900">{error}</div>
           ) : null}

@@ -19,7 +19,7 @@ export const grantContent = {
     welcome: 'Our programs encourage personal growth, gratitude, service to others, respect for nature, and the creation of a more peaceful and beautiful world. People of all backgrounds are welcome to learn about and participate in our activities.',
     mission: 'Miroku Association USA works to support the spiritual and personal development of individuals, strengthen communities, encourage service to others, promote appreciation for art and beauty, and foster a respectful relationship with nature. Inspired by our faith tradition, we seek to contribute to a healthier, more peaceful, and harmonious world.',
     programsIntro: 'Our ongoing program areas bring our faith into community life through welcoming, learning, creativity, care for nature, service, and spiritual support.',
-    activitiesCta: 'View Upcoming Activities', volunteerCta: 'Volunteer or Contact Us', locationsCta: 'Find a Johrei Center',
+    activitiesCta: 'View Events Calendar', volunteerCta: 'Volunteer or Contact Us', locationsCta: 'Find a Johrei Center',
     programs: [
       ['Community Outreach', 'We welcome community members, encourage fellowship, respond to local needs within our capacity, and build meaningful relationships through center and community activities.'],
       ['Education', 'Study opportunities, workshops, faith education, and personal-development activities connect spiritual values with nature, art, service, and everyday life.'],
@@ -36,7 +36,7 @@ export const grantContent = {
     welcome: 'Nuestros programas fomentan el crecimiento personal, la gratitud, el servicio a los demás, el respeto por la naturaleza y la creación de un mundo más pacífico y bello. Personas de todos los orígenes son bienvenidas.',
     mission: 'Miroku Association USA apoya el desarrollo espiritual y personal, fortalece comunidades, fomenta el servicio, promueve el aprecio por el arte y la belleza y cultiva una relación respetuosa con la naturaleza. Inspirados por nuestra tradición de fe, buscamos contribuir a un mundo más saludable, pacífico y armonioso.',
     programsIntro: 'Nuestras áreas permanentes de programas llevan nuestra fe a la vida comunitaria mediante acogida, aprendizaje, creatividad, cuidado de la naturaleza, servicio y apoyo espiritual.',
-    activitiesCta: 'Ver próximas actividades', volunteerCta: 'Ser voluntario o contactarnos', locationsCta: 'Encontrar un Centro Johrei',
+    activitiesCta: 'Ver calendario de eventos', volunteerCta: 'Ser voluntario o contactarnos', locationsCta: 'Encontrar un Centro Johrei',
     programs: [
       ['Alcance comunitario', 'Damos la bienvenida a la comunidad, fomentamos la convivencia, respondemos a necesidades locales dentro de nuestras posibilidades y construimos relaciones significativas.'],
       ['Educación', 'Estudios, talleres, educación religiosa y desarrollo personal conectan los valores espirituales con la naturaleza, el arte, el servicio y la vida diaria.'],
@@ -53,7 +53,7 @@ export const grantContent = {
     welcome: 'Nossos programas incentivam o crescimento pessoal, a gratidão, o serviço ao próximo, o respeito pela natureza e a criação de um mundo mais pacífico e belo. Pessoas de todas as origens são bem-vindas.',
     mission: 'A Miroku Association USA apoia o desenvolvimento espiritual e pessoal, fortalece comunidades, incentiva o serviço ao próximo, promove a apreciação da arte e da beleza e cultiva uma relação respeitosa com a natureza. Inspirados por nossa tradição de fé, buscamos contribuir para um mundo mais saudável, pacífico e harmonioso.',
     programsIntro: 'Nossas áreas permanentes de programas levam nossa fé à vida comunitária por meio do acolhimento, aprendizado, criatividade, cuidado com a natureza, serviço e apoio espiritual.',
-    activitiesCta: 'Ver próximas atividades', volunteerCta: 'Ser voluntário ou entrar em contato', locationsCta: 'Encontrar um Centro Johrei',
+    activitiesCta: 'Ver calendário de eventos', volunteerCta: 'Ser voluntário ou entrar em contato', locationsCta: 'Encontrar um Centro Johrei',
     programs: [
       ['Ação comunitária', 'Acolhemos a comunidade, incentivamos a convivência, respondemos às necessidades locais dentro de nossas possibilidades e construímos relacionamentos significativos.'],
       ['Educação', 'Estudos, oficinas, educação religiosa e desenvolvimento pessoal conectam valores espirituais à natureza, arte, serviço e vida cotidiana.'],

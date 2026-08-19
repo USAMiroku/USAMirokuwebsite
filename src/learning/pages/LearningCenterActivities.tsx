@@ -56,17 +56,17 @@ export default function LearningCenterActivities() {
             viewSessions: 'Ver evento',
           }
         : {
-            metaTitle: 'Center Activities',
+            metaTitle: 'Center Events',
             metaDescription: center ? `Special services, study sessions, and activities at ${center.name}.` : 'Browse public activities by center.',
             notFound: 'Center not found',
             backToLocations: 'Back to Locations',
-            title: 'Center Activities',
+            title: 'Center Events',
             intro: 'Review the special services, seminars, and public activities shared by this center.',
             backToCenter: `Back to ${center?.name ?? 'this center'}`,
-            allActivities: 'All Activities',
-            emptyTitle: 'No public activities have been added for this center yet.',
-            emptyBody: 'Check back later or browse all public activities.',
-            browseAll: 'Browse All Activities',
+            allActivities: 'Events Calendar',
+            emptyTitle: 'No public events have been added for this center yet.',
+            emptyBody: 'Check back later or browse the complete events calendar.',
+            browseAll: 'Browse Events Calendar',
             viewSessions: 'View Activity',
           }
 
