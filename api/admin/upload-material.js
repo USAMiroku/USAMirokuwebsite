@@ -1,6 +1,15 @@
-import { requireAdminAccess } from './_supabaseAdmin.js'
+import { requireAdminAccess, sendApiError } from './_supabaseAdmin.js'
+import { enforceRateLimit, enforceSameOrigin } from '../_security.js'
 
 const MATERIALS_BUCKET = 'learning-materials'
+const MAX_FILE_BYTES = 10 * 1024 * 1024
+const ALLOWED_FILES = new Map([
+  ['pdf', 'application/pdf'],
+  ['jpg', 'image/jpeg'],
+  ['jpeg', 'image/jpeg'],
+  ['png', 'image/png'],
+  ['webp', 'image/webp'],
+])
 
 export const config = {
   api: {
@@ -12,9 +21,22 @@ export const config = {
 
 function sanitizeFileName(name) {
   return String(name || 'download')
+    .normalize('NFKC')
+    .replace(/[\u0000-\u001f\u007f]/g, '')
     .replaceAll('/', '_')
     .replaceAll('\\', '_')
     .replace(/\s+/g, '_')
+    .replace(/^\.+/, '')
+    .replace(/[^a-zA-Z0-9._-]/g, '_')
+    .slice(-160)
+}
+
+function isExpectedSignature(binary, extension) {
+  if (extension === 'pdf') return binary.subarray(0, 5).toString('ascii') === '%PDF-'
+  if (extension === 'jpg' || extension === 'jpeg') return binary[0] === 0xff && binary[1] === 0xd8 && binary[2] === 0xff
+  if (extension === 'png') return binary.subarray(0, 8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]))
+  if (extension === 'webp') return binary.subarray(0, 4).toString('ascii') === 'RIFF' && binary.subarray(8, 12).toString('ascii') === 'WEBP'
+  return false
 }
 
 export default async function handler(req, res) {
@@ -22,6 +44,8 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Method not allowed.' })
   }
+  if (!enforceSameOrigin(req, res)) return
+  if (!enforceRateLimit(req, res, { key: 'admin-upload-material', limit: 20, windowMs: 10 * 60_000 })) return
 
   try {
     const { admin, profile } = await requireAdminAccess(req)
@@ -35,6 +59,8 @@ export default async function handler(req, res) {
     const fileName = sanitizeFileName(body.fileName)
     const mimeType = body.mimeType ? String(body.mimeType).trim() : null
     const fileBase64 = String(body.fileBase64 || '').trim()
+    const extension = fileName.split('.').pop()?.toLowerCase() || ''
+    const expectedMime = ALLOWED_FILES.get(extension)
 
     if (!['session', 'self_study'].includes(uploadMode)) {
       return res.status(400).json({ error: 'Invalid upload mode.' })
@@ -44,6 +70,9 @@ export default async function handler(req, res) {
     }
     if (!fileBase64) {
       return res.status(400).json({ error: 'File data is required.' })
+    }
+    if (!expectedMime || mimeType !== expectedMime) {
+      return res.status(400).json({ error: 'Only PDF, JPG, PNG, and WebP files are allowed.' })
     }
 
     let resolvedActivityId = activityId
@@ -85,6 +114,12 @@ export default async function handler(req, res) {
     }
 
     const binary = Buffer.from(fileBase64, 'base64')
+    if (binary.length === 0 || binary.length > MAX_FILE_BYTES) {
+      return res.status(400).json({ error: 'The file must be 10 MB or smaller.' })
+    }
+    if (!isExpectedSignature(binary, extension)) {
+      return res.status(400).json({ error: 'The file content does not match its extension.' })
+    }
     const path =
       uploadMode === 'session'
         ? `session/${resolvedSessionId}/${fileName}`
@@ -109,6 +144,7 @@ export default async function handler(req, res) {
         storage_path: path,
         file_name: fileName,
         mime_type: mimeType,
+        is_public: uploadMode === 'self_study',
       })
       .select('id,activity_id,session_id,title,file_name')
       .single()
@@ -120,7 +156,6 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ material })
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Could not upload download.'
-    return res.status(500).json({ error: message })
+    return sendApiError(res, error, 'Could not upload download.')
   }
 }

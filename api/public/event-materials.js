@@ -1,4 +1,5 @@
 import { getSupabaseAdmin } from '../admin/_supabaseAdmin.js'
+import { enforceRateLimit } from '../_security.js'
 
 const MATERIALS_BUCKET = 'learning-materials'
 
@@ -7,6 +8,8 @@ export default async function handler(req, res) {
     res.status(405).json({ error: 'Method not allowed.' })
     return
   }
+
+  if (!enforceRateLimit(req, res, { key: 'public-materials', limit: 40 })) return
 
   try {
     const activityId = String(req.query?.activityId || '').trim()
@@ -18,12 +21,15 @@ export default async function handler(req, res) {
     const admin = getSupabaseAdmin()
     const { data, error } = await admin
       .from('learning_materials')
-      .select('id,activity_id,session_id,title,description,storage_path,file_name,mime_type,created_at')
+      .select('id,activity_id,session_id,title,description,storage_path,file_name,mime_type,created_at,is_public,learning_activities!inner(is_published)')
       .eq('activity_id', activityId)
+      .eq('is_public', true)
+      .eq('learning_activities.is_published', true)
       .order('created_at', { ascending: false })
 
     if (error) {
-      res.status(500).json({ error: error.message })
+      console.error(error)
+      res.status(500).json({ error: 'Could not load materials.' })
       return
     }
 
@@ -33,8 +39,9 @@ export default async function handler(req, res) {
           .from(MATERIALS_BUCKET)
           .createSignedUrl(material.storage_path, 60 * 60)
 
+        const { learning_activities: _activity, storage_path: _storagePath, is_public: _isPublic, ...publicMaterial } = material
         return {
-          ...material,
+          ...publicMaterial,
           download_url: signedError ? null : signed?.signedUrl ?? null,
         }
       }),
@@ -42,7 +49,7 @@ export default async function handler(req, res) {
 
     res.status(200).json({ materials })
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unexpected error.'
-    res.status(500).json({ error: message })
+    console.error(error)
+    res.status(500).json({ error: 'Could not load materials.' })
   }
 }

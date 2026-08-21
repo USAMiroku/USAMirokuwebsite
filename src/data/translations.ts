@@ -215,7 +215,7 @@ export const translations: Record<string, TranslationContent> = {
     nav: {
       home: 'Home',
       about: 'About',
-      aboutJohrei: 'Johrei',
+      aboutJohrei: 'Three Pillars',
       meishuSama: 'Meishu-Sama',
       paradise: 'Paradise on Earth',
       firstVisit: 'First Visit',
@@ -244,7 +244,7 @@ export const translations: Record<string, TranslationContent> = {
     },
     home: {
       heroTitle: 'Welcome to',
-      heroIntro: 'Creating a World of Health, Prosperity, and Peace Through the Power of Johrei.',
+      heroIntro: 'Cultivating spiritual well-being, harmony with nature, and beauty in everyday life.',
       heroKicker: 'Miroku Association USA / World Messianic Church of America',
       heroSubtitle: 'Miroku Association USA / World Messianic Church of America',
       heroButtons: { findCenter: 'Visit a Center', firstVisit: 'Explore USA Units' },
@@ -257,7 +257,7 @@ export const translations: Record<string, TranslationContent> = {
       visitTitle: 'Begin Your Journey',
       visitSteps: [
         { title: 'A Warm Welcome', body: "Our centers are open sanctuaries where you'll be greeted with sincerity." },
-        { title: 'Receive Johrei', body: "Experience 20 minutes of spiritual purification through divine light." },
+        { title: 'Receive Johrei', body: 'Share a quiet time of prayer, reflection, and gratitude.' },
         { title: 'The Path of Beauty', body: "Explore our gardens and art, designed to uplift the human spirit." },
         { title: 'Connect & Share', body: 'Join a community dedicated to serving others and building peace.' },
       ],
@@ -285,7 +285,7 @@ export const translations: Record<string, TranslationContent> = {
             title: 'What is Johrei?',
             body: 'A spiritual practice of channeling divine light with gratitude and respect.',
             cta: 'Deep Dive into Johrei',
-            to: '/johrei',
+            to: '/three-pillars',
           },
           {
             title: 'What to expect',
@@ -364,7 +364,7 @@ export const translations: Record<string, TranslationContent> = {
       },
       service: {
         title: 'Core Practice',
-        body: 'Johrei purifies the spiritual body and supports the purification of blood as the materialized form of spirit.',
+        body: 'Johrei is a prayer-based spiritual practice for reflection, gratitude, spiritual refinement, and greater harmony in everyday life.',
       },
       guides: {
         title: 'Core Principles',
@@ -376,23 +376,23 @@ export const translations: Record<string, TranslationContent> = {
       },
     },
     johrei: {
-      title: 'Johrei: Spiritual Science of Divine Light',
+      title: 'Johrei: A Prayer-Based Spiritual Practice',
       intro:
-        'Johrei is a transmission of Divine Light that dissolves spiritual clouds and elevates the soul.',
+        'The word Johrei may be understood as “purification of the spirit.” Within our faith tradition, it is practiced through prayer and the symbolic transmission of Divine Light.',
       kicker: 'Core Practice',
       vision: {
-        title: 'The Spiritual Precedes the Physical',
+        title: 'A Time for Prayer and Reflection',
         body: 'Johrei is a prayer-based spiritual practice through which participants seek purification of the spirit, inner reflection, and greater harmony.',
       },
       whatIs: {
         title: 'Definition',
-        body: 'A transmission of Divine Light to dissolve spiritual clouds and elevate the soul.',
+        body: 'A prayer-based practice through which participants seek spiritual refinement, gratitude, inner reflection, and greater harmony.',
         experience: {
           title: 'Spiritual Purification',
-          body: 'Johrei targets the spiritual origin of suffering, bringing clarity and inner balance through Divine Light.',
+          body: 'Participants approach Johrei as a quiet opportunity for prayer, gratitude, spiritual reflection, and inner balance.',
         },
         effect: {
-          title: 'Relationship Between Spirit and Blood',
+          title: 'Spiritual Reflection',
           body: 'In our faith tradition, spiritual purification is understood as a path toward clarity, gratitude, and inner balance.',
         },
         goal: {
@@ -417,12 +417,12 @@ export const translations: Record<string, TranslationContent> = {
         mission: {
           title: 'Mission',
           quote:
-            'Although Johrei in our religion may appear to aim at curing illnesses, that is not all. It has a much greater meaning... it is a method of creating happiness.',
+            'Johrei is practiced as a path of spiritual refinement, gratitude, service, and the creation of greater harmony in everyday life.',
           author: 'Meishu-Sama',
         },
         practice: {
           title: 'How Johrei Works',
-          body: 'A qualified member ministers Johrei as a channel of Divine Light through the laying on of hands. Johrei Light acts on the spirit and reflects in the body, bringing spiritual, mental, and physical well-being.',
+          body: 'A qualified member offers Johrei through prayer and the symbolic transmission of Divine Light. Participants are invited to use this quiet time for gratitude, personal reflection, and spiritual development. No particular sensation or immediate experience is expected or required.',
         },
         benefits: {
           title: 'Benefits',
@@ -430,7 +430,7 @@ export const translations: Record<string, TranslationContent> = {
             'Awakens awareness of the Creator.',
             'Elevates intelligence and personality.',
             'Strengthens people to face life’s challenges.',
-            'Expands the aura, offering protection from misfortune.',
+            'Encourages thoughtful attention to spiritual values.',
             'Encourages spiritual reflection and inner harmony.',
             'Helps people perceive abundance and opportunities more clearly.',
             'Encourages serenity and peace.',
@@ -679,7 +679,7 @@ export const translations: Record<string, TranslationContent> = {
     nav: {
       home: 'Inicio',
       about: 'Nosotros',
-      aboutJohrei: 'Johrei',
+      aboutJohrei: 'Tres Pilares',
       meishuSama: 'Meishu-Sama',
       paradise: 'Paraíso Terrenal',
       firstVisit: 'Primera visita',
@@ -708,7 +708,7 @@ export const translations: Record<string, TranslationContent> = {
     },
     home: {
       heroTitle: 'Bienvenidos a',
-      heroIntro: 'Construyendo un mundo de salud, prosperidad y paz a través del poder del Johrei.',
+      heroIntro: 'Cultivando bienestar espiritual, armonía con la naturaleza y belleza en la vida cotidiana.',
       heroKicker: 'Miroku Association USA / World Messianic Church of America',
       heroSubtitle: 'Miroku Association USA / World Messianic Church of America',
       heroButtons: { findCenter: 'Visitar un centro', firstVisit: 'Explorar unidades EE.UU.' },
@@ -721,7 +721,7 @@ export const translations: Record<string, TranslationContent> = {
       visitTitle: 'Comienza tu camino',
       visitSteps: [
         { title: 'Una cálida bienvenida', body: 'Nuestros centros son santuarios abiertos donde serás recibido con sinceridad.' },
-        { title: 'Recibe el Johrei', body: 'Experimenta 20 minutos de purificación espiritual a través de la luz divina.' },
+        { title: 'Recibe el Johrei', body: 'Comparte un momento tranquilo de oración, reflexión y gratitud.' },
         { title: 'El camino de la belleza', body: 'Explora nuestros jardines y el arte, concebidos para elevar el espíritu humano.' },
         { title: 'Conecta y comparte', body: 'Únete a una comunidad dedicada a servir a los demás y construir la paz.' },
       ],
@@ -749,7 +749,7 @@ export const translations: Record<string, TranslationContent> = {
             title: '¿Qué es el Johrei?',
             body: 'Una práctica espiritual que canaliza la luz divina con gratitud y respeto.',
             cta: 'Conoce más sobre el Johrei',
-            to: '/johrei',
+            to: '/three-pillars',
           },
           {
             title: '¿Qué esperar?',
@@ -828,7 +828,7 @@ export const translations: Record<string, TranslationContent> = {
       },
       service: {
         title: 'Práctica central',
-        body: 'El Johrei purifica el cuerpo espiritual y apoya la purificación de la sangre como forma materializada del espíritu.',
+        body: 'Johrei es una práctica espiritual basada en la oración para la reflexión, la gratitud, el refinamiento espiritual y una mayor armonía en la vida cotidiana.',
       },
       guides: {
         title: 'Principios fundamentales',
@@ -840,22 +840,22 @@ export const translations: Record<string, TranslationContent> = {
       },
     },
     johrei: {
-      title: 'Johrei: Ciencia espiritual de la Luz Divina',
-      intro: 'El Johrei es una transmisión de Luz Divina que disuelve las nubes espirituales y eleva el alma.',
+      title: 'Johrei: una práctica espiritual basada en la oración',
+      intro: 'La palabra Johrei puede entenderse como “purificación del espíritu”. Dentro de nuestra tradición de fe, se practica mediante la oración y la transmisión simbólica de la Luz Divina.',
       kicker: 'Práctica central',
       vision: {
-        title: 'Lo espiritual precede a lo físico',
+        title: 'Un momento para la oración y la reflexión',
         body: 'Johrei es una práctica espiritual basada en la oración mediante la cual los participantes buscan purificación del espíritu, reflexión interior y mayor armonía.',
       },
       whatIs: {
         title: 'Definición',
-        body: 'Una transmisión de Luz Divina para disolver las nubes espirituales y elevar el alma.',
+        body: 'Una práctica basada en la oración mediante la cual los participantes buscan refinamiento espiritual, gratitud, reflexión interior y mayor armonía.',
         experience: {
           title: 'Purificación espiritual',
-          body: 'El Johrei actúa sobre el origen espiritual del sufrimiento, aportando claridad y equilibrio interior a través de la Luz Divina.',
+          body: 'Los participantes se acercan al Johrei como una oportunidad tranquila para la oración, la gratitud, la reflexión espiritual y el equilibrio interior.',
         },
         effect: {
-          title: 'Relación entre espíritu y sangre',
+          title: 'Reflexión espiritual',
           body: 'En nuestra tradición de fe, la purificación espiritual se entiende como un camino hacia la claridad, la gratitud y el equilibrio interior.',
         },
         goal: {
@@ -879,12 +879,12 @@ export const translations: Record<string, TranslationContent> = {
         },
         mission: {
           title: 'Misión',
-          quote: 'Aunque el Johrei de nuestra religión pueda parecer orientado a curar enfermedades, eso no es todo. Tiene un significado mucho más profundo... es un método para crear la felicidad.',
+          quote: 'Johrei se practica como un camino de refinamiento espiritual, gratitud, servicio y creación de mayor armonía en la vida cotidiana.',
           author: 'Meishu-Sama',
         },
         practice: {
           title: 'Cómo funciona el Johrei',
-          body: 'Un miembro calificado administra el Johrei como canal de la Luz Divina mediante la imposición de manos. La Luz del Johrei actúa sobre el espíritu y se refleja en el cuerpo, aportando bienestar espiritual, mental y físico.',
+          body: 'Un miembro calificado ministra Johrei mediante la oración y la transmisión simbólica de la Luz Divina. Los participantes pueden usar este momento tranquilo para la gratitud, la reflexión interior y el desarrollo espiritual. No se requiere ninguna sensación o experiencia inmediata en particular.',
         },
         benefits: {
           title: 'Beneficios',
@@ -892,8 +892,8 @@ export const translations: Record<string, TranslationContent> = {
             'Despierta la conciencia de la existencia del Creador.',
             'Eleva la inteligencia y la personalidad.',
             'Fortalece a las personas para enfrentar los desafíos de la vida.',
-            'Amplía el aura, ofreciendo protección frente a las adversidades.',
-            'Promueve la salud física y espiritual.',
+            'Fomenta la atención consciente a los valores espirituales.',
+            'Apoya la reflexión y el desarrollo espiritual.',
             'Ayuda a percibir con mayor claridad la abundancia y las oportunidades.',
             'Fomenta la serenidad y la paz interior.',
             'Fortalece la gratitud y el altruismo.',
@@ -1142,7 +1142,7 @@ export const translations: Record<string, TranslationContent> = {
     nav: {
       home: 'Início',
       about: 'Sobre',
-      aboutJohrei: 'Johrei',
+      aboutJohrei: 'Três Pilares',
       meishuSama: 'Meishu-Sama',
       paradise: 'Paraíso na Terra',
       firstVisit: 'Primeira visita',
@@ -1171,7 +1171,7 @@ export const translations: Record<string, TranslationContent> = {
     },
     home: {
       heroTitle: 'Bem-vindos à',
-      heroIntro: 'Construindo um mundo de saúde, prosperidade e paz através do poder do Johrei.',
+      heroIntro: 'Cultivando bem-estar espiritual, harmonia com a natureza e beleza na vida cotidiana.',
       heroKicker: 'Miroku Association USA / World Messianic Church of America',
       heroSubtitle: 'Miroku Association USA / World Messianic Church of America',
       heroButtons: { findCenter: 'Visitar um centro', firstVisit: 'Explorar unidades EUA' },
@@ -1184,7 +1184,7 @@ export const translations: Record<string, TranslationContent> = {
       visitTitle: 'Comece sua jornada',
       visitSteps: [
         { title: 'Uma calorosa boas-vindas', body: 'Nossos centros são santuários abertos onde você será recebido com sinceridade.' },
-        { title: 'Receba o Johrei', body: 'Experiencie 20 minutos de purificação espiritual através da luz divina.' },
+        { title: 'Receba o Johrei', body: 'Compartilhe um momento tranquilo de oração, reflexão e gratidão.' },
         { title: 'O caminho da beleza', body: 'Explore nossos jardins e obras de arte, concebidos para elevar o espírito humano.' },
         { title: 'Conecte e compartilhe', body: 'Faça parte de uma comunidade dedicada a servir ao próximo e construir a paz.' },
       ],
@@ -1212,7 +1212,7 @@ export const translations: Record<string, TranslationContent> = {
             title: 'O que é o Johrei?',
             body: 'Uma prática espiritual de canalização da luz divina com gratidão e respeito.',
             cta: 'Conheça mais sobre o Johrei',
-            to: '/johrei',
+            to: '/three-pillars',
           },
           {
             title: 'O que esperar',
@@ -1291,7 +1291,7 @@ export const translations: Record<string, TranslationContent> = {
       },
       service: {
         title: 'Prática central',
-        body: 'O Johrei purifica o corpo espiritual e apoia a purificação do sangue como forma materializada do espírito.',
+        body: 'Johrei é uma prática espiritual baseada na oração para reflexão, gratidão, aprimoramento espiritual e maior harmonia na vida cotidiana.',
       },
       guides: {
         title: 'Princípios fundamentais',
@@ -1303,22 +1303,22 @@ export const translations: Record<string, TranslationContent> = {
       },
     },
     johrei: {
-      title: 'Johrei: Ciência espiritual da Luz Divina',
-      intro: 'O Johrei é uma transmissão de Luz Divina que dissolve as nuvens espirituais e eleva a alma.',
+      title: 'Johrei: uma prática espiritual baseada na oração',
+      intro: 'A palavra Johrei pode ser compreendida como “purificação do espírito”. Em nossa tradição de fé, ele é praticado por meio da oração e da transmissão simbólica da Luz Divina.',
       kicker: 'Prática central',
       vision: {
-        title: 'O espiritual precede o físico',
+        title: 'Um momento para oração e reflexão',
         body: 'O Johrei é uma prática espiritual baseada na oração, por meio da qual os participantes buscam purificação do espírito, reflexão interior e maior harmonia.',
       },
       whatIs: {
         title: 'Definição',
-        body: 'Uma transmissão de Luz Divina para dissolver as nuvens espirituais e elevar a alma.',
+        body: 'Uma prática baseada na oração por meio da qual os participantes buscam aprimoramento espiritual, gratidão, reflexão interior e maior harmonia.',
         experience: {
           title: 'Purificação espiritual',
-          body: 'O Johrei atua sobre a origem espiritual do sofrimento, trazendo clareza e equilíbrio interior por meio da Luz Divina.',
+          body: 'Os participantes se aproximam do Johrei como uma oportunidade tranquila para oração, gratidão, reflexão espiritual e equilíbrio interior.',
         },
         effect: {
-          title: 'Relação entre espírito e sangue',
+          title: 'Reflexão espiritual',
           body: 'Em nossa tradição de fé, a purificação espiritual é compreendida como um caminho para clareza, gratidão e equilíbrio interior.',
         },
         goal: {
@@ -1342,12 +1342,12 @@ export const translations: Record<string, TranslationContent> = {
         },
         mission: {
           title: 'Missão',
-          quote: 'Embora o Johrei em nossa religião possa parecer ter como objetivo a cura de doenças, isso não é tudo. Ele tem um significado muito maior... é um método para criar a felicidade.',
+          quote: 'O Johrei é praticado como um caminho de aprimoramento espiritual, gratidão, serviço e criação de maior harmonia na vida cotidiana.',
           author: 'Meishu-Sama',
         },
         practice: {
           title: 'Como o Johrei funciona',
-          body: 'Um membro qualificado ministra o Johrei como canal da Luz Divina por meio da imposição de mãos. A Luz do Johrei age sobre o espírito e se reflete no corpo, trazendo bem-estar espiritual, mental e físico.',
+          body: 'Um membro qualificado ministra Johrei por meio da oração e da transmissão simbólica da Luz Divina. Os participantes podem usar esse momento tranquilo para gratidão, reflexão interior e desenvolvimento espiritual. Não é necessária nenhuma sensação ou experiência imediata específica.',
         },
         benefits: {
           title: 'Benefícios',
@@ -1355,8 +1355,8 @@ export const translations: Record<string, TranslationContent> = {
             'Desperta a consciência da existência do Criador.',
             'Eleva a inteligência e a personalidade.',
             'Fortalece as pessoas para enfrentar os desafios da vida.',
-            'Expande a aura, oferecendo proteção contra adversidades.',
-            'Promove a saúde física e espiritual.',
+            'Incentiva atenção consciente aos valores espirituais.',
+            'Apoia a reflexão e o desenvolvimento espiritual.',
             'Ajuda a perceber a abundância e as oportunidades com mais clareza.',
             'Estimula a serenidade e a paz interior.',
             'Fortalece a gratidão e o altruísmo.',

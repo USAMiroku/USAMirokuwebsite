@@ -22,6 +22,7 @@ create or replace function public.learning_is_admin()
 returns boolean
 language sql
 stable
+set search_path = ''
 as $$
   select exists (
     select 1
