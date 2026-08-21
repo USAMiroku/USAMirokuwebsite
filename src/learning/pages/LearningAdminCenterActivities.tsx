@@ -8,6 +8,7 @@ import { LearningAdminToolbar } from '../components/LearningAdminToolbar'
 import { RequireAdmin } from '../components/LearningRouteGuards'
 import { useLearningAuth } from '../context/LearningAuthContext'
 import { useManagedCenters } from '../../organization/centers'
+import { recurrenceLabel, type RecurrenceRule } from '../lib/sessionRecurrence'
 
 type Activity = {
   id: string
@@ -33,6 +34,10 @@ type Session = {
   meeting_url: string | null
   location: string | null
   seats_total: number | null
+  recurrence_rule: RecurrenceRule | null
+  recurrence_ordinal: number | null
+  recurrence_weekday: number | null
+  recurrence_until: string | null
 }
 
 const ACTIVITY_TYPES = ['event', 'study_session', 'class', 'self_study'] as const
@@ -132,6 +137,10 @@ function AdminCenterActivitiesInner() {
   const [sessionDraftLocation, setSessionDraftLocation] = useState('')
   const [sessionDraftMeetingUrl, setSessionDraftMeetingUrl] = useState('')
   const [sessionDraftSeats, setSessionDraftSeats] = useState('')
+  const [sessionDraftRecurrence, setSessionDraftRecurrence] = useState<RecurrenceRule>('none')
+  const [sessionDraftOrdinal, setSessionDraftOrdinal] = useState('2')
+  const [sessionDraftWeekday, setSessionDraftWeekday] = useState('0')
+  const [sessionDraftUntil, setSessionDraftUntil] = useState('')
 
   const centers = activeCenters
 
@@ -213,7 +222,7 @@ function AdminCenterActivitiesInner() {
       if (activityIds.length > 0) {
         const { data: sessionsData, error: sessionsError } = await supabase
           .from('learning_sessions')
-          .select('id,activity_id,start_time,end_time,meeting_url,location,seats_total')
+          .select('id,activity_id,start_time,end_time,meeting_url,location,seats_total,recurrence_rule,recurrence_ordinal,recurrence_weekday,recurrence_until')
           .in('activity_id', activityIds)
           .order('start_time', { ascending: true })
 
@@ -394,6 +403,10 @@ function AdminCenterActivitiesInner() {
     setSessionDraftLocation('')
     setSessionDraftMeetingUrl('')
     setSessionDraftSeats('')
+    setSessionDraftRecurrence('none')
+    setSessionDraftOrdinal('2')
+    setSessionDraftWeekday('0')
+    setSessionDraftUntil('')
   }
 
   function openSessionEdit(s: Session) {
@@ -404,6 +417,10 @@ function AdminCenterActivitiesInner() {
     setSessionDraftLocation(s.location ?? '')
     setSessionDraftMeetingUrl(s.meeting_url ?? '')
     setSessionDraftSeats(s.seats_total !== null ? String(s.seats_total) : '')
+    setSessionDraftRecurrence(s.recurrence_rule ?? 'none')
+    setSessionDraftOrdinal(String(s.recurrence_ordinal ?? 2))
+    setSessionDraftWeekday(String(s.recurrence_weekday ?? 0))
+    setSessionDraftUntil(s.recurrence_until ?? '')
   }
 
   async function handleSaveSessionDraft() {
@@ -416,13 +433,17 @@ function AdminCenterActivitiesInner() {
       location: sessionDraftLocation.trim() || null,
       meeting_url: sessionDraftMeetingUrl.trim() || null,
       seats_total: sessionDraftSeats ? parseInt(sessionDraftSeats, 10) : null,
+      recurrence_rule: sessionDraftRecurrence,
+      recurrence_ordinal: sessionDraftRecurrence === 'monthly_nth_weekday' ? parseInt(sessionDraftOrdinal, 10) : null,
+      recurrence_weekday: sessionDraftRecurrence === 'monthly_nth_weekday' ? parseInt(sessionDraftWeekday, 10) : null,
+      recurrence_until: sessionDraftRecurrence === 'monthly_nth_weekday' && sessionDraftUntil ? sessionDraftUntil : null,
     }
 
     if (sessionDraftMode === 'add') {
       const { data, error: insertErr } = await supabase
         .from('learning_sessions')
         .insert({ ...payload, activity_id: editingActivity.id })
-        .select('id,activity_id,start_time,end_time,meeting_url,location,seats_total')
+        .select('id,activity_id,start_time,end_time,meeting_url,location,seats_total,recurrence_rule,recurrence_ordinal,recurrence_weekday,recurrence_until')
         .single()
 
       if (insertErr) {
@@ -441,7 +462,7 @@ function AdminCenterActivitiesInner() {
         .from('learning_sessions')
         .update(payload)
         .eq('id', sessionDraftId)
-        .select('id,activity_id,start_time,end_time,meeting_url,location,seats_total')
+        .select('id,activity_id,start_time,end_time,meeting_url,location,seats_total,recurrence_rule,recurrence_ordinal,recurrence_weekday,recurrence_until')
         .single()
 
       if (updateErr) {
@@ -793,6 +814,9 @@ function AdminCenterActivitiesInner() {
                     >
                       <div>
                         <p className="text-sm font-semibold text-deep-slate">{formatSessionLabel(s)}</p>
+                        {recurrenceLabel(s) ? (
+                          <p className="mt-0.5 text-xs font-semibold text-sage-700">{recurrenceLabel(s)}</p>
+                        ) : null}
                         {s.end_time ? (
                           <p className="text-xs text-slate-500">
                             until{' '}
@@ -887,6 +911,46 @@ function AdminCenterActivitiesInner() {
                         min={1}
                       />
                     </label>
+                    <label className="block">
+                      <span className={LABEL_CLASS}>Repeats</span>
+                      <select
+                        value={sessionDraftRecurrence}
+                        onChange={(e) => setSessionDraftRecurrence(e.target.value as RecurrenceRule)}
+                        className={FIELD_CLASS}
+                      >
+                        <option value="none">Does not repeat</option>
+                        <option value="monthly_nth_weekday">Monthly on an ordinal weekday</option>
+                      </select>
+                    </label>
+                    {sessionDraftRecurrence === 'monthly_nth_weekday' ? (
+                      <>
+                        <label className="block">
+                          <span className={LABEL_CLASS}>Week of the month</span>
+                          <select value={sessionDraftOrdinal} onChange={(e) => setSessionDraftOrdinal(e.target.value)} className={FIELD_CLASS}>
+                            <option value="1">1st</option>
+                            <option value="2">2nd</option>
+                            <option value="3">3rd</option>
+                            <option value="4">4th</option>
+                            <option value="5">5th</option>
+                          </select>
+                        </label>
+                        <label className="block">
+                          <span className={LABEL_CLASS}>Day of the week</span>
+                          <select value={sessionDraftWeekday} onChange={(e) => setSessionDraftWeekday(e.target.value)} className={FIELD_CLASS}>
+                            {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day, index) => (
+                              <option key={day} value={index}>{day}</option>
+                            ))}
+                          </select>
+                        </label>
+                        <label className="block">
+                          <span className={LABEL_CLASS}>Repeat until (optional)</span>
+                          <input type="date" value={sessionDraftUntil} onChange={(e) => setSessionDraftUntil(e.target.value)} className={FIELD_CLASS} />
+                        </label>
+                        <p className="self-end rounded-xl bg-sanctuary-50 px-4 py-3 text-xs leading-5 text-slate-500">
+                          The first date sets the start time and the first month. The website will always calculate the next matching date automatically.
+                        </p>
+                      </>
+                    ) : null}
                   </div>
                   <div className="mt-4 flex gap-3">
                     <button

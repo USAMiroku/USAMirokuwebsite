@@ -120,8 +120,19 @@ create table if not exists public.learning_sessions (
   meeting_url text,
   seats_total integer,
   location text,
+  recurrence_rule text not null default 'none'
+    check (recurrence_rule in ('none', 'monthly_nth_weekday')),
+  recurrence_ordinal smallint check (recurrence_ordinal is null or recurrence_ordinal between 1 and 5),
+  recurrence_weekday smallint check (recurrence_weekday is null or recurrence_weekday between 0 and 6),
+  recurrence_until date,
   created_at timestamptz not null default now()
 );
+
+alter table public.learning_sessions
+  add column if not exists recurrence_rule text not null default 'none',
+  add column if not exists recurrence_ordinal smallint,
+  add column if not exists recurrence_weekday smallint,
+  add column if not exists recurrence_until date;
 
 create index if not exists learning_sessions_activity_id_start_idx
   on public.learning_sessions(activity_id, start_time);
@@ -163,6 +174,7 @@ create or replace function public.learning_is_admin()
 returns boolean
 language sql
 stable
+set search_path = ''
 as $$
   select exists (
     select 1

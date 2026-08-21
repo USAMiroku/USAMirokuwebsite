@@ -1,5 +1,21 @@
 import { createClient } from '@supabase/supabase-js'
 
+export class ApiError extends Error {
+  constructor(status, message) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+  }
+}
+
+export function sendApiError(res, error, fallback = 'Unexpected error.') {
+  if (error instanceof ApiError) {
+    return res.status(error.status).json({ error: error.message })
+  }
+  console.error(error)
+  return res.status(500).json({ error: fallback })
+}
+
 function getEnv(name) {
   return process.env[name] || ''
 }
@@ -26,13 +42,13 @@ export async function requireSuperAdmin(req) {
   const token = match?.[1]
 
   if (!token) {
-    throw new Error('Missing bearer token.')
+    throw new ApiError(401, 'Authentication is required.')
   }
 
   const admin = getSupabaseAdmin()
   const { data: userData, error: userError } = await admin.auth.getUser(token)
   if (userError || !userData.user) {
-    throw new Error('Invalid bearer token.')
+    throw new ApiError(401, 'The authentication session is invalid or expired.')
   }
 
   const { data: profile, error: profileError } = await admin
@@ -42,11 +58,11 @@ export async function requireSuperAdmin(req) {
     .maybeSingle()
 
   if (profileError) {
-    throw new Error(profileError.message)
+    throw new ApiError(500, 'Could not verify administrative access.')
   }
 
   if (!profile || profile.role !== 'super_admin') {
-    throw new Error('Not authorized.')
+    throw new ApiError(403, 'Not authorized.')
   }
 
   return { admin, currentUser: userData.user }
@@ -58,13 +74,13 @@ export async function requireAdminAccess(req) {
   const token = match?.[1]
 
   if (!token) {
-    throw new Error('Missing bearer token.')
+    throw new ApiError(401, 'Authentication is required.')
   }
 
   const admin = getSupabaseAdmin()
   const { data: userData, error: userError } = await admin.auth.getUser(token)
   if (userError || !userData.user) {
-    throw new Error('Invalid bearer token.')
+    throw new ApiError(401, 'The authentication session is invalid or expired.')
   }
 
   const { data: profile, error: profileError } = await admin
@@ -74,11 +90,11 @@ export async function requireAdminAccess(req) {
     .maybeSingle()
 
   if (profileError) {
-    throw new Error(profileError.message)
+    throw new ApiError(500, 'Could not verify administrative access.')
   }
 
   if (!profile || !['admin', 'instructor', 'center_admin', 'super_admin'].includes(profile.role)) {
-    throw new Error('Not authorized.')
+    throw new ApiError(403, 'Not authorized.')
   }
 
   return { admin, currentUser: userData.user, profile }

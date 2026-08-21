@@ -20,7 +20,7 @@ const faqItemsEn = [
   },
   {
     q: 'How long does a session last?',
-    a: 'A typical session lasts between 15 and 30 minutes. It is a quiet, meditative experience. Most people report deep relaxation, warmth, or mental clarity during and after the session.',
+    a: 'A typical session lasts between 15 and 30 minutes and takes place in a quiet, respectful setting. No particular sensation or immediate experience is required.',
   },
   {
     q: 'What is the connection between Art and Healing?',
@@ -46,7 +46,7 @@ const faqItemsPt = [
   { q: 'Isso é uma religião?', a: 'Embora tenha base espiritual, a filosofia de Meishu-sama é universal e acolhe pessoas de diferentes caminhos.' },
   { q: 'Preciso pagar para receber Johrei?', a: 'Em geral, o Johrei é oferecido gratuitamente ou por doação voluntária, em espírito de serviço.' },
   { q: 'Quanto tempo dura a sessão?', a: 'Uma sessão costuma durar entre 15 e 30 minutos, em um ambiente de calma e meditação.' },
-  { q: 'Qual a relação entre Arte e cura?', a: 'Meishu-sama ensinou que a beleza eleva o espírito e complementa a prática de Johrei e da Agricultura Natural.' },
+  { q: 'Qual a relação entre Arte e desenvolvimento espiritual?', a: 'Meishu-sama ensinou que a apreciação da beleza pode refinar a sensibilidade, incentivar a gratidão e complementar a prática de Johrei e da Agricultura Natural.' },
   { q: 'Preciso de treinamento especial para começar?', a: 'Não. Você pode começar hoje aplicando gratidão e beleza no seu cotidiano.' },
 ]
 
