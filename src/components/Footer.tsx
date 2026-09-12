@@ -28,7 +28,7 @@ function PublicFooter() {
   const links = [
     { to: '/', label: t.nav.home },
     { to: '/about', label: t.nav.about },
-    { to: '/johrei', label: t.nav.aboutJohrei },
+    { to: '/three-pillars', label: t.nav.aboutJohrei },
     { to: '/activities', label: t.nav.activities },
     { to: '/community-programs', label: grantContent[language].programsNav },
     { to: '/books', label: t.nav.books },
@@ -107,7 +107,7 @@ function LearningFooter() {
     { to: '/community-programs', label: grantContent[language].programsNav },
     { to: '/books', label: t.nav.books },
     { to: '/about', label: t.nav.about },
-    { to: '/johrei', label: t.nav.aboutJohrei },
+    { to: '/three-pillars', label: t.nav.aboutJohrei },
     { to: '/meishu-sama', label: t.nav.meishuSama },
     { to: '/locations', label: t.nav.locations },
     { to: '/contact', label: t.nav.contact },

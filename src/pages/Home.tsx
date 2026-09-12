@@ -4,27 +4,6 @@ import { usePageMeta } from '../hooks/usePageMeta'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
 import { grantContent } from '../data/grantContent'
 
-const sacredScenes = [
-  {
-    image: '/images/sacred-grounds/atami-sacred-grounds.jpg',
-    heading: 'Atami Sacred Grounds',
-    location: 'Atami-shi, Shizuoka-ken, Japan',
-    body: 'Known as the Celestial Land, this site was chosen by Meishu-sama for its mountains, sea, and balanced climate.',
-  },
-  {
-    image: '/images/sacred-grounds/guarapiranga-sacred-grounds.jpg',
-    heading: 'Guarapiranga Sacred Grounds',
-    location: 'Sao Paulo, Brazil',
-    body: 'Inaugurated in 1995 on the banks of the Guarapiranga reservoir, this sacred ground harmonizes nature and spirituality.',
-  },
-  {
-    image: '/images/sacred-grounds/saraburi-sacred-grounds.jpg',
-    heading: 'Saraburi Sacred Grounds',
-    location: 'Saraburi, Thailand',
-    body: 'Dedicated in 1996, this sacred ground houses a Messianic temple, botanical gardens, and an agricultural school.',
-  },
-] as const
-
 function HomeLink({
   to,
   children,
@@ -100,9 +79,6 @@ export default function Home() {
           faqCta: 'Abrir FAQ',
           faqBody: 'Respuestas claras y rápidas sobre el Johrei, las sesiones y su primera visita.',
           newHereKicker: 'Nuevo aquí',
-          sacredKicker: 'Inspiración y tranquilidad',
-          sacredTitle: 'Atami, Guarapiranga y Saraburi',
-          sacredBody: 'Tres Tierras Sagradas donde la belleza natural, la arquitectura sagrada y un espíritu de oración y gratitud se unen.',
           visitContactTitle: 'Visitar, contactar, apoyar',
           supportKicker: 'Visitar, contactar, apoyar',
           supportActions: {
@@ -118,9 +94,6 @@ export default function Home() {
             faqCta: 'Abrir FAQ',
             faqBody: 'Respostas rápidas e claras sobre Johrei, sessões e sua primeira visita.',
             newHereKicker: 'Novo por aqui',
-            sacredKicker: 'Inspiração e tranquilidade',
-            sacredTitle: 'Atami, Guarapiranga e Saraburi',
-            sacredBody: 'Três Terras Sagradas onde beleza natural, arquitetura sagrada e espírito de oração e gratidão se unem.',
             visitContactTitle: 'Visitar, contatar, apoiar',
             supportKicker: 'Visitar, contatar, apoiar',
             supportActions: {
@@ -135,9 +108,6 @@ export default function Home() {
             faqCta: 'Open FAQ',
             faqBody: 'Get quick, clear answers about Johrei, sessions, and your first visit.',
             newHereKicker: 'New Here',
-            sacredKicker: 'Inspiration and Tranquility',
-            sacredTitle: 'Atami, Guarapiranga, and Saraburi',
-            sacredBody: 'Three Sacred Grounds where natural beauty, sacred architecture, and a spirit of prayer and gratitude come together.',
             visitContactTitle: 'Visit, Contact, Support',
             supportKicker: 'Visit, Contact, Support',
             supportActions: {
@@ -181,17 +151,6 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="mt-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                {t.home.stats.map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-[20px] border border-white/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.08))] px-5 py-4 text-white backdrop-blur-sm"
-                  >
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-white/56">{stat.label}</p>
-                    <p className="mt-2 text-2xl leading-tight">{stat.value}</p>
-                  </div>
-                ))}
-              </div>
             </div>
 
             <div className="rounded-[30px] border border-white/14 bg-[linear-gradient(180deg,rgba(166,150,130,0.62),rgba(60,67,66,0.34))] p-5 text-white backdrop-blur-md lg:mt-6">
@@ -216,6 +175,9 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <a href="https://unsplash.com/photos/NRQV-hBF10M" target="_blank" rel="noreferrer" title="Decorative photograph; this is not a Miroku Association USA property or program site." className="absolute bottom-3 right-4 z-10 text-[9px] tracking-[0.08em] text-white/55 transition hover:text-white/80">
+            Yosemite — decorative image. Photo: Bailey Zindel/Unsplash.
+          </a>
         </div>
       </section>
 
@@ -232,6 +194,29 @@ export default function Home() {
             <p className="mt-5 text-xl leading-9 text-white/82">{grantCopy.mission}</p>
             <div className="mt-8"><HomeLink to="/community-programs" tone="gold">{grantCopy.programsNav}</HomeLink></div>
           </article>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.vision.kicker}</p>
+            <h2 className="mt-4 text-5xl leading-none text-[#314343] md:text-6xl">{grantCopy.pillarsTitle}</h2>
+            <p className="mx-auto mt-4 max-w-3xl text-xl leading-8 text-slate-500">{grantCopy.pillarsIntro}</p>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {grantCopy.pillars.map(([title, body], index) => (
+              <article key={title} className="rounded-[28px] border border-[rgba(15,23,42,0.04)] bg-[#fffdfa] px-7 py-7 shadow-[0_28px_70px_-50px_rgba(60,52,39,0.28)]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-400">0{index + 1}</p>
+                <h3 className="mt-5 text-[2rem] leading-tight text-[#314343]">{title}</h3>
+                <p className="mt-4 text-lg leading-9 text-slate-500">{body}</p>
+                <Link to={`/three-pillars${['#johrei', '#natural-farming', '#art-beauty'][index]}`} className="mt-7 inline-flex text-[10px] font-semibold uppercase tracking-[0.24em] text-sage-600 transition-colors hover:text-sage-700">
+                  {t.actions.learnMore}
+                </Link>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -255,7 +240,7 @@ export default function Home() {
             <h2 className="mt-4 text-[3rem] leading-none text-[#314343]">{t.home.whatIsJohrei.title}</h2>
             <p className="mt-5 text-lg leading-9 text-slate-500">{t.home.whatIsJohrei.body}</p>
             <div className="mt-7">
-              <HomeLink to="/johrei" tone="gold">
+              <HomeLink to="/three-pillars#johrei" tone="gold">
                 {t.home.johreiCta}
               </HomeLink>
             </div>
@@ -273,103 +258,6 @@ export default function Home() {
               </HomeLink>
             </div>
           </article>
-        </div>
-      </section>
-
-      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{supportCopy.newHereKicker}</p>
-            <h2 className="mt-4 text-5xl leading-none text-[#314343] md:text-6xl">{t.home.newcomers.title}</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-xl leading-8 text-slate-500">{t.home.newcomers.body}</p>
-          </div>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {t.home.newcomers.cards.map((card, index) => (
-              <article
-                key={card.title}
-                className="relative overflow-hidden rounded-[28px] border border-white/70 bg-white px-7 py-7 shadow-[0_26px_60px_-44px_rgba(60,52,39,0.3)]"
-              >
-                <div className="absolute right-6 top-4 h-20 w-20 rounded-full bg-[radial-gradient(circle,rgba(222,194,145,0.24),rgba(255,255,255,0))]" />
-                <p className="relative text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-400">0{index + 1}</p>
-                <h3 className="relative mt-5 text-[2.1rem] leading-none text-[#314343]">{card.title}</h3>
-                <p className="relative mt-4 text-base leading-8 text-slate-500">{card.body}</p>
-                <Link
-                  to={card.to}
-                  className="relative mt-8 inline-flex text-[10px] font-semibold uppercase tracking-[0.24em] text-sage-600 transition-colors hover:text-sage-700"
-                >
-                  {card.cta}
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-[rgba(15,23,42,0.05)] bg-white px-4 py-18 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.vision.kicker}</p>
-            <h2 className="mt-4 text-5xl leading-none text-[#314343] md:text-6xl">{t.home.vision.title}</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-xl leading-8 text-slate-500">{t.home.vision.body}</p>
-          </div>
-
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {t.home.vision.cards.map((card, index) => (
-              <article
-                key={card.title}
-                className="rounded-[28px] border border-[rgba(15,23,42,0.04)] bg-[#fffdfa] px-7 py-7 shadow-[0_28px_70px_-50px_rgba(60,52,39,0.28)]"
-              >
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-400">0{index + 1}</p>
-                <h3 className="mt-5 text-[2rem] leading-none text-[#314343]">{card.title}</h3>
-                <p className="mt-4 text-lg leading-9 text-slate-500">{card.body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl">
-          <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{supportCopy.sacredKicker}</p>
-            <h2 className="mt-4 text-4xl leading-none text-[#314343] md:text-5xl">{supportCopy.sacredTitle}</h2>
-            <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-slate-500">
-              {supportCopy.sacredBody}
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-4 lg:grid-cols-[1.08fr_0.68fr]">
-            <article className="overflow-hidden rounded-[28px] border border-[rgba(15,23,42,0.05)] bg-white shadow-[0_28px_70px_-50px_rgba(60,52,39,0.28)]">
-              <img
-                src={sacredScenes[0].image}
-                alt={sacredScenes[0].heading}
-                className="h-[25rem] w-full object-cover object-center"
-                loading="lazy"
-              />
-              <div className="space-y-3 px-6 py-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-sage-600/80">{sacredScenes[0].location}</p>
-                <h3 className="text-[2.1rem] leading-none text-[#314343]">{sacredScenes[0].heading}</h3>
-                <p className="text-base leading-8 text-slate-500">{sacredScenes[0].body}</p>
-              </div>
-            </article>
-
-            <div className="grid gap-4">
-              {sacredScenes.slice(1).map((scene) => (
-                <article
-                  key={scene.heading}
-                  className="overflow-hidden rounded-[24px] border border-[rgba(15,23,42,0.05)] bg-white shadow-[0_28px_70px_-50px_rgba(60,52,39,0.24)]"
-                >
-                  <img src={scene.image} alt={scene.heading} className="h-40 w-full object-cover object-center" loading="lazy" />
-                  <div className="space-y-2 px-5 py-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-sage-600/80">{scene.location}</p>
-                    <h3 className="text-[1.7rem] leading-none text-[#314343]">{scene.heading}</h3>
-                    <p className="text-sm leading-7 text-slate-500">{scene.body}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 

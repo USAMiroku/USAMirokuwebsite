@@ -41,16 +41,8 @@ export function getRequestOrigin(req) {
     return process.env.SITE_URL.replace(/\/$/, '')
   }
 
-  const forwardedHost = req.headers['x-forwarded-host']
-  const host = forwardedHost || req.headers.host
-  const forwardedProto = req.headers['x-forwarded-proto']
-  const proto = forwardedProto || 'https'
-
-  if (!host) {
-    return 'http://localhost:5173'
-  }
-
-  return `${proto}://${host}`
+  if (process.env.NODE_ENV !== 'production') return 'http://localhost:5173'
+  throw new Error('SITE_URL must be configured in production.')
 }
 
 function getPayPalBaseUrl() {

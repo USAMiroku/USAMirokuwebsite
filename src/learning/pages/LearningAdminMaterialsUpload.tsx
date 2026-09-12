@@ -103,6 +103,15 @@ function AdminMaterialsUploadInner() {
       setError('Please select a file to upload.')
       return
     }
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      setError('Only PDF, JPG, PNG, and WebP files are allowed.')
+      return
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError('The file must be 10 MB or smaller.')
+      return
+    }
     if (!title.trim()) {
       setError('Please provide a title for the download.')
       return
@@ -252,9 +261,11 @@ function AdminMaterialsUploadInner() {
                   <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">File *</span>
                   <input
                     type="file"
+                    accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
                     onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                     className="mt-2 block w-full text-sm text-slate-700"
                   />
+                  <span className="mt-2 block text-xs text-slate-500">PDF, JPG, PNG, or WebP; maximum 10 MB.</span>
                 </label>
 
                 <label className="block md:col-span-2">

@@ -1,10 +1,13 @@
-import { parseJsonBody, requireSuperAdmin } from './_supabaseAdmin.js'
+import { parseJsonBody, requireSuperAdmin, sendApiError } from './_supabaseAdmin.js'
+import { enforceRateLimit, enforceSameOrigin } from '../_security.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Method not allowed.' })
   }
+  if (!enforceSameOrigin(req, res)) return
+  if (!enforceRateLimit(req, res, { key: 'admin-create-user', limit: 8, windowMs: 10 * 60_000 })) return
 
   try {
     const { admin } = await requireSuperAdmin(req)
@@ -18,6 +21,9 @@ export default async function handler(req, res) {
 
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required.' })
+    }
+    if (password.length < 14 || !/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+      return res.status(400).json({ error: 'Password must be at least 14 characters and include upper- and lowercase letters, a number, and a symbol.' })
     }
 
     if (!['center_admin', 'super_admin'].includes(role)) {
@@ -40,7 +46,6 @@ export default async function handler(req, res) {
     })
 
     if (createError) {
-      // If the user already exists in Supabase Auth, look them up and reuse their ID
       const alreadyExists =
         createError.message?.toLowerCase().includes('already been registered') ||
         createError.message?.toLowerCase().includes('already exists')
@@ -49,24 +54,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: createError.message || 'Could not create user.' })
       }
 
-      // Find the existing auth user by email
-      const { data: listData, error: listError } = await admin.auth.admin.listUsers()
-      if (listError) {
-        return res.status(500).json({ error: 'Could not look up existing user.' })
-      }
-
-      const existingUser = listData.users.find((u) => u.email?.toLowerCase() === email)
-      if (!existingUser) {
-        return res.status(400).json({ error: 'User exists in authentication but could not be found. Please contact support.' })
-      }
-
-      userId = existingUser.id
-
-      // Update the password so the new credentials work
-      await admin.auth.admin.updateUserById(userId, {
-        password,
-        user_metadata: { full_name: fullName || undefined },
-      })
+      return res.status(409).json({ error: 'An authentication account already exists for this email. Use the password-reset workflow instead of replacing its credentials.' })
     } else {
       if (!created.user) {
         return res.status(400).json({ error: 'Could not create user.' })
@@ -96,7 +84,6 @@ export default async function handler(req, res) {
       managedCenterId: role === 'center_admin' ? managedCenterId : null,
     })
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Could not create user.'
-    return res.status(500).json({ error: message })
+    return sendApiError(res, error, 'Could not create user.')
   }
 }

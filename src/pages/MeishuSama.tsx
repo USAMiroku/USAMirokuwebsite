@@ -51,7 +51,7 @@ export default function MeishuSama() {
           pillars: [
             {
               title: 'La purificación del espíritu',
-              body: 'Enseñó que la enfermedad y la desgracia surgen de nubes o impurezas espirituales. El Johrei ayuda a disolver esas nubes y a restaurar la claridad y el equilibrio.',
+              body: 'Enseñó el Johrei como una práctica de fe orientada al refinamiento espiritual, la gratitud, el servicio y una vida cotidiana más armoniosa.',
             },
             {
               title: 'Agricultura natural',
@@ -111,7 +111,7 @@ export default function MeishuSama() {
             pillars: [
               {
                 title: 'A purificação do espírito',
-                body: 'Ensinou que a doença e a infelicidade surgem de nuvens ou impurezas espirituais. O Johrei ajuda a dissolver essas nuvens e a restaurar clareza e equilíbrio.',
+                body: 'Ensinou o Johrei como uma prática de fé voltada ao aprimoramento espiritual, à gratidão, ao serviço e a uma vida cotidiana mais harmoniosa.',
               },
               {
                 title: 'Agricultura natural',
@@ -170,7 +170,7 @@ export default function MeishuSama() {
             pillars: [
               {
                 title: 'The Purification of the Spirit',
-                body: 'He taught that illness and misfortune arise from spiritual clouds or impurities. Johrei helps dissolve those clouds and restore clarity and balance.',
+                body: 'He taught Johrei as a faith practice oriented toward spiritual refinement, gratitude, service, and greater harmony in everyday life.',
               },
               {
                 title: 'Natural Farming',

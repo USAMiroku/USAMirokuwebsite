@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useManagedCenters } from '../../organization/centers'
 import { useTranslation } from '../../context/TranslationContext'
 import { AnnualEventsCalendar } from '../components/AnnualEventsCalendar'
+import { expandUpcomingSessions, recurrenceLabel, type RecurrenceRule } from '../lib/sessionRecurrence'
 
 type Activity = {
   id: string
@@ -19,6 +20,10 @@ type Session = {
   id: string
   activity_id: string
   start_time: string | null
+  recurrence_rule: RecurrenceRule | null
+  recurrence_ordinal: number | null
+  recurrence_weekday: number | null
+  recurrence_until: string | null
 }
 
 const TYPE_BADGE: Record<Activity['type'], string> = {
@@ -214,7 +219,7 @@ export default function LearningActivities() {
         // Fetch all sessions (past + future) so we can detect expired activities
         const { data: sessionData, error: sessionError } = await supabase
           .from('learning_sessions')
-          .select('id,activity_id,start_time')
+          .select('id,activity_id,start_time,recurrence_rule,recurrence_ordinal,recurrence_weekday,recurrence_until')
           .in('activity_id', ids)
           .order('start_time', { ascending: true })
           .limit(500)
@@ -230,24 +235,29 @@ export default function LearningActivities() {
     void load()
   }, [])
 
+  const upcomingSessions = useMemo(
+    () => expandUpcomingSessions(sessions, new Date(), 1),
+    [sessions],
+  )
+
   // Activities that have sessions but all in the past are hidden automatically
   const activeActivities = useMemo(() => {
     return activities.filter((activity) => {
       if (!hasAnySessions(sessions, activity.id)) return true // no sessions = evergreen (downloads, etc.)
-      return countUpcoming(sessions, activity.id) > 0
+      return countUpcoming(upcomingSessions, activity.id) > 0
     })
-  }, [activities, sessions])
+  }, [activities, sessions, upcomingSessions])
 
   const sortedActivities = useMemo(() => {
     return [...activeActivities].sort((a, b) => {
-      const nextA = getNextSession(sessions, a.id)
-      const nextB = getNextSession(sessions, b.id)
+      const nextA = getNextSession(upcomingSessions, a.id)
+      const nextB = getNextSession(upcomingSessions, b.id)
       if (nextA && nextB) return new Date(nextA.start_time!).getTime() - new Date(nextB.start_time!).getTime()
       if (nextA) return -1
       if (nextB) return 1
       return 0
     })
-  }, [activeActivities, sessions])
+  }, [activeActivities, upcomingSessions])
 
   return (
     <div className="relative min-h-screen bg-sanctuary-100 text-deep-slate">
@@ -304,8 +314,8 @@ export default function LearningActivities() {
                 const center = activity.center_id
                   ? activeCenters.find((c) => c.id === activity.center_id)
                   : null
-                const nextSession = getNextSession(sessions, activity.id)
-                const upcomingCount = countUpcoming(sessions, activity.id)
+                const nextSession = getNextSession(upcomingSessions, activity.id)
+                const upcomingCount = countUpcoming(upcomingSessions, activity.id)
                 const nextDate = nextSession?.start_time
                   ? formatDate(nextSession.start_time, language)
                   : null
@@ -327,6 +337,9 @@ export default function LearningActivities() {
                         </span>
                       ) : null}
                     </div>
+                    {nextSession && recurrenceLabel(nextSession) ? (
+                      <p className="mt-3 text-xs font-semibold text-sage-700">{recurrenceLabel(nextSession)}</p>
+                    ) : null}
 
                     <h2 className="mt-4 text-2xl font-serif text-deep-slate">{activity.title}</h2>
                     {center ? (

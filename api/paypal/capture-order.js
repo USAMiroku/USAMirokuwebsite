@@ -7,6 +7,7 @@ import {
   sanitizeText,
 } from './_paypal.js'
 import { markDonationCompleted } from './_donations.js'
+import { enforceRateLimit, enforceSameOrigin } from '../_security.js'
 
 async function fetchOrderDetails({ baseUrl, accessToken, orderId }) {
   return paypalRequest({
@@ -22,6 +23,8 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Method not allowed.' })
   }
+  if (!enforceSameOrigin(req, res)) return
+  if (!enforceRateLimit(req, res, { key: 'paypal-capture', limit: 20 })) return
 
   try {
     const body = parseRequestBody(req)

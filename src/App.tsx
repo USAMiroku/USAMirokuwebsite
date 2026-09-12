@@ -12,7 +12,7 @@ const FAQ = lazy(() => import('./pages/FAQ'))
 const FirstVisit = lazy(() => import('./pages/FirstVisit'))
 const Guidelines2026 = lazy(() => import('./pages/Guidelines2026'))
 const Home = lazy(() => import('./pages/Home'))
-const Johrei = lazy(() => import('./pages/Johrei'))
+const ThreePillars = lazy(() => import('./pages/ThreePillars'))
 const LocationDetail = lazy(() => import('./pages/LocationDetail'))
 const Locations = lazy(() => import('./pages/Locations'))
 const MeishuSama = lazy(() => import('./pages/MeishuSama'))
@@ -66,7 +66,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="books" element={<Books />} />
-          <Route path="johrei" element={<Johrei />} />
+          <Route path="three-pillars" element={<ThreePillars />} />
+          <Route path="johrei" element={<Navigate to="/three-pillars" replace />} />
           <Route path="meishu-sama" element={<MeishuSama />} />
           <Route path="meishu-sama/legacy" element={<MeishuSamaLegacy />} />
           <Route path="paradise-on-earth" element={<ParadiseOnEarth />} />

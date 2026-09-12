@@ -6,6 +6,7 @@ import { usePageMeta } from '../../hooks/usePageMeta'
 import { supabase } from '../lib/supabaseClient'
 import { useTranslation } from '../../context/TranslationContext'
 import { useManagedCenters } from '../../organization/centers'
+import { expandUpcomingSessions, recurrenceLabel, type RecurrenceRule } from '../lib/sessionRecurrence'
 
 type Activity = {
   id: string
@@ -27,6 +28,10 @@ type Session = {
   meeting_url: string | null
   seats_total: number | null
   location: string | null
+  recurrence_rule: RecurrenceRule | null
+  recurrence_ordinal: number | null
+  recurrence_weekday: number | null
+  recurrence_until: string | null
 }
 
 type Material = {
@@ -294,7 +299,7 @@ export default function LearningActivityDetail() {
 
       const { data: sessionData, error: sessionsError } = await supabase
         .from('learning_sessions')
-        .select('id,start_time,end_time,meeting_url,seats_total,location')
+        .select('id,start_time,end_time,meeting_url,seats_total,location,recurrence_rule,recurrence_ordinal,recurrence_weekday,recurrence_until')
         .eq('activity_id', activityId)
         .order('start_time', { ascending: true })
         .limit(50)
@@ -329,7 +334,7 @@ export default function LearningActivityDetail() {
   }, [activityId, copy.notConfigured])
 
   const upcomingSessions = useMemo(() => {
-    return sessions.filter((s) => s.start_time && new Date(s.start_time).getTime() >= pageLoadedAt)
+    return expandUpcomingSessions(sessions, new Date(pageLoadedAt), 12)
   }, [pageLoadedAt, sessions])
 
   const eventMaterials = materials.filter((m) => m.session_id === null)
@@ -422,7 +427,7 @@ export default function LearningActivityDetail() {
                         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                           <div className="space-y-2">
                             <p className="text-[11px] uppercase tracking-[0.16em] font-semibold text-sage-600">
-                              {copy.session}
+                              {recurrenceLabel(s) ?? copy.session}
                             </p>
                             <p className="text-xl md:text-2xl font-serif text-deep-slate">
                               {formatDateTime(s.start_time, language) ?? copy.scheduleTba}
@@ -475,13 +480,13 @@ export default function LearningActivityDetail() {
                         </div>
 
                         {/* Session-specific materials */}
-                        {materials.filter((m) => m.session_id === s.id).length > 0 ? (
+                        {materials.filter((m) => m.session_id === s.id.split(':')[0]).length > 0 ? (
                           <div className="mt-6 space-y-2 border-t border-slate-100 pt-5">
                             <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
                               {copy.sessionDownloads}
                             </p>
                             {materials
-                              .filter((m) => m.session_id === s.id)
+                              .filter((m) => m.session_id === s.id.split(':')[0])
                               .map((m) => (
                                 <a
                                   key={m.id}

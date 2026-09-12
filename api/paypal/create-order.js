@@ -13,12 +13,15 @@ import {
   sanitizeText,
 } from './_paypal.js'
 import { recordDonationOrder } from './_donations.js'
+import { enforceRateLimit, enforceSameOrigin } from '../_security.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return res.status(405).json({ error: 'Method not allowed.' })
   }
+  if (!enforceSameOrigin(req, res)) return
+  if (!enforceRateLimit(req, res, { key: 'paypal-create', limit: 12 })) return
 
   try {
     const body = parseRequestBody(req)
@@ -34,7 +37,7 @@ export default async function handler(req, res) {
     const centerId = sanitizeText(body.centerId, 80)
     const donationType = sanitizeText(body.donationType, 80)
     const amount = parseAmount(body.amount)
-    const currency = sanitizeText(body.currency || 'USD', 3).toUpperCase()
+    const currency = 'USD'
     const fundingSource = body.fundingSource === 'card' ? 'card' : 'paypal'
     const coverProcessingFee = body.coverProcessingFee === true
 
@@ -44,6 +47,9 @@ export default async function handler(req, res) {
 
     if (!amount) {
       return res.status(400).json({ error: 'Amount must be greater than zero.' })
+    }
+    if (Number(amount) > 100000) {
+      return res.status(400).json({ error: 'Amount exceeds the online transaction limit.' })
     }
 
     const { baseUrl, accessToken } = await getAccessToken(fundType)
