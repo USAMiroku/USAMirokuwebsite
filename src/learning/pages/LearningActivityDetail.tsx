@@ -6,6 +6,7 @@ import { usePageMeta } from '../../hooks/usePageMeta'
 import { supabase } from '../lib/supabaseClient'
 import { useTranslation } from '../../context/TranslationContext'
 import { useManagedCenters } from '../../organization/centers'
+import { PosterImage } from '../components/PosterImage'
 import { expandUpcomingSessions, recurrenceLabel, type RecurrenceRule } from '../lib/sessionRecurrence'
 
 type Activity = {
@@ -364,14 +365,16 @@ export default function LearningActivityDetail() {
         </div>
       </section>
 
-      {/* ─── Banner image ─────────────────────────────────────────────────── */}
+      {/* ─── Event poster ─────────────────────────────────────────────────── */}
       {activity?.image_url ? (
         <div className="px-6 pb-4">
           <div className="mx-auto max-w-4xl">
-            <img
+            <PosterImage
               src={activity.image_url}
               alt={activity.title}
-              className="w-full rounded-3xl object-cover max-h-80 shadow-[0_24px_80px_rgba(15,23,42,0.12)]"
+              language={language}
+              className="mx-auto w-fit rounded-3xl bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]"
+              imageClassName="max-h-[75vh] w-auto rounded-3xl object-contain"
             />
           </div>
         </div>

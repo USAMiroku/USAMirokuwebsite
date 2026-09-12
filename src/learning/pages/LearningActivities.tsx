@@ -5,7 +5,8 @@ import { usePageMeta } from '../../hooks/usePageMeta'
 import { supabase } from '../lib/supabaseClient'
 import { useManagedCenters } from '../../organization/centers'
 import { useTranslation } from '../../context/TranslationContext'
-import { AnnualEventsCalendar } from '../components/AnnualEventsCalendar'
+import { AnnualEventsCalendar, type LiveCalendarEvent } from '../components/AnnualEventsCalendar'
+import { PosterImage } from '../components/PosterImage'
 import { expandUpcomingSessions, recurrenceLabel, type RecurrenceRule } from '../lib/sessionRecurrence'
 
 type Activity = {
@@ -14,12 +15,14 @@ type Activity = {
   title: string
   description: string | null
   center_id: string | null
+  image_url?: string | null
 }
 
 type Session = {
   id: string
   activity_id: string
   start_time: string | null
+  location?: string | null
   recurrence_rule: RecurrenceRule | null
   recurrence_ordinal: number | null
   recurrence_weekday: number | null
@@ -187,7 +190,7 @@ export default function LearningActivities() {
 
       let { data, error: queryError } = await supabase
         .from('learning_activities')
-        .select('id,type,title,description,center_id')
+        .select('id,type,title,description,center_id,image_url')
         .eq('is_published', true)
         .eq('show_on_main_events', true)
         .order('created_at', { ascending: false })
@@ -197,7 +200,7 @@ export default function LearningActivities() {
       if (queryError) {
         const fallback = await supabase
           .from('learning_activities')
-          .select('id,type,title,description,center_id')
+          .select('id,type,title,description,center_id,image_url')
           .eq('show_on_main_events', true)
           .order('created_at', { ascending: false })
           .limit(50)
@@ -219,7 +222,7 @@ export default function LearningActivities() {
         // Fetch all sessions (past + future) so we can detect expired activities
         const { data: sessionData, error: sessionError } = await supabase
           .from('learning_sessions')
-          .select('id,activity_id,start_time,recurrence_rule,recurrence_ordinal,recurrence_weekday,recurrence_until')
+          .select('id,activity_id,start_time,location,recurrence_rule,recurrence_ordinal,recurrence_weekday,recurrence_until')
           .in('activity_id', ids)
           .order('start_time', { ascending: true })
           .limit(500)
@@ -259,6 +262,28 @@ export default function LearningActivities() {
     })
   }, [activeActivities, upcomingSessions])
 
+  // Every dated occurrence this year, so admin-managed activities also appear on the calendar grid
+  const calendarEvents = useMemo<LiveCalendarEvent[]>(() => {
+    const activityById = new Map(activities.map((activity) => [activity.id, activity]))
+    const yearStart = new Date(new Date().getFullYear(), 0, 1)
+    return expandUpcomingSessions(sessions, yearStart, 24).flatMap((session) => {
+      const activity = activityById.get(session.activity_id)
+      if (!activity || !session.start_time) return []
+      const center = activity.center_id ? activeCenters.find((c) => c.id === activity.center_id) : null
+      const entry: LiveCalendarEvent = {
+        id: session.id,
+        activityId: activity.id,
+        title: activity.title,
+        startIso: session.start_time,
+        category: activity.type === 'event' ? 'service' : 'class',
+        location: session.location || center?.name || null,
+        imageUrl: activity.image_url ?? null,
+        recurrence: recurrenceLabel(session),
+      }
+      return [entry]
+    })
+  }, [activeCenters, activities, sessions])
+
   return (
     <div className="relative min-h-screen bg-sanctuary-100 text-deep-slate">
       <div className="noise-subtle" />
@@ -272,7 +297,7 @@ export default function LearningActivities() {
 
       <Section className="bg-white">
         <div className="max-w-6xl mx-auto px-6 space-y-10">
-          <AnnualEventsCalendar language={language} />
+          <AnnualEventsCalendar language={language} liveEvents={calendarEvents} />
           {error ? (
             <div className="rounded-2xl border border-rose-200 bg-rose-50 px-6 py-5 text-rose-900">{error}</div>
           ) : null}
@@ -325,6 +350,15 @@ export default function LearningActivities() {
                     key={activity.id}
                     className="flex flex-col rounded-3xl border border-[rgba(184,134,11,0.22)] bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)]"
                   >
+                    {activity.image_url ? (
+                      <PosterImage
+                        src={activity.image_url}
+                        alt={activity.title}
+                        language={language}
+                        className="mb-6 w-full rounded-2xl bg-sanctuary-100"
+                        imageClassName="mx-auto max-h-80 w-auto object-contain"
+                      />
+                    ) : null}
                     <div className="flex flex-wrap items-center gap-2">
                       <span
                         className={`inline-flex items-center rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ${TYPE_BADGE[activity.type]}`}
