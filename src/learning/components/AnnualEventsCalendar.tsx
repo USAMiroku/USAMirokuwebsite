@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { annualCalendar2026, annualCalendarSourceNote, type AnnualCalendarEvent, type AnnualEventCategory } from '../../data/annualCalendar2026'
 import type { Language } from '../../types'
+import { PosterImage } from './PosterImage'
 
 const categoryStyles: Record<AnnualEventCategory, string> = {
   service: 'border-amber-200 bg-amber-50 text-amber-900', class: 'border-sage-200 bg-sage-50 text-sage-800',
@@ -14,6 +16,51 @@ const copyByLanguage = {
   pt: { title: 'Calendário Anual de Eventos 2026', intro: 'Explore a programação anual aprovada de cultos, aulas, seminários, reuniões, atividades artísticas e peregrinação.', next: 'Próximo evento programado', calendar: 'Calendário', agenda: 'Agenda', search: 'Buscar eventos', all: 'Todas as categorias', today: 'Mês atual', previous: 'Mês anterior', following: 'Próximo mês', time: 'Horário', place: 'Local', presenter: 'Apresentador', details: 'Detalhes do evento', noResults: 'Nenhum evento corresponde a estes filtros.', scheduleNote: 'Os horários são exibidos exatamente como fornecidos. A fonte não informa o fuso horário; confirme os detalhes com a organização.', confirmation: 'A data precisa de confirmação', sourceSays: 'A célula de origem informa', approved: 'Programação anual aprovada', live: 'Eventos atuais e recém-adicionados', liveBody: 'Estas listagens atuais vêm do sistema de gerenciamento de eventos do site e podem incluir inscrições, materiais ou atualizações.', categories: { service: 'Cultos', class: 'Aulas', seminar: 'Seminários', meeting: 'Reuniões', art: 'Arte', pilgrimage: 'Peregrinação' } },
 } as const
 
+const liveCopyByLanguage = {
+  en: { viewEvent: 'View event page' },
+  es: { viewEvent: 'Ver página del evento' },
+  pt: { viewEvent: 'Ver página do evento' },
+} as const
+
+/** One occurrence of an activity managed in the admin, shown alongside the approved annual schedule. */
+export type LiveCalendarEvent = {
+  id: string
+  activityId: string
+  title: string
+  startIso: string
+  category: AnnualEventCategory
+  location?: string | null
+  imageUrl?: string | null
+  recurrence?: string | null
+}
+
+type CalendarEntry = AnnualCalendarEvent & {
+  href?: string
+  imageUrl?: string | null
+  locationText?: string | null
+  recurrence?: string | null
+}
+
+const NO_LIVE_EVENTS: LiveCalendarEvent[] = []
+
+function toCalendarEntry(event: LiveCalendarEvent, language: Language): CalendarEntry | null {
+  const start = new Date(event.startIso)
+  if (Number.isNaN(start.getTime())) return null
+  const locale = language === 'es' ? 'es-US' : language === 'pt' ? 'pt-BR' : 'en-US'
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return {
+    id: event.id,
+    title: event.title,
+    startDate: `${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`,
+    time: new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: '2-digit' }).format(start),
+    category: event.category,
+    href: `/activities/${event.activityId}`,
+    imageUrl: event.imageUrl,
+    locationText: event.location,
+    recurrence: event.recurrence,
+  }
+}
+
 function localDate(value: string) { return new Date(`${value}T12:00:00`) }
 function formatDate(event: AnnualCalendarEvent, language: Language) {
   const locale = language === 'es' ? 'es-US' : language === 'pt' ? 'pt-BR' : 'en-US'
@@ -23,18 +70,21 @@ function formatDate(event: AnnualCalendarEvent, language: Language) {
   return `${start} – ${new Intl.DateTimeFormat(locale, options).format(localDate(event.endDate))}`
 }
 
-function EventDetails({ event, language }: { event: AnnualCalendarEvent; language: Language }) {
+function EventDetails({ event, language }: { event: CalendarEntry; language: Language }) {
   const copy = copyByLanguage[language]
   return <div className="space-y-3 text-sm leading-6 text-slate-600">
     <p className="font-semibold text-deep-slate">{formatDate(event, language)}</p>
     <p><span className="font-semibold text-deep-slate">{copy.time}:</span> {event.time}</p>
-    {event.location ? <p><span className="font-semibold text-deep-slate">{copy.place}:</span> {event.location === 'Zoom' ? 'Zoom' : 'Miroku Association USA Headquarters'}</p> : null}
+    {event.recurrence ? <p className="font-semibold text-sage-700">{event.recurrence}</p> : null}
+    {event.locationText || event.location ? <p><span className="font-semibold text-deep-slate">{copy.place}:</span> {event.locationText || (event.location === 'Zoom' ? 'Zoom' : 'Miroku Association USA Headquarters')}</p> : null}
     {event.presenter ? <p><span className="font-semibold text-deep-slate">{copy.presenter}:</span> {event.presenter}</p> : null}
     {event.dateNeedsConfirmation ? <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 font-medium text-amber-900">{copy.confirmation}. {copy.sourceSays}: {event.sourceDate}.</p> : null}
+    {event.imageUrl ? <PosterImage src={event.imageUrl} alt={event.title} language={language} className="w-fit rounded-2xl bg-white" imageClassName="max-h-80 w-auto rounded-2xl object-contain" /> : null}
+    {event.href ? <Link to={event.href} className="inline-flex h-10 items-center rounded-full bg-divine-gold px-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-[#9e730a]">{liveCopyByLanguage[language].viewEvent}</Link> : null}
   </div>
 }
 
-export function AnnualEventsCalendar({ language }: { language: Language }) {
+export function AnnualEventsCalendar({ language, liveEvents = NO_LIVE_EVENTS }: { language: Language; liveEvents?: LiveCalendarEvent[] }) {
   const now = new Date()
   const initialMonth = now.getFullYear() === 2026 ? now.getMonth() : 0
   const [month, setMonth] = useState(initialMonth)
@@ -45,11 +95,15 @@ export function AnnualEventsCalendar({ language }: { language: Language }) {
   const copy = copyByLanguage[language]
   const locale = language === 'es' ? 'es-US' : language === 'pt' ? 'pt-BR' : 'en-US'
   const categories = Object.keys(copy.categories) as AnnualEventCategory[]
-  const filtered = useMemo(() => annualCalendar2026.filter((event) => (category === 'all' || event.category === category) && event.title.toLowerCase().includes(query.trim().toLowerCase())), [category, query])
-  const monthEvents = filtered.filter((event) => localDate(event.startDate).getMonth() === month || (event.endDate && localDate(event.endDate).getMonth() === month))
+  const entries = useMemo<CalendarEntry[]>(() => [
+    ...annualCalendar2026,
+    ...liveEvents.map((event) => toCalendarEntry(event, language)).filter((entry): entry is CalendarEntry => entry !== null),
+  ].sort((a, b) => a.startDate.localeCompare(b.startDate)), [language, liveEvents])
+  const filtered = useMemo(() => entries.filter((event) => (category === 'all' || event.category === category) && event.title.toLowerCase().includes(query.trim().toLowerCase())), [category, entries, query])
+  const monthEvents = filtered.filter((event) => localDate(event.startDate) <= new Date(2026, month + 1, 0, 23, 59) && localDate(event.endDate ?? event.startDate) >= new Date(2026, month, 1))
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
-  const nextEvent = annualCalendar2026.find((event) => localDate(event.endDate ?? event.startDate).getTime() >= todayStart)
-  const selected = annualCalendar2026.find((event) => event.id === selectedId)
+  const nextEvent = entries.find((event) => localDate(event.endDate ?? event.startDate).getTime() >= todayStart)
+  const selected = entries.find((event) => event.id === selectedId)
   const firstDay = new Date(2026, month, 1).getDay()
   const daysInMonth = new Date(2026, month + 1, 0).getDate()
   const monthName = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(new Date(2026, month, 1))

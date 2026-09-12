@@ -786,7 +786,7 @@ function AdminCenterActivitiesInner() {
               </div>
 
               {/* ── Description & Image ── */}
-              <p className={SECTION_TITLE}>Description & Image</p>
+              <p className={SECTION_TITLE}>Description & Poster</p>
               <div className="grid gap-4">
                 <label className="block">
                   <span className={LABEL_CLASS}>Description</span>
@@ -803,10 +803,10 @@ function AdminCenterActivitiesInner() {
                 </label>
 
                 <div className="block">
-                  <span className={LABEL_CLASS}>Banner Image</span>
+                  <span className={LABEL_CLASS}>Event Poster</span>
                   <p className="mt-1 text-xs text-slate-400">
-                    Upload a photo (JPG, PNG, or WebP up to 12 MB) or paste a direct image URL. Leave blank to use no
-                    image.
+                    Upload the event poster or flyer (JPG, PNG, or WebP up to 12 MB), or paste a direct image URL.
+                    Visitors can click the poster to see it full size. Leave blank for no poster.
                   </p>
                   <div className="mt-2 flex flex-wrap items-center gap-3">
                     <label
@@ -814,7 +814,7 @@ function AdminCenterActivitiesInner() {
                         isUploadingImage ? 'pointer-events-none opacity-60' : ''
                       }`}
                     >
-                      {isUploadingImage ? 'Uploading…' : editImageUrl.trim() ? 'Replace Photo' : 'Upload Photo'}
+                      {isUploadingImage ? 'Uploading…' : editImageUrl.trim() ? 'Replace Poster' : 'Upload Poster'}
                       <input
                         type="file"
                         accept="image/jpeg,image/png,image/webp"
@@ -830,7 +830,7 @@ function AdminCenterActivitiesInner() {
                         disabled={isUploadingImage}
                         className="inline-flex h-10 items-center justify-center rounded-full border border-slate-200 px-5 text-[10px] font-semibold uppercase text-slate-600 hover:bg-slate-50 disabled:opacity-50"
                       >
-                        Remove Image
+                        Remove Poster
                       </button>
                     ) : null}
                   </div>
@@ -841,13 +841,13 @@ function AdminCenterActivitiesInner() {
                     onChange={(e) => setEditImageUrl(e.target.value)}
                     className={FIELD_CLASS}
                     placeholder="https://..."
-                    aria-label="Banner image URL"
+                    aria-label="Poster image URL"
                   />
                   {editImageUrl.trim() ? (
                     <img
                       src={editImageUrl}
                       alt="Preview"
-                      className="mt-3 h-40 w-full rounded-xl object-cover border border-slate-100"
+                      className="mt-3 max-h-72 w-auto rounded-xl border border-slate-100 object-contain"
                       onError={(e) => {
                         ;(e.target as HTMLImageElement).style.display = 'none'
                       }}
