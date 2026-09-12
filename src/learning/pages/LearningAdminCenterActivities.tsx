@@ -4,6 +4,7 @@ import { Section } from '../../components/Section'
 import { ButtonLink } from '../../components/ButtonLink'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { supabase } from '../lib/supabaseClient'
+import { removeActivityImage, uploadActivityImage } from '../lib/activityImages'
 import { LearningAdminToolbar } from '../components/LearningAdminToolbar'
 import { RequireAdmin } from '../components/LearningRouteGuards'
 import { useLearningAuth } from '../context/LearningAuthContext'
@@ -112,6 +113,8 @@ function AdminCenterActivitiesInner() {
   const [editIsPublished, setEditIsPublished] = useState(true)
   const [toggleSavedField, setToggleSavedField] = useState<string | null>(null)
   const [editImageUrl, setEditImageUrl] = useState('')
+  const [isUploadingImage, setIsUploadingImage] = useState(false)
+  const [imageUploadError, setImageUploadError] = useState<string | null>(null)
   const [editContactName, setEditContactName] = useState('')
   const [editContactEmail, setEditContactEmail] = useState('')
   const [editRegistrationRequired, setEditRegistrationRequired] = useState(false)
@@ -246,6 +249,7 @@ function AdminCenterActivitiesInner() {
     setEditShowOnMainEvents(activity.show_on_main_events !== false)
     setEditIsPublished(activity.is_published !== false)
     setEditImageUrl(activity.image_url ?? '')
+    setImageUploadError(null)
     setEditContactName(activity.contact_name ?? '')
     setEditContactEmail(activity.contact_email ?? '')
     setEditRegistrationRequired(activity.registration_required === true)
@@ -282,6 +286,31 @@ function AdminCenterActivitiesInner() {
     setTimeout(() => setToggleSavedField(null), 2000)
   }
 
+  // ─── Upload banner image ─────────────────────────────────────────────────
+  async function handleImageFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!supabase || !editingActivity || !file) return
+    setImageUploadError(null)
+    setIsUploadingImage(true)
+    try {
+      const previousUrl = editImageUrl.trim()
+      const url = await uploadActivityImage(
+        supabase,
+        file,
+        editingActivity.id,
+        (isSuperAdmin ? editCenterId : managedCenterId) || null,
+      )
+      setEditImageUrl(url)
+      // Discard an earlier unsaved upload from this editing session.
+      if (previousUrl && previousUrl !== editingActivity.image_url) void removeActivityImage(supabase, previousUrl)
+    } catch (uploadError) {
+      setImageUploadError(uploadError instanceof Error ? uploadError.message : 'Could not upload the image.')
+    } finally {
+      setIsUploadingImage(false)
+    }
+  }
+
   // ─── Save edited activity ────────────────────────────────────────────────
   async function handleSaveEdit() {
     if (!supabase || !editingActivity) return
@@ -305,6 +334,10 @@ function AdminCenterActivitiesInner() {
     if (updateError) {
       setError(updateError.message)
       return
+    }
+
+    if (editingActivity.image_url && editingActivity.image_url !== (editImageUrl.trim() || null)) {
+      void removeActivityImage(supabase, editingActivity.image_url)
     }
 
     setActivities((prev) =>
@@ -381,6 +414,7 @@ function AdminCenterActivitiesInner() {
       setError(deleteError.message)
       return
     }
+    void removeActivityImage(supabase, activity.image_url)
     setActivities((prev) => prev.filter((a) => a.id !== activity.id))
     if (editingActivity?.id === activity.id) setEditingActivity(null)
   }
@@ -747,17 +781,46 @@ function AdminCenterActivitiesInner() {
                   />
                 </label>
 
-                <label className="block">
-                  <span className={LABEL_CLASS}>Banner Image URL</span>
+                <div className="block">
+                  <span className={LABEL_CLASS}>Banner Image</span>
                   <p className="mt-1 text-xs text-slate-400">
-                    Paste a direct image URL (jpg, png, webp). Leave blank to use no image.
+                    Upload a photo (JPG, PNG, or WebP up to 12 MB) or paste a direct image URL. Leave blank to use no
+                    image.
                   </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-3">
+                    <label
+                      className={`inline-flex h-10 cursor-pointer items-center justify-center rounded-full bg-divine-gold px-6 text-[10px] font-semibold uppercase tracking-[0.14em] text-white hover:bg-[#9e730a] transition ${
+                        isUploadingImage ? 'pointer-events-none opacity-60' : ''
+                      }`}
+                    >
+                      {isUploadingImage ? 'Uploading…' : editImageUrl.trim() ? 'Replace Photo' : 'Upload Photo'}
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={(e) => void handleImageFileChange(e)}
+                        disabled={isUploadingImage}
+                        className="sr-only"
+                      />
+                    </label>
+                    {editImageUrl.trim() ? (
+                      <button
+                        type="button"
+                        onClick={() => setEditImageUrl('')}
+                        disabled={isUploadingImage}
+                        className="inline-flex h-10 items-center justify-center rounded-full border border-slate-200 px-5 text-[10px] font-semibold uppercase text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                      >
+                        Remove Image
+                      </button>
+                    ) : null}
+                  </div>
+                  {imageUploadError ? <p className="mt-2 text-xs text-rose-700">{imageUploadError}</p> : null}
                   <input
                     type="url"
                     value={editImageUrl}
                     onChange={(e) => setEditImageUrl(e.target.value)}
                     className={FIELD_CLASS}
                     placeholder="https://..."
+                    aria-label="Banner image URL"
                   />
                   {editImageUrl.trim() ? (
                     <img
@@ -769,7 +832,7 @@ function AdminCenterActivitiesInner() {
                       }}
                     />
                   ) : null}
-                </label>
+                </div>
               </div>
 
               {/* ── Sessions ── */}
