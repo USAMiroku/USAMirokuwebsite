@@ -36,7 +36,7 @@ export const siteConfig = {
       address: '47-10 32nd Place, Suite 207, Long Island City, NY 11101',
       phone: '+1 (305) 308-8830',
       email: 'info@miroku.us',
-      schedule: 'By appointment.',
+      schedule: 'Tuesdays, Wednesdays, Fridays & Saturdays: 9:30 AM–11:00 AM and 5:30 PM–6:30 PM. 1st & 3rd Sundays: 10:00 AM–1:00 PM. Outside these hours, visits are available by appointment.',
     },
     {
       id: 'boston-johrei-center',
@@ -77,7 +77,7 @@ export const siteConfig = {
       address: '47-10 32nd Place, Suite 207, Long Island City, NY 11101',
       phone: '+1 (305) 308-8830',
       email: 'info@miroku.us',
-      schedule: 'By appointment.',
+      schedule: 'Tuesdays, Wednesdays, Fridays & Saturdays: 9:30 AM–11:00 AM and 5:30 PM–6:30 PM. 1st & 3rd Sundays: 10:00 AM–1:00 PM. Outside these hours, visits are available by appointment.',
     },
     {
       id: 'orlando-johrei-center',
