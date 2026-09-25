@@ -49,6 +49,8 @@ export const specialServicesLandingCopy: Record<
     donate: string
     back: string
     openForm: string
+    annualAncestorsLabel: string
+    openAnnualAncestors: string
   }
 > = {
   en: {
@@ -60,6 +62,8 @@ export const specialServicesLandingCopy: Record<
     donate: 'Donate',
     back: 'Back to Special Services',
     openForm: 'Open form',
+    annualAncestorsLabel: 'Featured prayer form',
+    openAnnualAncestors: 'Open Annual Ancestors Form',
   },
   pt: {
     title: 'Cultos Especiais',
@@ -70,6 +74,8 @@ export const specialServicesLandingCopy: Record<
     donate: 'Doar',
     back: 'Voltar para Cultos Especiais',
     openForm: 'Abrir formulário',
+    annualAncestorsLabel: 'Formulário de oração em destaque',
+    openAnnualAncestors: 'Abrir formulário do Culto Anual dos Antepassados',
   },
   es: {
     title: 'Ceremonias Especiales',
@@ -80,6 +86,8 @@ export const specialServicesLandingCopy: Record<
     donate: 'Donar',
     back: 'Volver a Ceremonias Especiales',
     openForm: 'Abrir formulario',
+    annualAncestorsLabel: 'Formulario de oración destacado',
+    openAnnualAncestors: 'Abrir formulario de la Ceremonia Anual de los Antepasados',
   },
 }
 
