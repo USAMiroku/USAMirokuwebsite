@@ -331,6 +331,9 @@ export default function SpecialServiceForm() {
                   />
                 </div>
               </div>
+              <p className="screen-only text-xs leading-relaxed text-slate-500">
+                {ui.extraWritingNote}
+              </p>
             </div>
           )}
 

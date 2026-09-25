@@ -109,6 +109,7 @@ export const specialServiceFormUiCopy: Record<
     shareCanceled: string
     shareUnavailable: string
     extraNamesNote: string
+    extraWritingNote: string
   }
 > = {
   en: {
@@ -135,6 +136,7 @@ export const specialServiceFormUiCopy: Record<
     shareCanceled: 'The sharing dialog closed without completing the handoff. Your PDF is still ready: try Share PDF again or download the PDF below.',
     shareUnavailable: 'File sharing is unavailable or could not open on this device. Download the PDF to attach manually.',
     extraNamesNote: 'This page has space for 24 names. For more, prepare another form and attach each form when you send your request.',
+    extraWritingNote: 'For more writing space, prepare another form. Print each form, or download the PDFs and attach them all to one message.',
   },
   pt: {
     centerLabel: 'Para onde você deseja enviar este formulário?',
@@ -160,6 +162,7 @@ export const specialServiceFormUiCopy: Record<
     shareCanceled: 'A janela de compartilhamento foi fechada sem concluir a transferência. Seu PDF continua pronto: tente Compartilhar PDF novamente ou baixe o PDF abaixo.',
     shareUnavailable: 'O compartilhamento de arquivos não está disponível ou não abriu neste dispositivo. Baixe o PDF para anexar manualmente.',
     extraNamesNote: 'Esta página tem espaço para 24 nomes. Para incluir mais, prepare outro formulário e anexe todos ao enviar sua solicitação.',
+    extraWritingNote: 'Para ter mais espaço para escrever, prepare outro formulário. Imprima cada formulário ou baixe os PDFs e anexe todos em uma única mensagem.',
   },
   es: {
     centerLabel: '¿A dónde desea enviar este formulario?',
@@ -185,6 +188,7 @@ export const specialServiceFormUiCopy: Record<
     shareCanceled: 'Se cerró la ventana sin completar la transferencia. Su PDF sigue listo: intente Compartir PDF de nuevo o descargue el PDF abajo.',
     shareUnavailable: 'Compartir archivos no está disponible o no pudo abrirse en este dispositivo. Descargue el PDF para adjuntarlo manualmente.',
     extraNamesNote: 'Esta página tiene espacio para 24 nombres. Si necesita más, prepare otro formulario y adjunte todos al enviar su solicitud.',
+    extraWritingNote: 'Si necesita más espacio para escribir, prepare otro formulario. Imprima cada uno o descargue los PDF y adjúntelos todos en un mismo mensaje.',
   },
 }
 
@@ -201,10 +205,10 @@ export const specialServices: SpecialServiceDefinition[] = [
         quote: 'Paradise on Earth is a world where truth, virtue and beauty are being manifested in perfect form.',
         section1:
           'Supreme God, Creator and Giver of All Life, please accept the expression of my deepest gratitude for all the changes and transformations that have been manifested in my heart, in my home, and in my life, such as:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'With a sincere heart, I renew my commitment to dedicate myself even more to the Divine Plan for the construction of Paradise on Earth, striving especially in the following practices:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
       pt: {
         title: 'Culto do Paraíso Terrestre',
@@ -213,10 +217,10 @@ export const specialServices: SpecialServiceDefinition[] = [
         quote: 'O Paraíso Terrestre é um mundo onde a Verdade, o Bem e o Belo se manifestam plenamente.',
         section1:
           'Supremo Deus, Criador e Doador de Toda a Vida, receba, por favor, minha profunda gratidão por todas as mudanças e transformações que se manifestaram em meu coração, no meu lar e em minha vida, tais como:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'Com sincero sentimento, renovo meu compromisso de dedicar-me ainda mais ao Plano Divino para a construção do Paraíso Terrestre, esforçando-me especialmente nas seguintes práticas:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
       es: {
         title: 'Ceremonia de Celebración del Paraíso en la Tierra',
@@ -226,10 +230,10 @@ export const specialServices: SpecialServiceDefinition[] = [
           'El Paraíso en la Tierra es un mundo donde la Verdad, el Bien y la Belleza se manifiestan plenamente.',
         section1:
           'Dios Supremo, Creador y Dador de Toda Vida, por favor recibe la expresión de mi más profunda gratitud por todos los cambios y transformaciones que se han manifestado en mi corazón, en mi hogar y en mi vida, tales como:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'Con un corazón sincero, renuevo mi compromiso de dedicarme aún más al Plan Divino para la construcción del Paraíso en la Tierra, esforzándome especialmente en las siguientes prácticas:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
     },
   },
@@ -277,10 +281,10 @@ export const specialServices: SpecialServiceDefinition[] = [
           'Noble is the human being who feels gratitude for the blessings received and can keep them in their heart.',
         section1:
           'God, Creator and Giver of All Life, please receive my gratitude for all the blessings and protection I have received such as:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           "For this coming year, I'd like to commit myself to be in service to the Divine Plan as an instrument of Meishu-sama by putting into practice the following:",
-        section2Lines: 12,
+        section2Lines: 15,
       },
       pt: {
         title: 'Culto Comemorativo do Natalício de Meishu-sama',
@@ -290,10 +294,10 @@ export const specialServices: SpecialServiceDefinition[] = [
           'É nobre o ser humano que sente gratidão pelas bênçãos recebidas e consegue conservá-las em seu coração.',
         section1:
           'Deus, Criador e Doador de Toda a Vida, por favor, receba minha gratidão por todas as bênçãos e proteção que tenho recebido, tais como:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'Para este próximo Ano Novo, desejo comprometer-me a servir ao Plano Divino como instrumento de Meishu-sama, colocando em prática o seguinte:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
       es: {
         title: 'Ceremonia de Celebración del Natalicio de Meishu-sama',
@@ -303,10 +307,10 @@ export const specialServices: SpecialServiceDefinition[] = [
           'Noble es el ser humano que siente gratitud por las bendiciones recibidas y puede conservarlas en su corazón.',
         section1:
           'Dios, Creador y Dador de Toda Vida, por favor recibe mi gratitud por todas las bendiciones y protección que he recibido, tales como:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'Para este próximo año, deseo comprometerme a servir al Plan Divino como instrumento de Meishu-sama, poniendo en práctica lo siguiente:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
     },
   },

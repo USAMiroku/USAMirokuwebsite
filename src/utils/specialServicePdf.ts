@@ -65,12 +65,13 @@ export function createSpecialServicePdf(data: PrayerFormData, logo?: string) {
   function ruledText(text: string, minimumLines: number) {
     pdf.setFont('times', 'normal').setFontSize(11)
     const lines = pdf.splitTextToSize(text, width - 8) as string[]
+    const rowHeight = 12
     for (let i = 0; i < Math.max(minimumLines, lines.length); i++) {
-      room(14)
+      room(rowHeight)
       pdf.setFont('times', 'normal').setFontSize(11)
       if (lines[i]) pdf.text(lines[i], left + 3, y)
       pdf.line(left, y + 3, right, y + 3)
-      y += 14
+      y += rowHeight
     }
     y += 13
   }
