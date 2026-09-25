@@ -1,6 +1,5 @@
 import { type CSSProperties, useMemo, useRef, useState } from 'react'
-import html2canvas from 'html2canvas'
-import jsPDF from 'jspdf'
+import { createSpecialServicePdf } from '../utils/specialServicePdf'
 import { Navigate, useParams } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { useTranslation } from '../context/TranslationContext'
@@ -124,6 +123,7 @@ export default function SpecialServiceForm() {
   const [error, setError] = useState('')
   const [sendNotice, setSendNotice] = useState('')
   const [isSending, setIsSending] = useState(false)
+  const [preparedFiles, setPreparedFiles] = useState<{ pdf: File; snapshot: string; subject: string; recipient: string } | null>(null)
 
   const copy = service?.copy[language]
   const ui = specialServiceFormUiCopy[language]
@@ -144,6 +144,8 @@ export default function SpecialServiceForm() {
   }
 
   const activeService = service
+  const formSnapshot = JSON.stringify([serviceSlug, language, selectedCenterEmail, fullName, date, section1, section2, ancestors])
+  const currentFiles = preparedFiles?.snapshot === formSnapshot ? preparedFiles : null
   function updateAncestor(index: number, field: keyof AncestorRow, value: string) {
     setAncestors((rows) => rows.map((row, rowIndex) => (rowIndex === index ? { ...row, [field]: value } : row)))
   }
@@ -164,138 +166,22 @@ export default function SpecialServiceForm() {
   }
 
   async function generatePdfBlob() {
-    if (!formRef.current) {
-      throw new Error('Missing form.')
-    }
-
-    formRef.current.classList.add('special-service-capturing')
-    const canvas = await html2canvas(formRef.current, {
-      scale: 1.15,
-      backgroundColor: '#ffffff',
-      useCORS: true,
-      onclone: (documentClone) => {
-        const style = documentClone.createElement('style')
-        style.textContent = `
-          .special-service-sheet,
-          .special-service-sheet * {
-            color: #1f2933 !important;
-            border-color: #000000 !important;
-            box-shadow: none !important;
-            text-shadow: none !important;
-          }
-
-          .special-service-sheet {
-            background: #ffffff !important;
-          }
-
-          .special-service-sheet .bg-slate-100 {
-            background: #f1f5f9 !important;
-          }
-
-          .special-service-sheet input,
-          .special-service-sheet select {
-            background: transparent !important;
-          }
-
-          .special-service-line-frame,
-          .special-service-pdf-line,
-          .special-service-textarea-frame,
-          .special-service-pdf-textarea {
-            box-sizing: border-box !important;
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            height: 20px !important;
-            overflow: hidden !important;
-            border-bottom: 1px solid #000000 !important;
-            background: transparent !important;
-          }
-
-          .special-service-textarea-frame,
-          .special-service-pdf-textarea {
-            height: calc(var(--special-service-lines, 1) * 20px) !important;
-            border-bottom: 0 !important;
-            background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 19px, #000000 19px, #000000 20px) !important;
-            background-size: 100% 20px !important;
-            background-repeat: repeat-y !important;
-          }
-
-          .special-service-pdf-line {
-            white-space: nowrap !important;
-            font-family: Georgia, "Times New Roman", serif !important;
-            font-size: 13px !important;
-            line-height: 19px !important;
-            padding: 0 !important;
-          }
-
-          .special-service-pdf-textarea {
-            white-space: pre-wrap !important;
-            overflow-wrap: anywhere !important;
-            font-family: Georgia, "Times New Roman", serif !important;
-            font-size: 13px !important;
-            line-height: 20px !important;
-            padding: 0 !important;
-          }
-        `
-        documentClone.head.appendChild(style)
-
-        documentClone.querySelectorAll<HTMLTextAreaElement>('textarea.special-service-textarea').forEach((textarea) => {
-          const replacement = documentClone.createElement('div')
-          replacement.className = 'special-service-pdf-textarea'
-          replacement.style.setProperty('--special-service-lines', textarea.rows.toString())
-          replacement.textContent = textarea.value
-          textarea.replaceWith(replacement)
-        })
-
-        documentClone.querySelectorAll<HTMLInputElement>('input.special-service-line').forEach((input) => {
-          const replacement = documentClone.createElement('div')
-          replacement.className = 'special-service-pdf-line'
-          replacement.textContent = input.value
-          input.replaceWith(replacement)
-        })
-      },
-      ignoreElements: (element) => element.classList.contains('screen-only'),
-    }).finally(() => {
-      formRef.current?.classList.remove('special-service-capturing')
+    const logoResponse = await fetch('/logo.png')
+    if (!logoResponse.ok) throw new Error('Could not load PDF logo.')
+    const logoBlob = await logoResponse.blob()
+    const logo = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = () => reject(new Error('Could not read PDF logo.'))
+      reader.readAsDataURL(logoBlob)
     })
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'letter' })
-    const pageWidth = pdf.internal.pageSize.getWidth()
-    const pageHeight = pdf.internal.pageSize.getHeight()
-    const margin = 36
-    const printableHeight = pageHeight - margin * 2
-    const imageWidth = pageWidth - margin * 2
-    const imageHeight = (canvas.height * imageWidth) / canvas.width
-    const imageData = canvas.toDataURL('image/jpeg', 0.78)
-
-    if (imageHeight <= printableHeight) {
-      pdf.addImage(imageData, 'JPEG', margin, margin, imageWidth, imageHeight, undefined, 'FAST')
-    } else if (imageHeight <= printableHeight * 1.06) {
-      const fitScale = printableHeight / imageHeight
-      const scaledWidth = imageWidth * fitScale
-      const x = margin + (imageWidth - scaledWidth) / 2
-      pdf.addImage(imageData, 'JPEG', x, margin, scaledWidth, printableHeight, undefined, 'FAST')
-    } else {
-      let position = margin
-      let remainingHeight = imageHeight
-      while (remainingHeight > 0) {
-        pdf.addImage(imageData, 'JPEG', margin, position, imageWidth, imageHeight, undefined, 'FAST')
-        remainingHeight -= printableHeight
-        if (remainingHeight > 0) {
-          pdf.addPage()
-          position = margin - (imageHeight - remainingHeight)
-        }
-      }
-    }
-
-    const blob = pdf.output('blob')
-    if (!blob.size) {
-      throw new Error('Empty PDF.')
-    }
-    return blob
+    return createSpecialServicePdf({
+      service: activeService, language, center: selectedCenter?.name ?? '',
+      fullName, date, section1, section2, ancestors,
+    }, logo).output('blob')
   }
 
-  function downloadPdf(file: File) {
+  function downloadFile(file: File) {
     const downloadUrl = URL.createObjectURL(file)
     const link = document.createElement('a')
     link.href = downloadUrl
@@ -303,12 +189,7 @@ export default function SpecialServiceForm() {
     document.body.appendChild(link)
     link.click()
     link.remove()
-    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000)
-  }
-
-  function openEmailDraft(recipient: string, subject: string, filename: string) {
-    const body = encodeURIComponent(ui.emailBody.replace('{filename}', filename))
-    window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${body}`
+    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 60000)
   }
 
   async function handleSend() {
@@ -316,6 +197,7 @@ export default function SpecialServiceForm() {
     if (!validateForm() || !selectedCenter) return
 
     setIsSending(true)
+    setPreparedFiles(null)
     setError('')
     setSendNotice('')
 
@@ -324,44 +206,43 @@ export default function SpecialServiceForm() {
       const pdfFile = new File([pdfBlob], activeService.pdfFilename, { type: 'application/pdf' })
       const subject = `Prayer Form - ${activeService.apiServiceName} - ${selectedCenter.name}`
 
-      let canShareFile = false
-      try {
-        canShareFile = typeof navigator.share === 'function'
-          && typeof navigator.canShare === 'function'
-          && navigator.canShare({ files: [pdfFile] })
-      } catch {
-        canShareFile = false
-      }
-
-      if (canShareFile) {
-        try {
-          await navigator.share({
-            files: [pdfFile],
-            title: subject,
-            text: ui.shareText.replaceAll('{recipient}', selectedCenter.email),
-          })
-          setSendNotice(ui.shareComplete.replace('{recipient}', selectedCenter.email))
-        } catch (shareError) {
-          if (shareError instanceof DOMException && shareError.name === 'AbortError') {
-            setSendNotice(ui.shareCanceled)
-            return
-          }
-          downloadPdf(pdfFile)
-          setSendNotice(ui.downloadInstructions
-            .replace('{filename}', pdfFile.name)
-            .replace('{recipient}', selectedCenter.email))
-          openEmailDraft(selectedCenter.email, subject, pdfFile.name)
-        }
-      } else {
-        downloadPdf(pdfFile)
-        setSendNotice(ui.downloadInstructions
-          .replace('{filename}', pdfFile.name)
-          .replace('{recipient}', selectedCenter.email))
-        openEmailDraft(selectedCenter.email, subject, pdfFile.name)
-      }
+      setPreparedFiles({ pdf: pdfFile, snapshot: formSnapshot, subject, recipient: selectedCenter.email })
+      setSendNotice(ui.downloadInstructions
+        .replace('{filename}', pdfFile.name)
+        .replace('{recipient}', selectedCenter.email))
     } catch (sendError) {
       console.error('Could not prepare the special-service PDF.', sendError)
       setError(ui.pdfError)
+    } finally {
+      setIsSending(false)
+    }
+  }
+
+  async function handleCopyCenterEmail() {
+    if (!currentFiles) return
+    try {
+      await navigator.clipboard.writeText(currentFiles.recipient)
+      setSendNotice(ui.emailCopied.replace('{recipient}', currentFiles.recipient))
+    } catch {
+      setSendNotice(ui.emailCopyFailed.replace('{recipient}', currentFiles.recipient))
+    }
+  }
+
+  async function handleShare() {
+    if (!currentFiles || isSending) return
+    // Call from the click itself, without awaiting PDF generation: browsers require user activation.
+    setIsSending(true)
+    try {
+      if (typeof navigator.share !== 'function' || typeof navigator.canShare !== 'function'
+        || !navigator.canShare({ files: [currentFiles.pdf] })) {
+        setSendNotice(ui.shareUnavailable)
+        return
+      }
+      await navigator.share({ files: [currentFiles.pdf], title: currentFiles.subject })
+      setSendNotice(ui.shareComplete)
+    } catch (shareError) {
+      setSendNotice(shareError instanceof DOMException && shareError.name === 'AbortError'
+        ? ui.shareCanceled : ui.shareUnavailable)
     } finally {
       setIsSending(false)
     }
@@ -526,6 +407,19 @@ export default function SpecialServiceForm() {
             <p role="status" className="mt-3 rounded-lg border border-sage-200 bg-sage-50 px-4 py-3 text-sm leading-relaxed text-deep-slate">
               {sendNotice}
             </p>
+          ) : null}
+          {currentFiles ? (
+            <div className="mt-3 flex flex-wrap gap-4">
+              <button type="button" disabled={isSending} onClick={() => void handleShare()} className="rounded-lg bg-deep-slate px-5 py-3 text-sm font-semibold text-white disabled:opacity-70">
+                {ui.sharePdf}
+              </button>
+              <button type="button" disabled={isSending} onClick={() => void handleCopyCenterEmail()} className="rounded-lg border border-slate-300 px-5 py-3 text-sm font-semibold text-deep-slate disabled:opacity-70">
+                {ui.copyCenterEmail}
+              </button>
+              <button type="button" onClick={() => downloadFile(currentFiles.pdf)} className="text-sm font-semibold text-deep-slate underline">
+                {ui.downloadPdf}
+              </button>
+            </div>
           ) : null}
           {error ? <p className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">{error}</p> : null}
           <div className="mt-4 flex flex-wrap gap-3">

@@ -99,11 +99,15 @@ export const specialServiceFormUiCopy: Record<
     nameError: string
     pdfError: string
     helper: string
-    shareText: string
+    downloadInstructions: string
+    downloadPdf: string
+    copyCenterEmail: string
+    emailCopied: string
+    emailCopyFailed: string
+    sharePdf: string
     shareComplete: string
     shareCanceled: string
-    downloadInstructions: string
-    emailBody: string
+    shareUnavailable: string
   }
 > = {
   en: {
@@ -114,17 +118,21 @@ export const specialServiceFormUiCopy: Record<
     fullName: 'Full name',
     date: 'Date',
     print: 'Print form',
-    send: 'Send form',
+    send: 'Prepare form to share',
     sending: 'Preparing PDF...',
     selectCenterError: 'Please choose where you would like to send this form.',
     nameError: 'Please enter your full name.',
     pdfError: 'Could not prepare the PDF. Please try again.',
-    helper: 'To keep this service simple and free, Send form prepares a PDF on this device. The website does not submit it automatically. Confirm the recipient above, then finish sharing or sending it in your email application.',
-    shareText: 'Completed prayer form for {recipient}. Please choose your email application, address the message to {recipient}, and complete sending.',
-    shareComplete: 'The PDF was passed to your chosen application for {recipient}. The website did not submit it automatically—please complete sending in that application.',
-    shareCanceled: 'Sharing was canceled. Nothing was sent. Select Send form when you are ready to try again.',
-    downloadInstructions: 'The PDF {filename} was downloaded and an email draft to {recipient} was opened. Attach the downloaded PDF, then complete sending in your email application. The website did not submit the form automatically.',
-    emailBody: 'Please find my completed special-service prayer form attached.\n\nIMPORTANT: Attach the downloaded PDF named {filename} before sending this email.',
+    helper: 'Prepare your PDF, then select Share PDF to choose Mail, Messages, or another available app. Choose the recipient and finish sending there. Sharing options depend on your device. You can also download the PDF.',
+    downloadInstructions: 'Your PDF {filename} is ready. Select Share PDF, then choose an app. For email, select Copy center email before sharing, then paste {recipient} into the To field. For Messages, choose the intended contact. Nothing has been sent yet.',
+    downloadPdf: 'Download PDF',
+    sharePdf: 'Share PDF',
+    copyCenterEmail: 'Copy center email',
+    emailCopied: 'Copied {recipient}. Select Share PDF, choose your email app, then paste the address into the To field.',
+    emailCopyFailed: 'Could not copy automatically. Select and copy this address: {recipient}.',
+    shareComplete: 'The PDF was handed to your chosen app. Complete sending there; the website cannot confirm delivery.',
+    shareCanceled: 'The sharing dialog closed without completing the handoff. Your PDF is still ready: try Share PDF again or download the PDF below.',
+    shareUnavailable: 'File sharing is unavailable or could not open on this device. Download the PDF to attach manually.',
   },
   pt: {
     centerLabel: 'Para onde você deseja enviar este formulário?',
@@ -134,17 +142,21 @@ export const specialServiceFormUiCopy: Record<
     fullName: 'Nome completo',
     date: 'Data',
     print: 'Imprimir formulário',
-    send: 'Enviar formulário',
+    send: 'Preparar formulário para compartilhar',
     sending: 'Preparando PDF...',
     selectCenterError: 'Escolha para onde deseja enviar este formulário.',
     nameError: 'Digite seu nome completo.',
     pdfError: 'Não foi possível preparar o PDF. Tente novamente.',
-    helper: 'Para manter este serviço simples e gratuito, Enviar formulário prepara um PDF neste dispositivo. O site não o envia automaticamente. Confirme o destinatário acima e conclua o compartilhamento ou o envio no seu aplicativo de e-mail.',
-    shareText: 'Formulário de oração preenchido para {recipient}. Escolha seu aplicativo de e-mail, envie a mensagem para {recipient} e conclua o envio.',
-    shareComplete: 'O PDF foi transferido para o aplicativo escolhido para {recipient}. O site não o enviou automaticamente — conclua o envio nesse aplicativo.',
-    shareCanceled: 'O compartilhamento foi cancelado. Nada foi enviado. Selecione Enviar formulário quando estiver pronto para tentar novamente.',
-    downloadInstructions: 'O PDF {filename} foi baixado e um rascunho de e-mail para {recipient} foi aberto. Anexe o PDF baixado e conclua o envio no seu aplicativo de e-mail. O site não enviou o formulário automaticamente.',
-    emailBody: 'Segue em anexo meu formulário de oração preenchido para o culto especial.\n\nIMPORTANTE: Anexe o PDF baixado chamado {filename} antes de enviar este e-mail.',
+    helper: 'Prepare seu PDF e selecione Compartilhar PDF para escolher Mail, Mensagens ou outro aplicativo disponível. Escolha o destinatário e conclua o envio no aplicativo. As opções dependem do dispositivo. Você também pode baixar o PDF.',
+    downloadInstructions: 'Seu PDF {filename} está pronto. Selecione Compartilhar PDF e escolha um aplicativo. Para e-mail, selecione Copiar e-mail do centro antes de compartilhar e cole {recipient} no campo Para. Para Mensagens, escolha o contato desejado. Nada foi enviado ainda.',
+    downloadPdf: 'Baixar PDF',
+    sharePdf: 'Compartilhar PDF',
+    copyCenterEmail: 'Copiar e-mail do centro',
+    emailCopied: 'E-mail copiado: {recipient}. Selecione Compartilhar PDF, escolha seu aplicativo de e-mail e cole o endereço no campo Para.',
+    emailCopyFailed: 'Não foi possível copiar automaticamente. Selecione e copie este endereço: {recipient}.',
+    shareComplete: 'O PDF foi transferido para o aplicativo escolhido. Conclua o envio nele; o site não pode confirmar a entrega.',
+    shareCanceled: 'A janela de compartilhamento foi fechada sem concluir a transferência. Seu PDF continua pronto: tente Compartilhar PDF novamente ou baixe o PDF abaixo.',
+    shareUnavailable: 'O compartilhamento de arquivos não está disponível ou não abriu neste dispositivo. Baixe o PDF para anexar manualmente.',
   },
   es: {
     centerLabel: '¿A dónde desea enviar este formulario?',
@@ -154,17 +166,21 @@ export const specialServiceFormUiCopy: Record<
     fullName: 'Nombre completo',
     date: 'Fecha',
     print: 'Imprimir formulario',
-    send: 'Enviar formulario',
+    send: 'Preparar formulario para compartir',
     sending: 'Preparando PDF...',
     selectCenterError: 'Elija a dónde desea enviar este formulario.',
     nameError: 'Ingrese su nombre completo.',
     pdfError: 'No se pudo preparar el PDF. Inténtelo de nuevo.',
-    helper: 'Para mantener este servicio sencillo y gratuito, Enviar formulario prepara un PDF en este dispositivo. El sitio web no lo envía automáticamente. Confirme el destinatario arriba y termine de compartirlo o enviarlo en su aplicación de correo.',
-    shareText: 'Formulario de oración completado para {recipient}. Elija su aplicación de correo, dirija el mensaje a {recipient} y complete el envío.',
-    shareComplete: 'El PDF fue transferido a la aplicación elegida para {recipient}. El sitio web no lo envió automáticamente; complete el envío en esa aplicación.',
-    shareCanceled: 'Se canceló el uso compartido. No se envió nada. Seleccione Enviar formulario cuando esté listo para intentarlo de nuevo.',
-    downloadInstructions: 'El PDF {filename} se descargó y se abrió un borrador de correo para {recipient}. Adjunte el PDF descargado y complete el envío en su aplicación de correo. El sitio web no envió el formulario automáticamente.',
-    emailBody: 'Adjunto encontrará mi formulario de oración completado para la ceremonia especial.\n\nIMPORTANTE: Adjunte el PDF descargado llamado {filename} antes de enviar este correo.',
+    helper: 'Prepare su PDF y seleccione Compartir PDF para elegir Mail, Mensajes u otra aplicación disponible. Elija el destinatario y complete el envío allí. Las opciones dependen del dispositivo. También puede descargar el PDF.',
+    downloadInstructions: 'Su PDF {filename} está listo. Seleccione Compartir PDF y elija una aplicación. Para correo, seleccione Copiar correo del centro antes de compartir y pegue {recipient} en el campo Para. Para Mensajes, elija el contacto deseado. No se ha enviado nada todavía.',
+    downloadPdf: 'Descargar PDF',
+    sharePdf: 'Compartir PDF',
+    copyCenterEmail: 'Copiar correo del centro',
+    emailCopied: 'Correo copiado: {recipient}. Seleccione Compartir PDF, elija su aplicación de correo y pegue la dirección en el campo Para.',
+    emailCopyFailed: 'No se pudo copiar automáticamente. Seleccione y copie esta dirección: {recipient}.',
+    shareComplete: 'El PDF se transfirió a la aplicación elegida. Complete el envío allí; el sitio no puede confirmar la entrega.',
+    shareCanceled: 'Se cerró la ventana sin completar la transferencia. Su PDF sigue listo: intente Compartir PDF de nuevo o descargue el PDF abajo.',
+    shareUnavailable: 'Compartir archivos no está disponible o no pudo abrirse en este dispositivo. Descargue el PDF para adjuntarlo manualmente.',
   },
 }
 

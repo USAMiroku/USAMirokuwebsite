@@ -46,7 +46,7 @@ insert into public.organization_centers (
   id, slug, kind, name, city, state, address, phone, email, schedule, leadership_head, leadership_assistant, display_order
 )
 values
-  ('boston-johrei-center', 'boston-johrei-center', 'center', 'Boston Johrei Center', 'Boston', 'Massachusetts', '230 Congress Street, 5th Floor, Boston, MA 02110', '+1 (305) 308-8830', 'info@miroku.us', 'By appointment.', 'Center Head', 'Assistant', 10),
+  ('boston-johrei-center', 'boston-johrei-center', 'center', 'Boston Johrei Center', 'Boston', 'Massachusetts', '230 Congress Street, 5th Floor, Boston, MA 02110', '+1 (617) 618-0365', 'boston@miroku.us', 'Monday: closed. Tuesday-Saturday: 10:00-11:30 AM and 5:30-6:30 PM. 2nd/3rd/4th Sundays: 11:00 AM-1:00 PM. By appointment between 11:30 AM and 5:30 PM; please call or email to arrange a time.', 'Center Head', 'Assistant', 10),
   ('los-angeles-johrei-center', 'los-angeles-johrei-center', 'center', 'Los Angeles Johrei Center', 'Los Angeles', 'California', '2730 W 8th Street, Suite 100, Los Angeles, CA 90005', '+1 (305) 308-8830', 'info@miroku.us', 'By appointment.', null, null, 20),
   ('miami-johrei-center', 'miami-johrei-center', 'center', 'Miami Johrei Center', 'Miami', 'Florida', '14180 SW 88th Street, Suite 201, Miami, FL 33186', '+1 (305) 308-8830', 'info@miroku.us', 'By appointment.', null, null, 30),
   ('new-york-johrei-center', 'new-york-johrei-center', 'center', 'New York Johrei Center', 'Long Island City', 'New York', '47-10 32nd Place, Suite 207, Long Island City, NY 11101', '+1 (305) 308-8830', 'info@miroku.us', 'By appointment.', 'Center Head', 'Assistant', 40),

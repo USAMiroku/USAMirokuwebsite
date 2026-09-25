@@ -3,6 +3,28 @@ import { useTranslation } from '../context/TranslationContext'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
 import { grantContent } from '../data/grantContent'
+import { books } from '../data/books'
+
+const sacredScenes = [
+  {
+    image: '/images/sacred-grounds/atami-sacred-grounds.jpg',
+    heading: 'Atami Sacred Grounds',
+    location: 'Atami-shi, Shizuoka-ken, Japan',
+    body: 'Known as the Celestial Land, this site was chosen by Meishu-sama for its mountains, sea, and balanced climate.',
+  },
+  {
+    image: '/images/sacred-grounds/guarapiranga-sacred-grounds.jpg',
+    heading: 'Guarapiranga Sacred Grounds',
+    location: 'Sao Paulo, Brazil',
+    body: 'Inaugurated in 1995 on the banks of the Guarapiranga reservoir, this sacred ground harmonizes nature and spirituality.',
+  },
+  {
+    image: '/images/sacred-grounds/saraburi-sacred-grounds.jpg',
+    heading: 'Saraburi Sacred Grounds',
+    location: 'Saraburi, Thailand',
+    body: 'Dedicated in 1996, this sacred ground houses a Messianic temple, botanical gardens, and an agricultural school.',
+  },
+] as const
 
 function HomeLink({
   to,
@@ -64,6 +86,7 @@ export default function Home() {
   const { t, language } = useTranslation()
   const donateHref = resolveDonateHref()
   const isInternalDonate = donateHref.startsWith('/')
+  const featuredBooks = books.filter((book) => book.status === 'available').slice(0, 3)
   const grantCopy = grantContent[language]
 
   usePageMeta({
@@ -79,12 +102,24 @@ export default function Home() {
           faqCta: 'Abrir FAQ',
           faqBody: 'Respuestas claras y rápidas sobre el Johrei, las sesiones y su primera visita.',
           newHereKicker: 'Nuevo aquí',
+          sacredKicker: 'Inspiración y tranquilidad',
+          sacredTitle: 'Atami, Guarapiranga y Saraburi',
+          sacredBody: 'Tres Tierras Sagradas donde la belleza natural, la arquitectura sagrada y un espíritu de oración y gratitud se unen.',
           visitContactTitle: 'Visitar, contactar, apoyar',
           supportKicker: 'Visitar, contactar, apoyar',
           supportActions: {
             locations: 'Ubicaciones',
             donate: 'Donar',
             contact: 'Contactarnos',
+          },
+          books: {
+            kicker: 'Libros y ebooks',
+            title: 'Teachings of Meishu-sama',
+            body: 'Explore la colección impresa de las enseñanzas de Meishu-sama para estudio, reflexión y crecimiento espiritual. Las ediciones digitales están en preparación.',
+            printCta: 'Ver libros',
+            ebookCta: 'Ebooks',
+            ebookNote: 'Ebooks para Kindle y Apple Books próximamente.',
+            available: 'Disponible ahora',
           },
         }
       : language === 'pt'
@@ -94,12 +129,24 @@ export default function Home() {
             faqCta: 'Abrir FAQ',
             faqBody: 'Respostas rápidas e claras sobre Johrei, sessões e sua primeira visita.',
             newHereKicker: 'Novo por aqui',
+            sacredKicker: 'Inspiração e tranquilidade',
+            sacredTitle: 'Atami, Guarapiranga e Saraburi',
+            sacredBody: 'Três Terras Sagradas onde beleza natural, arquitetura sagrada e espírito de oração e gratidão se unem.',
             visitContactTitle: 'Visitar, contatar, apoiar',
             supportKicker: 'Visitar, contatar, apoiar',
             supportActions: {
               locations: 'Locais',
               donate: 'Doar',
               contact: 'Contato',
+            },
+            books: {
+              kicker: 'Livros e ebooks',
+              title: 'Teachings of Meishu-sama',
+              body: 'Explore a coleção impressa dos ensinamentos de Meishu-sama para estudo, reflexão e crescimento espiritual. As edições digitais estão em preparação.',
+              printCta: 'Ver livros',
+              ebookCta: 'Ebooks',
+              ebookNote: 'Ebooks para Kindle e Apple Books em breve.',
+              available: 'Disponivel agora',
             },
           }
         : {
@@ -108,12 +155,24 @@ export default function Home() {
             faqCta: 'Open FAQ',
             faqBody: 'Get quick, clear answers about Johrei, sessions, and your first visit.',
             newHereKicker: 'New Here',
+            sacredKicker: 'Inspiration and Tranquility',
+            sacredTitle: 'Atami, Guarapiranga, and Saraburi',
+            sacredBody: 'Three Sacred Grounds where natural beauty, sacred architecture, and a spirit of prayer and gratitude come together.',
             visitContactTitle: 'Visit, Contact, Support',
             supportKicker: 'Visit, Contact, Support',
             supportActions: {
               locations: 'Locations',
               donate: 'Donate',
               contact: 'Contact Us',
+            },
+            books: {
+              kicker: 'Books and Ebooks',
+              title: 'Teachings of Meishu-sama',
+              body: "Explore the print collection of Meishu-sama's teachings for study, reflection, and spiritual growth. Digital editions are being prepared.",
+              printCta: 'View Books',
+              ebookCta: 'Ebooks',
+              ebookNote: 'Kindle and Apple Books editions coming soon.',
+              available: 'Available Now',
             },
           }
 
@@ -258,6 +317,146 @@ export default function Home() {
               </HomeLink>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section id="books-promo" className="border-b border-[rgba(15,23,42,0.05)] bg-white px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(420px,1.06fr)] lg:items-center">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{supportCopy.books.kicker}</p>
+            <h2 className="mt-4 max-w-xl text-4xl leading-none text-[#314343] md:text-6xl">{supportCopy.books.title}</h2>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-500">{supportCopy.books.body}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <HomeLink to="/books#available-book" tone="gold" className="books-promo-print-link">
+                {supportCopy.books.printCta}
+              </HomeLink>
+              <Link
+                to="/books#ebooks"
+                className="books-promo-ebook-link inline-flex h-11 items-center justify-center rounded-full border border-[rgba(15,23,42,0.12)] bg-white px-6 text-[10px] font-semibold uppercase tracking-[0.18em] text-deep-slate transition-colors hover:bg-[#f4ecdf]"
+              >
+                {supportCopy.books.ebookCta}
+              </Link>
+            </div>
+            <p className="mt-5 text-sm leading-7 text-slate-500">{supportCopy.books.ebookNote}</p>
+          </div>
+
+          <div className="grid gap-3 min-[520px]:grid-cols-3">
+            {featuredBooks.map((book) => (
+              <Link
+                key={book.id}
+                to="/books#available-book"
+                className="group rounded-[22px] border border-[rgba(15,23,42,0.06)] bg-[#fbf7ef] p-3 shadow-[0_24px_60px_-48px_rgba(60,52,39,0.28)] transition-transform duration-300 hover:-translate-y-1"
+              >
+                <img
+                  src={book.coverImage}
+                  alt={`${book.title}, ${book.subtitle} cover`}
+                  className="aspect-[0.62] w-full rounded-[16px] object-cover shadow-[0_22px_44px_-30px_rgba(15,23,42,0.58)]"
+                  loading="lazy"
+                />
+                <div className="px-1 pb-1 pt-4">
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#8d6b26]">{supportCopy.books.available}</p>
+                  <h3 className="mt-2 text-2xl leading-none text-[#314343]">{book.subtitle}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{supportCopy.newHereKicker}</p>
+            <h2 className="mt-4 text-5xl leading-none text-[#314343] md:text-6xl">{t.home.newcomers.title}</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-xl leading-8 text-slate-500">{t.home.newcomers.body}</p>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {t.home.newcomers.cards.map((card, index) => (
+              <article
+                key={card.title}
+                className="relative overflow-hidden rounded-[28px] border border-white/70 bg-white px-7 py-7 shadow-[0_26px_60px_-44px_rgba(60,52,39,0.3)]"
+              >
+                <div className="absolute right-6 top-4 h-20 w-20 rounded-full bg-[radial-gradient(circle,rgba(222,194,145,0.24),rgba(255,255,255,0))]" />
+                <p className="relative text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-400">0{index + 1}</p>
+                <h3 className="relative mt-5 text-[2.1rem] leading-none text-[#314343]">{card.title}</h3>
+                <p className="relative mt-4 text-base leading-8 text-slate-500">{card.body}</p>
+                <Link
+                  to={card.to}
+                  className="relative mt-8 inline-flex text-[10px] font-semibold uppercase tracking-[0.24em] text-sage-600 transition-colors hover:text-sage-700"
+                >
+                  {card.cta}
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-white px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{t.home.vision.kicker}</p>
+            <h2 className="mt-4 text-5xl leading-none text-[#314343] md:text-6xl">{t.home.vision.title}</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-xl leading-8 text-slate-500">{t.home.vision.body}</p>
+          </div>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {t.home.vision.cards.map((card, index) => (
+              <article
+                key={card.title}
+                className="rounded-[28px] border border-[rgba(15,23,42,0.04)] bg-[#fffdfa] px-7 py-7 shadow-[0_28px_70px_-50px_rgba(60,52,39,0.28)]"
+              >
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-slate-400">0{index + 1}</p>
+                <h3 className="mt-5 text-[2rem] leading-none text-[#314343]">{card.title}</h3>
+                <p className="mt-4 text-lg leading-9 text-slate-500">{card.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[rgba(15,23,42,0.05)] bg-[#f8f4eb] px-4 py-18 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-sage-600/80">{supportCopy.sacredKicker}</p>
+            <h2 className="mt-4 text-4xl leading-none text-[#314343] md:text-5xl">{supportCopy.sacredTitle}</h2>
+            <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-slate-500">
+              {supportCopy.sacredBody}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-4 lg:grid-cols-[1.08fr_0.68fr]">
+            <article className="overflow-hidden rounded-[28px] border border-[rgba(15,23,42,0.05)] bg-white shadow-[0_28px_70px_-50px_rgba(60,52,39,0.28)]">
+              <img
+                src={sacredScenes[0].image}
+                alt={sacredScenes[0].heading}
+                className="h-[25rem] w-full object-cover object-center"
+                loading="lazy"
+              />
+              <div className="space-y-3 px-6 py-6">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-sage-600/80">{sacredScenes[0].location}</p>
+                <h3 className="text-[2.1rem] leading-none text-[#314343]">{sacredScenes[0].heading}</h3>
+                <p className="text-base leading-8 text-slate-500">{sacredScenes[0].body}</p>
+              </div>
+            </article>
+
+            <div className="grid gap-4">
+              {sacredScenes.slice(1).map((scene) => (
+                <article
+                  key={scene.heading}
+                  className="overflow-hidden rounded-[24px] border border-[rgba(15,23,42,0.05)] bg-white shadow-[0_28px_70px_-50px_rgba(60,52,39,0.24)]"
+                >
+                  <img src={scene.image} alt={scene.heading} className="h-40 w-full object-cover object-center" loading="lazy" />
+                  <div className="space-y-2 px-5 py-4">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-sage-600/80">{scene.location}</p>
+                    <h3 className="text-[1.7rem] leading-none text-[#314343]">{scene.heading}</h3>
+                    <p className="text-sm leading-7 text-slate-500">{scene.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
