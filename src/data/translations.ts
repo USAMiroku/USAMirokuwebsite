@@ -18,6 +18,7 @@ export type TranslationContent = {
     resources: string
     testimonials: string
     contact: string
+    specialServices: string
     usaUnits: string
     usaContact: string
     donate: string
@@ -227,6 +228,7 @@ export const translations: Record<string, TranslationContent> = {
       resources: 'Resources',
       testimonials: 'Testimonials',
       contact: 'Contact',
+      specialServices: 'Special Services',
       usaUnits: 'USA Units',
       usaContact: 'USA Contact',
       donate: 'Donate',
@@ -691,6 +693,7 @@ export const translations: Record<string, TranslationContent> = {
       resources: 'Recursos',
       testimonials: 'Testimonios',
       contact: 'Contacto',
+      specialServices: 'Ceremonias Especiales',
       usaUnits: 'Unidades en EE.UU.',
       usaContact: 'Contacto EE.UU.',
       donate: 'Donar',
@@ -1154,6 +1157,7 @@ export const translations: Record<string, TranslationContent> = {
       resources: 'Recursos',
       testimonials: 'Testemunhos',
       contact: 'Contato',
+      specialServices: 'Cultos Especiais',
       usaUnits: 'Unidades nos EUA',
       usaContact: 'Contato EUA',
       donate: 'Doar',

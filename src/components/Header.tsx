@@ -53,6 +53,7 @@ function PublicHeader() {
     { to: '/about', label: t.nav.about },
     { to: '/three-pillars', label: t.nav.aboutJohrei },
     { to: '/activities', label: t.nav.activities },
+    { to: '/special-services', label: t.nav.specialServices },
     { to: '/community-programs', label: grantContent[language].programsNav },
     { to: '/locations', label: t.nav.locations },
     { to: '/contact', label: t.nav.contact },
@@ -90,7 +91,9 @@ function PublicHeader() {
                 to={link.to}
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `inline-flex items-center justify-center rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+                  `inline-flex items-center justify-center rounded-full py-2 font-semibold uppercase transition-colors ${
+                    link.to === '/special-services' ? 'px-2.5 text-[10px] tracking-[0.08em]' : 'px-4 text-[11px] tracking-[0.14em]'
+                  } ${
                     isActive ? 'bg-[#294341] text-white' : 'text-slate-600 hover:bg-white/75 hover:text-deep-slate'
                   }`
                 }
