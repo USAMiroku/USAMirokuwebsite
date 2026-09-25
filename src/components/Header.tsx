@@ -65,12 +65,12 @@ function PublicHeader() {
         className="site-header fixed inset-x-0 top-0 z-50 px-3 pt-4 sm:px-4 md:px-6"
       >
         <div
-          className={`mx-auto flex max-w-7xl items-center justify-between gap-2 rounded-full border border-[rgba(208,194,168,0.72)] px-3 py-3 shadow-[0_18px_40px_-28px_rgba(34,31,27,0.34)] transition-all duration-300 sm:gap-4 sm:px-4 md:gap-5 md:px-6 ${
+          className={`mx-auto flex max-w-[1440px] items-center justify-between gap-2 rounded-full border border-[rgba(208,194,168,0.72)] px-3 py-3 shadow-[0_18px_40px_-28px_rgba(34,31,27,0.34)] transition-all duration-300 sm:gap-4 sm:px-4 md:gap-5 md:px-6 ${
             isScrolled ? 'bg-[rgba(247,241,231,0.95)] backdrop-blur-xl' : 'bg-[rgba(247,241,231,0.94)] backdrop-blur-md'
           }`}
         >
           {/* Brand */}
-          <Link to="/" onClick={closeMobileMenu} className="site-brand flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
+          <Link to="/" onClick={closeMobileMenu} className="site-brand flex w-[15rem] shrink-0 items-center gap-2 sm:gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white sm:h-11 sm:w-11">
               <img src="/logo.png" alt={siteConfig.organizationName} className="h-full w-full rounded-full object-cover" />
             </div>
@@ -84,15 +84,15 @@ function PublicHeader() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center gap-0.5 2xl:flex">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `inline-flex items-center justify-center rounded-full py-2 font-semibold uppercase transition-colors ${
-                    link.to === '/special-services' ? 'px-2.5 text-[10px] tracking-[0.08em]' : 'px-4 text-[11px] tracking-[0.14em]'
+                  `inline-flex whitespace-nowrap items-center justify-center rounded-full py-2 font-semibold uppercase transition-colors ${
+                    link.to === '/special-services' ? 'px-2.5 text-[10px] tracking-[0.08em]' : 'px-2.5 text-[10px] tracking-[0.1em]'
                   } ${
                     isActive ? 'bg-[#294341] text-white' : 'text-slate-600 hover:bg-white/75 hover:text-deep-slate'
                   }`
@@ -105,7 +105,7 @@ function PublicHeader() {
 
           <div className="flex shrink-0 items-center gap-2 md:gap-3">
             {/* Language toggle: desktop only — mobile lives at top of slide-out menu */}
-            <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none lg:inline-flex" />
+            <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none 2xl:inline-flex" />
 
             <DonateButton
               onClick={closeMobileMenu}
@@ -114,7 +114,7 @@ function PublicHeader() {
 
             <button
               onClick={() => setIsMobileMenuOpen((open) => !open)}
-              className="rounded-full border border-[rgba(15,23,42,0.08)] bg-white/78 p-3 text-deep-slate lg:hidden"
+              className="rounded-full border border-[rgba(15,23,42,0.08)] bg-white/78 p-3 text-deep-slate 2xl:hidden"
               aria-label="Toggle menu"
             >
               <div className="w-6 space-y-1.5">
@@ -129,7 +129,7 @@ function PublicHeader() {
 
       {/* Mobile slide-out menu — dark green card, Miroku.ca style */}
       <div
-        className={`fixed inset-x-3 top-20 bottom-4 z-40 overflow-y-auto rounded-3xl bg-[#2c4840] shadow-2xl transition-all duration-300 lg:hidden ${
+        className={`fixed inset-x-3 top-20 bottom-4 z-40 overflow-y-auto rounded-3xl bg-[#2c4840] shadow-2xl transition-all duration-300 2xl:hidden ${
           isMobileMenuOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'
         }`}
         aria-hidden={!isMobileMenuOpen}
