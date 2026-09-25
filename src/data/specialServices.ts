@@ -108,6 +108,7 @@ export const specialServiceFormUiCopy: Record<
     shareComplete: string
     shareCanceled: string
     shareUnavailable: string
+    extraNamesNote: string
   }
 > = {
   en: {
@@ -133,6 +134,7 @@ export const specialServiceFormUiCopy: Record<
     shareComplete: 'The PDF was handed to your chosen app. Complete sending there; the website cannot confirm delivery.',
     shareCanceled: 'The sharing dialog closed without completing the handoff. Your PDF is still ready: try Share PDF again or download the PDF below.',
     shareUnavailable: 'File sharing is unavailable or could not open on this device. Download the PDF to attach manually.',
+    extraNamesNote: 'This page has space for 24 names. For more, prepare another form and attach each form when you send your request.',
   },
   pt: {
     centerLabel: 'Para onde você deseja enviar este formulário?',
@@ -157,6 +159,7 @@ export const specialServiceFormUiCopy: Record<
     shareComplete: 'O PDF foi transferido para o aplicativo escolhido. Conclua o envio nele; o site não pode confirmar a entrega.',
     shareCanceled: 'A janela de compartilhamento foi fechada sem concluir a transferência. Seu PDF continua pronto: tente Compartilhar PDF novamente ou baixe o PDF abaixo.',
     shareUnavailable: 'O compartilhamento de arquivos não está disponível ou não abriu neste dispositivo. Baixe o PDF para anexar manualmente.',
+    extraNamesNote: 'Esta página tem espaço para 24 nomes. Para incluir mais, prepare outro formulário e anexe todos ao enviar sua solicitação.',
   },
   es: {
     centerLabel: '¿A dónde desea enviar este formulario?',
@@ -181,6 +184,7 @@ export const specialServiceFormUiCopy: Record<
     shareComplete: 'El PDF se transfirió a la aplicación elegida. Complete el envío allí; el sitio no puede confirmar la entrega.',
     shareCanceled: 'Se cerró la ventana sin completar la transferencia. Su PDF sigue listo: intente Compartir PDF de nuevo o descargue el PDF abajo.',
     shareUnavailable: 'Compartir archivos no está disponible o no pudo abrirse en este dispositivo. Descargue el PDF para adjuntarlo manualmente.',
+    extraNamesNote: 'Esta página tiene espacio para 24 nombres. Si necesita más, prepare otro formulario y adjunte todos al enviar su solicitud.',
   },
 }
 

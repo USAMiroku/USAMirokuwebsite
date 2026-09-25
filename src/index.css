@@ -384,7 +384,7 @@
 
 .special-service-two-column {
   display: grid;
-  grid-template-columns: minmax(0, 65%) minmax(0, 35%);
+  grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
   gap: 1rem;
   max-width: 100%;
   overflow: hidden;
@@ -423,6 +423,7 @@
 }
 
 @page {
+  size: letter;
   margin: 1.5cm;
 }
 
@@ -461,6 +462,16 @@
     box-shadow: none !important;
     padding: 0 !important;
     width: 100% !important;
+    overflow: visible !important;
+  }
+
+  .special-service-page {
+    padding: 0 !important;
+  }
+
+  .special-service-two-column {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .special-service-line {

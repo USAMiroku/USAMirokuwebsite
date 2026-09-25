@@ -117,7 +117,7 @@ export default function SpecialServiceForm() {
   const [section1, setSection1] = useState('')
   const [section2, setSection2] = useState('')
   const [ancestors, setAncestors] = useState<AncestorRow[]>(
-    () => Array.from({ length: 15 }, () => ({ name: '', relationship: '' })),
+    () => Array.from({ length: 24 }, () => ({ name: '', relationship: '' })),
   )
   const [fieldErrors, setFieldErrors] = useState<{ center?: string; fullName?: string }>({})
   const [error, setError] = useState('')
@@ -251,7 +251,7 @@ export default function SpecialServiceForm() {
   const isAncestorForm = activeService.slug === 'annual-ancestors'
 
   return (
-    <div className="bg-white px-4 pb-16 pt-32 text-deep-slate md:px-6">
+    <div className="special-service-page bg-white px-4 pb-16 pt-32 text-deep-slate md:px-6">
       <div className="mx-auto max-w-[840px]">
         <div ref={formRef} className="special-service-sheet bg-white px-7 py-7 shadow-[0_24px_70px_-52px_rgba(15,23,42,0.32)] md:px-10">
           <header className="flex items-start justify-between gap-4 border-b-2 border-deep-slate pb-3">
@@ -279,7 +279,7 @@ export default function SpecialServiceForm() {
             <div className="mt-6">
               <p className="font-serif text-[13px] leading-relaxed text-deep-slate">{copy.prayerText}</p>
               <div className="mt-6">
-                <div className="grid grid-cols-[65%_35%] gap-4 text-[9px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                <div className="grid grid-cols-[minmax(0,1.85fr)_minmax(0,1fr)] gap-4 text-[9px] font-bold uppercase tracking-[0.16em] text-slate-500">
                   <span>{copy.tableHeaders?.name}</span>
                   <span>{copy.tableHeaders?.relationship}</span>
                 </div>
@@ -299,6 +299,9 @@ export default function SpecialServiceForm() {
                     </div>
                   ))}
                 </div>
+                <p className="screen-only mt-3 text-xs leading-relaxed text-slate-500">
+                  {ui.extraNamesNote}
+                </p>
               </div>
             </div>
           ) : (

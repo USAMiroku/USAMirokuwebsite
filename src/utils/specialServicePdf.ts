@@ -108,13 +108,14 @@ export function createSpecialServicePdf(data: PrayerFormData, logo?: string) {
       const count = Math.max(names.length, relationships.length)
       // Long entries continue on the next page instead of shrinking or clipping.
       for (let i = 0; i < count; i++) {
-        if (y + 22 > bottom) { pdf.addPage(); header(); tableHeader() }
+        const rowHeight = 18
+        if (y + rowHeight > bottom) { pdf.addPage(); header(); tableHeader() }
         pdf.setFont('times', 'normal').setFontSize(11)
         if (names[i]) pdf.text(names[i], left + 4, y)
         if (relationships[i]) pdf.text(relationships[i], split + 8, y)
         pdf.line(left, y + 5, split - 4, y + 5)
         pdf.line(split + 4, y + 5, right, y + 5)
-        y += 22
+        y += rowHeight
       }
     }
     y += 18
