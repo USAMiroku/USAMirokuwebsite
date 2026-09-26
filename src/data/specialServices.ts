@@ -49,6 +49,8 @@ export const specialServicesLandingCopy: Record<
     donate: string
     back: string
     openForm: string
+    annualAncestorsLabel: string
+    openAnnualAncestors: string
   }
 > = {
   en: {
@@ -60,6 +62,8 @@ export const specialServicesLandingCopy: Record<
     donate: 'Donate',
     back: 'Back to Special Services',
     openForm: 'Open form',
+    annualAncestorsLabel: 'Featured prayer form',
+    openAnnualAncestors: 'Open Annual Ancestors Form',
   },
   pt: {
     title: 'Cultos Especiais',
@@ -70,6 +74,8 @@ export const specialServicesLandingCopy: Record<
     donate: 'Doar',
     back: 'Voltar para Cultos Especiais',
     openForm: 'Abrir formulário',
+    annualAncestorsLabel: 'Formulário de oração em destaque',
+    openAnnualAncestors: 'Abrir formulário do Culto Anual dos Antepassados',
   },
   es: {
     title: 'Ceremonias Especiales',
@@ -80,6 +86,8 @@ export const specialServicesLandingCopy: Record<
     donate: 'Donar',
     back: 'Volver a Ceremonias Especiales',
     openForm: 'Abrir formulario',
+    annualAncestorsLabel: 'Formulario de oración destacado',
+    openAnnualAncestors: 'Abrir formulario de la Ceremonia Anual de los Antepasados',
   },
 }
 
@@ -99,11 +107,19 @@ export const specialServiceFormUiCopy: Record<
     nameError: string
     pdfError: string
     helper: string
-    shareText: string
+    downloadInstructions: string
+    downloadPdf: string
+    copyCenterEmail: string
+    emailCopied: string
+    emailCopyFailed: string
+    sharePdf: string
     shareComplete: string
     shareCanceled: string
-    downloadInstructions: string
-    emailBody: string
+    shareUnavailable: string
+    extraNamesNote: string
+    extraWritingNote: string
+    anotherForm: string
+    anotherFormReady: string
   }
 > = {
   en: {
@@ -114,17 +130,25 @@ export const specialServiceFormUiCopy: Record<
     fullName: 'Full name',
     date: 'Date',
     print: 'Print form',
-    send: 'Send form',
+    send: 'Prepare form to share',
     sending: 'Preparing PDF...',
     selectCenterError: 'Please choose where you would like to send this form.',
     nameError: 'Please enter your full name.',
     pdfError: 'Could not prepare the PDF. Please try again.',
-    helper: 'To keep this service simple and free, Send form prepares a PDF on this device. The website does not submit it automatically. Confirm the recipient above, then finish sharing or sending it in your email application.',
-    shareText: 'Completed prayer form for {recipient}. Please choose your email application, address the message to {recipient}, and complete sending.',
-    shareComplete: 'The PDF was passed to your chosen application for {recipient}. The website did not submit it automatically—please complete sending in that application.',
-    shareCanceled: 'Sharing was canceled. Nothing was sent. Select Send form when you are ready to try again.',
-    downloadInstructions: 'The PDF {filename} was downloaded and an email draft to {recipient} was opened. Attach the downloaded PDF, then complete sending in your email application. The website did not submit the form automatically.',
-    emailBody: 'Please find my completed special-service prayer form attached.\n\nIMPORTANT: Attach the downloaded PDF named {filename} before sending this email.',
+    helper: 'Prepare your PDF, then select Share PDF to choose Mail, Messages, or another available app. Choose the recipient and finish sending there. Sharing options depend on your device. You can also download the PDF.',
+    downloadInstructions: 'Your PDF {filename} is ready. Select Share PDF, then choose an app. For email, select Copy center email before sharing, then paste {recipient} into the To field. For Messages, choose the intended contact. Nothing has been sent yet.',
+    downloadPdf: 'Download PDF',
+    sharePdf: 'Share PDF',
+    copyCenterEmail: 'Copy center email',
+    emailCopied: 'Copied {recipient}. Select Share PDF, choose your email app, then paste the address into the To field.',
+    emailCopyFailed: 'Could not copy automatically. Select and copy this address: {recipient}.',
+    shareComplete: 'The PDF was handed to your chosen app. Complete sending there; the website cannot confirm delivery.',
+    shareCanceled: 'The sharing dialog closed without completing the handoff. Your PDF is still ready: try Share PDF again or download the PDF below.',
+    shareUnavailable: 'File sharing is unavailable or could not open on this device. Download the PDF to attach manually.',
+    anotherForm: 'Save PDF and prepare another form',
+    anotherFormReady: 'Your previous PDF download has started. Keep that file and attach it with your other forms. Your center, name, and date have been kept for this new form.',
+    extraNamesNote: 'This page has space for 24 names. For more, prepare another form and attach each form when you send your request.',
+    extraWritingNote: 'For more writing space, prepare another form. Print each form, or download the PDFs and attach them all to one message.',
   },
   pt: {
     centerLabel: 'Para onde você deseja enviar este formulário?',
@@ -134,17 +158,25 @@ export const specialServiceFormUiCopy: Record<
     fullName: 'Nome completo',
     date: 'Data',
     print: 'Imprimir formulário',
-    send: 'Enviar formulário',
+    send: 'Preparar formulário para compartilhar',
     sending: 'Preparando PDF...',
     selectCenterError: 'Escolha para onde deseja enviar este formulário.',
     nameError: 'Digite seu nome completo.',
     pdfError: 'Não foi possível preparar o PDF. Tente novamente.',
-    helper: 'Para manter este serviço simples e gratuito, Enviar formulário prepara um PDF neste dispositivo. O site não o envia automaticamente. Confirme o destinatário acima e conclua o compartilhamento ou o envio no seu aplicativo de e-mail.',
-    shareText: 'Formulário de oração preenchido para {recipient}. Escolha seu aplicativo de e-mail, envie a mensagem para {recipient} e conclua o envio.',
-    shareComplete: 'O PDF foi transferido para o aplicativo escolhido para {recipient}. O site não o enviou automaticamente — conclua o envio nesse aplicativo.',
-    shareCanceled: 'O compartilhamento foi cancelado. Nada foi enviado. Selecione Enviar formulário quando estiver pronto para tentar novamente.',
-    downloadInstructions: 'O PDF {filename} foi baixado e um rascunho de e-mail para {recipient} foi aberto. Anexe o PDF baixado e conclua o envio no seu aplicativo de e-mail. O site não enviou o formulário automaticamente.',
-    emailBody: 'Segue em anexo meu formulário de oração preenchido para o culto especial.\n\nIMPORTANTE: Anexe o PDF baixado chamado {filename} antes de enviar este e-mail.',
+    helper: 'Prepare seu PDF e selecione Compartilhar PDF para escolher Mail, Mensagens ou outro aplicativo disponível. Escolha o destinatário e conclua o envio no aplicativo. As opções dependem do dispositivo. Você também pode baixar o PDF.',
+    downloadInstructions: 'Seu PDF {filename} está pronto. Selecione Compartilhar PDF e escolha um aplicativo. Para e-mail, selecione Copiar e-mail do centro antes de compartilhar e cole {recipient} no campo Para. Para Mensagens, escolha o contato desejado. Nada foi enviado ainda.',
+    downloadPdf: 'Baixar PDF',
+    sharePdf: 'Compartilhar PDF',
+    copyCenterEmail: 'Copiar e-mail do centro',
+    emailCopied: 'E-mail copiado: {recipient}. Selecione Compartilhar PDF, escolha seu aplicativo de e-mail e cole o endereço no campo Para.',
+    emailCopyFailed: 'Não foi possível copiar automaticamente. Selecione e copie este endereço: {recipient}.',
+    shareComplete: 'O PDF foi transferido para o aplicativo escolhido. Conclua o envio nele; o site não pode confirmar a entrega.',
+    shareCanceled: 'A janela de compartilhamento foi fechada sem concluir a transferência. Seu PDF continua pronto: tente Compartilhar PDF novamente ou baixe o PDF abaixo.',
+    shareUnavailable: 'O compartilhamento de arquivos não está disponível ou não abriu neste dispositivo. Baixe o PDF para anexar manualmente.',
+    anotherForm: 'Salvar PDF e preparar outro formulário',
+    anotherFormReady: 'O download do PDF anterior foi iniciado. Guarde esse arquivo e anexe-o com os outros formulários. Seu centro, nome e data foram mantidos neste novo formulário.',
+    extraNamesNote: 'Esta página tem espaço para 24 nomes. Para incluir mais, prepare outro formulário e anexe todos ao enviar sua solicitação.',
+    extraWritingNote: 'Para ter mais espaço para escrever, prepare outro formulário. Imprima cada formulário ou baixe os PDFs e anexe todos em uma única mensagem.',
   },
   es: {
     centerLabel: '¿A dónde desea enviar este formulario?',
@@ -154,17 +186,25 @@ export const specialServiceFormUiCopy: Record<
     fullName: 'Nombre completo',
     date: 'Fecha',
     print: 'Imprimir formulario',
-    send: 'Enviar formulario',
+    send: 'Preparar formulario para compartir',
     sending: 'Preparando PDF...',
     selectCenterError: 'Elija a dónde desea enviar este formulario.',
     nameError: 'Ingrese su nombre completo.',
     pdfError: 'No se pudo preparar el PDF. Inténtelo de nuevo.',
-    helper: 'Para mantener este servicio sencillo y gratuito, Enviar formulario prepara un PDF en este dispositivo. El sitio web no lo envía automáticamente. Confirme el destinatario arriba y termine de compartirlo o enviarlo en su aplicación de correo.',
-    shareText: 'Formulario de oración completado para {recipient}. Elija su aplicación de correo, dirija el mensaje a {recipient} y complete el envío.',
-    shareComplete: 'El PDF fue transferido a la aplicación elegida para {recipient}. El sitio web no lo envió automáticamente; complete el envío en esa aplicación.',
-    shareCanceled: 'Se canceló el uso compartido. No se envió nada. Seleccione Enviar formulario cuando esté listo para intentarlo de nuevo.',
-    downloadInstructions: 'El PDF {filename} se descargó y se abrió un borrador de correo para {recipient}. Adjunte el PDF descargado y complete el envío en su aplicación de correo. El sitio web no envió el formulario automáticamente.',
-    emailBody: 'Adjunto encontrará mi formulario de oración completado para la ceremonia especial.\n\nIMPORTANTE: Adjunte el PDF descargado llamado {filename} antes de enviar este correo.',
+    helper: 'Prepare su PDF y seleccione Compartir PDF para elegir Mail, Mensajes u otra aplicación disponible. Elija el destinatario y complete el envío allí. Las opciones dependen del dispositivo. También puede descargar el PDF.',
+    downloadInstructions: 'Su PDF {filename} está listo. Seleccione Compartir PDF y elija una aplicación. Para correo, seleccione Copiar correo del centro antes de compartir y pegue {recipient} en el campo Para. Para Mensajes, elija el contacto deseado. No se ha enviado nada todavía.',
+    downloadPdf: 'Descargar PDF',
+    sharePdf: 'Compartir PDF',
+    copyCenterEmail: 'Copiar correo del centro',
+    emailCopied: 'Correo copiado: {recipient}. Seleccione Compartir PDF, elija su aplicación de correo y pegue la dirección en el campo Para.',
+    emailCopyFailed: 'No se pudo copiar automáticamente. Seleccione y copie esta dirección: {recipient}.',
+    shareComplete: 'El PDF se transfirió a la aplicación elegida. Complete el envío allí; el sitio no puede confirmar la entrega.',
+    shareCanceled: 'Se cerró la ventana sin completar la transferencia. Su PDF sigue listo: intente Compartir PDF de nuevo o descargue el PDF abajo.',
+    shareUnavailable: 'Compartir archivos no está disponible o no pudo abrirse en este dispositivo. Descargue el PDF para adjuntarlo manualmente.',
+    anotherForm: 'Guardar PDF y preparar otro formulario',
+    anotherFormReady: 'La descarga del PDF anterior ha comenzado. Guarde ese archivo y adjúntelo con los demás formularios. Su centro, nombre y fecha se conservaron en este nuevo formulario.',
+    extraNamesNote: 'Esta página tiene espacio para 24 nombres. Si necesita más, prepare otro formulario y adjunte todos al enviar su solicitud.',
+    extraWritingNote: 'Si necesita más espacio para escribir, prepare otro formulario. Imprima cada uno o descargue los PDF y adjúntelos todos en un mismo mensaje.',
   },
 }
 
@@ -181,10 +221,10 @@ export const specialServices: SpecialServiceDefinition[] = [
         quote: 'Paradise on Earth is a world where truth, virtue and beauty are being manifested in perfect form.',
         section1:
           'Supreme God, Creator and Giver of All Life, please accept the expression of my deepest gratitude for all the changes and transformations that have been manifested in my heart, in my home, and in my life, such as:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'With a sincere heart, I renew my commitment to dedicate myself even more to the Divine Plan for the construction of Paradise on Earth, striving especially in the following practices:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
       pt: {
         title: 'Culto do Paraíso Terrestre',
@@ -193,10 +233,10 @@ export const specialServices: SpecialServiceDefinition[] = [
         quote: 'O Paraíso Terrestre é um mundo onde a Verdade, o Bem e o Belo se manifestam plenamente.',
         section1:
           'Supremo Deus, Criador e Doador de Toda a Vida, receba, por favor, minha profunda gratidão por todas as mudanças e transformações que se manifestaram em meu coração, no meu lar e em minha vida, tais como:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'Com sincero sentimento, renovo meu compromisso de dedicar-me ainda mais ao Plano Divino para a construção do Paraíso Terrestre, esforçando-me especialmente nas seguintes práticas:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
       es: {
         title: 'Ceremonia de Celebración del Paraíso en la Tierra',
@@ -206,10 +246,10 @@ export const specialServices: SpecialServiceDefinition[] = [
           'El Paraíso en la Tierra es un mundo donde la Verdad, el Bien y la Belleza se manifiestan plenamente.',
         section1:
           'Dios Supremo, Creador y Dador de Toda Vida, por favor recibe la expresión de mi más profunda gratitud por todos los cambios y transformaciones que se han manifestado en mi corazón, en mi hogar y en mi vida, tales como:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'Con un corazón sincero, renuevo mi compromiso de dedicarme aún más al Plan Divino para la construcción del Paraíso en la Tierra, esforzándome especialmente en las siguientes prácticas:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
     },
   },
@@ -257,10 +297,10 @@ export const specialServices: SpecialServiceDefinition[] = [
           'Noble is the human being who feels gratitude for the blessings received and can keep them in their heart.',
         section1:
           'God, Creator and Giver of All Life, please receive my gratitude for all the blessings and protection I have received such as:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           "For this coming year, I'd like to commit myself to be in service to the Divine Plan as an instrument of Meishu-sama by putting into practice the following:",
-        section2Lines: 12,
+        section2Lines: 15,
       },
       pt: {
         title: 'Culto Comemorativo do Natalício de Meishu-sama',
@@ -270,10 +310,10 @@ export const specialServices: SpecialServiceDefinition[] = [
           'É nobre o ser humano que sente gratidão pelas bênçãos recebidas e consegue conservá-las em seu coração.',
         section1:
           'Deus, Criador e Doador de Toda a Vida, por favor, receba minha gratidão por todas as bênçãos e proteção que tenho recebido, tais como:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'Para este próximo Ano Novo, desejo comprometer-me a servir ao Plano Divino como instrumento de Meishu-sama, colocando em prática o seguinte:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
       es: {
         title: 'Ceremonia de Celebración del Natalicio de Meishu-sama',
@@ -283,10 +323,10 @@ export const specialServices: SpecialServiceDefinition[] = [
           'Noble es el ser humano que siente gratitud por las bendiciones recibidas y puede conservarlas en su corazón.',
         section1:
           'Dios, Creador y Dador de Toda Vida, por favor recibe mi gratitud por todas las bendiciones y protección que he recibido, tales como:',
-        section1Lines: 14,
+        section1Lines: 17,
         section2:
           'Para este próximo año, deseo comprometerme a servir al Plan Divino como instrumento de Meishu-sama, poniendo en práctica lo siguiente:',
-        section2Lines: 12,
+        section2Lines: 15,
       },
     },
   },
