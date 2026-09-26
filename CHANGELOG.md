@@ -32,3 +32,10 @@ were still recoverable; there is no evidence that their commits were deleted.
 
 Git history remains the detailed record of older changes. Deployment status
 for old commits above has not been independently reconstructed.
+
+### Release workflow follow-up
+
+Vercel's installed CLI added extra stdout text. Production succeeded, but the
+release recorder correctly stopped at its URL guard. Verified the Ready
+production deployment, recorded it, and adjusted URL extraction to accept the
+CLI output. Both T7 source locations and GitHub receive the same final record.

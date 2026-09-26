@@ -14,7 +14,8 @@ npm run test:forms
 source_commit=$(git rev-parse HEAD)
 # Save both source copies before production deployment.
 python3 scripts/sync-t7-mirror.py
-deployment_url=$(vercel deploy --prod -y)
+deployment_output=$(vercel deploy --prod -y)
+deployment_url=$(printf '%s\n' "$deployment_output" | python3 -c 'import re,sys; urls=re.findall(r"https://[a-zA-Z0-9.-]+\.vercel\.app", sys.stdin.read()); print(urls[-1] if urls else "")')
 [[ "$deployment_url" == https://*.vercel.app ]] || { echo 'Unexpected deployment output; inspect Vercel before continuing.'; exit 1; }
 vercel inspect "$deployment_url"
 {
