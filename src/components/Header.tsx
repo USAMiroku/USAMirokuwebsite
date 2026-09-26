@@ -83,14 +83,14 @@ function PublicHeader() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center gap-0 xl:flex">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `inline-flex items-center justify-center rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+                  `inline-flex items-center justify-center rounded-full px-2 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] transition-colors ${
                     isActive ? 'bg-[#294341] text-white' : 'text-slate-600 hover:bg-white/75 hover:text-deep-slate'
                   }`
                 }
@@ -102,7 +102,7 @@ function PublicHeader() {
 
           <div className="flex shrink-0 items-center gap-2 md:gap-3">
             {/* Language toggle: desktop only — mobile lives at top of slide-out menu */}
-            <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none lg:inline-flex" />
+            <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none xl:inline-flex" />
 
             <DonateButton
               onClick={closeMobileMenu}
@@ -111,7 +111,7 @@ function PublicHeader() {
 
             <button
               onClick={() => setIsMobileMenuOpen((open) => !open)}
-              className="rounded-full border border-[rgba(15,23,42,0.08)] bg-white/78 p-3 text-deep-slate lg:hidden"
+              className="rounded-full border border-[rgba(15,23,42,0.08)] bg-white/78 p-3 text-deep-slate xl:hidden"
               aria-label="Toggle menu"
             >
               <div className="w-6 space-y-1.5">
@@ -126,7 +126,7 @@ function PublicHeader() {
 
       {/* Mobile slide-out menu — dark green card, Miroku.ca style */}
       <div
-        className={`fixed inset-x-3 top-20 bottom-4 z-40 overflow-y-auto rounded-3xl bg-[#2c4840] shadow-2xl transition-all duration-300 lg:hidden ${
+        className={`fixed inset-x-3 top-20 bottom-4 z-40 overflow-y-auto rounded-3xl bg-[#2c4840] shadow-2xl transition-all duration-300 xl:hidden ${
           isMobileMenuOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'
         }`}
         aria-hidden={!isMobileMenuOpen}
