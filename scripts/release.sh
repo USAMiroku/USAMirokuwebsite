@@ -12,8 +12,6 @@ npm run lint
 npm run build
 npm run test:forms
 source_commit=$(git rev-parse HEAD)
-# Save both source copies before production deployment.
-python3 scripts/sync-t7-mirror.py
 deployment_output=$(vercel deploy --prod -y)
 deployment_url=$(printf '%s\n' "$deployment_output" | python3 -c 'import re,sys; urls=re.findall(r"https://[a-zA-Z0-9.-]+\.vercel\.app", sys.stdin.read()); print(urls[-1] if urls else "")')
 [[ "$deployment_url" == https://*.vercel.app ]] || { echo 'Unexpected deployment output; inspect Vercel before continuing.'; exit 1; }
@@ -27,5 +25,7 @@ vercel inspect "$deployment_url"
 git add DEPLOYMENTS.md
 git commit -m 'Record verified production deployment'
 git push origin main
-python3 scripts/sync-t7-mirror.py
+remote_commit=$(git ls-remote origin refs/heads/main | cut -f1)
+[[ $(git rev-parse HEAD) == "$remote_commit" ]] || { echo 'GitHub and T7 differ; release incomplete.'; exit 1; }
+[[ -z $(git status --porcelain) ]] || { echo 'Uncommitted changes remain; release incomplete.'; exit 1; }
 echo "Production deployed; GitHub and T7 synchronized: $deployment_url"

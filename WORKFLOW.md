@@ -4,9 +4,10 @@ Use the T7 folder `Projects/USAMirokuwebsite` as the working project.
 Its `.git` folder contains the history. GitHub repository:
 https://github.com/USAMiroku/USAMirokuwebsite
 
-The neighboring `usa-mirokuwebsite-live/src` folder is a source-only mirror.
-Do not edit or deploy that mirror. The original recovered copy was older than
-GitHub and could overwrite improvements. Do not run `sync-usamiroku-repo.sh`.
+Keep exactly one website folder on T7: `USAMirokuwebsite`. The duplicate
+`usa-mirokuwebsite-live` folder and obsolete sync scripts were removed at the
+user's request. Do not recreate mirrors or backup source folders. Use Git
+history and GitHub to inspect or recover earlier versions.
 
 ## Start work
 
@@ -25,12 +26,12 @@ GitHub and could overwrite improvements. Do not run `sync-usamiroku-repo.sh`.
 Update CHANGELOG.md, run lint/build/form tests, then commit and push main.
 Run `bash scripts/release.sh` from the T7 checkout. The script verifies that
 main is current, deploys to the existing Vercel project in production, records
-its URL and source commit, pushes that record, and refreshes the source mirror.
+its URL and source commit, pushes that record, and verifies T7 matches GitHub.
 A failure is an incomplete release; read the output before retrying. If the
-site deployed but the record push failed, finish that push and run the mirror
-command without redeploying. No force pushes or automatic conflict resolution.
+site deployed but the record push failed, finish that push and verify
+`git rev-parse HEAD` matches `git ls-remote origin refs/heads/main`. No force pushes or automatic conflict resolution.
 
 The final check is: live deployment ready, GitHub main = T7 HEAD, clean working
-tree, and a matching `.source-commit` file in the source mirror. Safely eject T7
+tree, and an accurate entry in `DEPLOYMENTS.md`. Safely eject T7
 before changing computers. This workflow runs when invoked; it is not a
 background synchronization service.

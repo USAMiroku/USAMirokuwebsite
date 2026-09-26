@@ -6,8 +6,8 @@ Do not report completion until all three locations are verified, or clearly
 report which step is blocked. Never assume a pushed feature branch is live.
 
 Canonical repository: USAMiroku/USAMirokuwebsite, production branch main.
-The T7 checkout is Projects/USAMirokuwebsite. Projects/usa-mirokuwebsite-live/src
-is a generated source mirror, not a separate development/deployment source.
+The only T7 website folder is Projects/USAMirokuwebsite. Do not create a
+second source folder or mirror. Git history and GitHub preserve past versions.
 Paths may have different drive prefixes on another computer.
 
 Before editing:
@@ -26,7 +26,7 @@ For each change:
 - Run npm run lint, npm run build, and npm run test:forms.
 - Commit and push to main (merge reviewed branches first when applicable).
 - Run bash scripts/release.sh from the T7 checkout. It checks synchronization,
-  publishes production, records the deployment and updates the source mirror.
+  publishes production, records the deployment and verifies T7 matches GitHub.
 - Verify origin/main equals the T7 HEAD and the working tree is clean.
 - If network, drive, credentials or deployment are unavailable, explicitly
   report the incomplete step. Never claim automatic synchronization occurred.

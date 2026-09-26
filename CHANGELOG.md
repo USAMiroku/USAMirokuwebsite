@@ -39,3 +39,15 @@ Vercel's installed CLI added extra stdout text. Production succeeded, but the
 release recorder correctly stopped at its URL guard. Verified the Ready
 production deployment, recorded it, and adjusted URL extraction to accept the
 CLI output. Both T7 source locations and GitHub receive the same final record.
+
+## 2026-09-26 — Keep one authoritative T7 website folder
+
+User requested one folder to prevent confusion between different source copies.
+Keep `Projects/USAMirokuwebsite`, the Git checkout synchronized with GitHub main.
+Remove the duplicate `Projects/usa-mirokuwebsite-live`, including its old recovery
+backup, and the obsolete parent `sync-usamiroku-repo.sh`. Remove the mirror
+script and update release instructions so no second source folder is created.
+Earlier entries mentioning mirrors describe the previous arrangement only.
+Git commits, CHANGELOG.md and DEPLOYMENTS.md preserve the history and progress.
+No application behavior changes. Shell syntax and release checks validate the
+updated workflow; the release record identifies the deployed source commit.
