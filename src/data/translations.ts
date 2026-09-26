@@ -22,6 +22,7 @@ export type TranslationContent = {
     usaContact: string
     donate: string
     guidelines: string
+    specialServices: string
   },
   actions: {
     donate: string
@@ -231,6 +232,7 @@ export const translations: Record<string, TranslationContent> = {
       usaContact: 'USA Contact',
       donate: 'Donate',
       guidelines: 'Guidelines 2026',
+      specialServices: 'Special Services',
     },
     actions: {
       donate: 'Donate',
@@ -695,6 +697,7 @@ export const translations: Record<string, TranslationContent> = {
       usaContact: 'Contacto EE.UU.',
       donate: 'Donar',
       guidelines: 'Directrices 2026',
+      specialServices: 'Ceremonias Especiales',
     },
     actions: {
       donate: 'Donar',
@@ -1158,6 +1161,7 @@ export const translations: Record<string, TranslationContent> = {
       usaContact: 'Contato EUA',
       donate: 'Doar',
       guidelines: 'Diretrizes 2026',
+      specialServices: 'Cultos Especiais',
     },
     actions: {
       donate: 'Doar',

@@ -53,6 +53,7 @@ function PublicHeader() {
     { to: '/about', label: t.nav.about },
     { to: '/three-pillars', label: t.nav.aboutJohrei },
     { to: '/activities', label: t.nav.activities },
+    { to: '/special-services', label: t.nav.specialServices },
     { to: '/community-programs', label: grantContent[language].programsNav },
     { to: '/locations', label: t.nav.locations },
     { to: '/contact', label: t.nav.contact },
