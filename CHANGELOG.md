@@ -51,3 +51,22 @@ Earlier entries mentioning mirrors describe the previous arrangement only.
 Git commits, CHANGELOG.md and DEPLOYMENTS.md preserve the history and progress.
 No application behavior changes. Shell syntax and release checks validate the
 updated workflow; the release record identifies the deployed source commit.
+
+## 2026-10-09 — Keep navigation visible on laptop and intermediate widths
+
+- Replace the public header's 1280px compact-menu cutoff with wrapping navigation
+  from 768px, using a separate navigation row below 1536px. Keep the brand,
+  donation action and language selection readable without resetting browser zoom.
+- Add a visible localized Menu label, expanded state, closed-menu inertness and
+  Escape-key dismissal with focus return. Give the phone brand its own row.
+- Measure header height so page spacing and the compact menu follow wrapped
+  content; exclude this screen spacing from printed forms.
+- Validation: Chromium and WebKit passed 84 combinations of 320–1920 CSS-pixel
+  viewports and EN/PT/ES, including narrow effective widths encountered at higher
+  zoom. Checked menu interactions, visible link bounds and representative screenshots.
+  Browser form checks passed in EN/PT/ES for 24 rows, PDF download, mocked native
+  sharing/clipboard and new-form continuation preserving name/date/center.
+  Print layout has no added header padding. Node 22 lint/build/PDF regression
+  results and the production release are recorded through the release workflow.
+- Existing unrelated lint warning and bundle-size warning remain. Native Safari
+  UI zoom settings were not automated; WebKit viewport reflow was tested.

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation as useRouteLocation } from 'react-router-dom'
 import { useTranslation } from '../context/TranslationContext'
 import { resolveDonateHref, siteConfig } from '../config/siteConfig'
@@ -46,6 +46,33 @@ function PublicHeader() {
     setIsMobileMenuOpen(false)
   }, [routeLocation.pathname])
 
+  const headerRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const header = headerRef.current
+    const shell = header?.closest<HTMLElement>('.public-site')
+    if (!header || !shell) return
+    const observer = new ResizeObserver(() => {
+      shell.style.setProperty('--public-header-height', `${header.getBoundingClientRect().height}px`)
+    })
+    observer.observe(header)
+    return () => {
+      observer.disconnect()
+      shell.style.removeProperty('--public-header-height')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+        headerRef.current?.querySelector<HTMLButtonElement>('[aria-controls="public-mobile-menu"]')?.focus()
+      }
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [isMobileMenuOpen])
+
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
 
   const navLinks = [
@@ -62,10 +89,11 @@ function PublicHeader() {
   return (
     <>
       <header
-        className="site-header fixed inset-x-0 top-0 z-50 px-3 pt-4 sm:px-4 md:px-6"
+        ref={headerRef}
+        className="site-header public-header fixed inset-x-0 top-0 z-50 px-3 pt-4 sm:px-4 md:px-6"
       >
         <div
-          className={`mx-auto flex max-w-7xl items-center justify-between gap-2 rounded-full border border-[rgba(208,194,168,0.72)] px-3 py-3 shadow-[0_18px_40px_-28px_rgba(34,31,27,0.34)] transition-all duration-300 sm:gap-4 sm:px-4 md:gap-5 md:px-6 ${
+          className={`public-header-bar mx-auto flex max-w-[1440px] items-center justify-between gap-2 rounded-full border border-[rgba(208,194,168,0.72)] px-3 py-3 shadow-[0_18px_40px_-28px_rgba(34,31,27,0.34)] transition-all duration-300 sm:gap-4 sm:px-4 md:gap-5 md:px-6 ${
             isScrolled ? 'bg-[rgba(247,241,231,0.95)] backdrop-blur-xl' : 'bg-[rgba(247,241,231,0.94)] backdrop-blur-md'
           }`}
         >
@@ -84,14 +112,14 @@ function PublicHeader() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-0 xl:flex">
+          <nav aria-label="Main navigation" className="public-navigation">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `inline-flex items-center justify-center rounded-full px-2 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] transition-colors ${
+                  `inline-flex whitespace-nowrap items-center justify-center rounded-full px-2 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] transition-colors ${
                     isActive ? 'bg-[#294341] text-white' : 'text-slate-600 hover:bg-white/75 hover:text-deep-slate'
                   }`
                 }
@@ -101,9 +129,9 @@ function PublicHeader() {
             ))}
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2 md:gap-3">
-            {/* Language toggle: desktop only — mobile lives at top of slide-out menu */}
-            <LanguageToggle className="hidden border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none xl:inline-flex" />
+          <div className="public-header-actions flex shrink-0 items-center gap-2 md:gap-3">
+            {/* Language selection is also available inside the compact menu */}
+            <LanguageToggle compact className="public-header-languages border border-[rgba(15,23,42,0.08)] bg-white/72 shadow-none" />
 
             <DonateButton
               onClick={closeMobileMenu}
@@ -112,10 +140,12 @@ function PublicHeader() {
 
             <button
               onClick={() => setIsMobileMenuOpen((open) => !open)}
-              className="rounded-full border border-[rgba(15,23,42,0.08)] bg-white/78 p-3 text-deep-slate xl:hidden"
-              aria-label="Toggle menu"
+              className="public-menu-button flex items-center gap-2 rounded-full border border-[rgba(15,23,42,0.08)] bg-white/78 p-3 text-deep-slate"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="public-mobile-menu"
             >
-              <div className="w-6 space-y-1.5">
+              <span className="text-xs font-semibold">{language === 'es' ? 'Menú' : 'Menu'}</span>
+              <div aria-hidden="true" className="w-6 space-y-1.5">
                 <div className={`h-[2px] w-6 bg-current transition-all ${isMobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`} />
                 <div className={`h-[2px] w-6 bg-current transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
                 <div className={`h-[2px] w-6 bg-current transition-all ${isMobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
@@ -127,7 +157,9 @@ function PublicHeader() {
 
       {/* Mobile slide-out menu — dark green card, Miroku.ca style */}
       <div
-        className={`fixed inset-x-3 top-20 bottom-4 z-40 overflow-y-auto rounded-3xl bg-[#2c4840] shadow-2xl transition-all duration-300 xl:hidden ${
+        id="public-mobile-menu"
+        inert={!isMobileMenuOpen}
+        className={`public-mobile-menu fixed inset-x-3 bottom-4 z-40 overflow-y-auto rounded-3xl bg-[#2c4840] shadow-2xl transition-all duration-300 ${
           isMobileMenuOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'
         }`}
         aria-hidden={!isMobileMenuOpen}
