@@ -26,3 +26,17 @@ reported separately and must not be recorded as successful.
 - Source commit: `44e21841f7d99daf34506cac0d5524403e9cb222`
 - Production deployment: https://usa-mirokuwebsite-ot2sisjhk-website-1824s-projects.vercel.app
 - Validation: lint, build and form PDF regression checks passed; Vercel deployment inspected.
+
+## 2026-10-09 — Responsive public navigation
+
+- Source commit: `b184114ca2ee55e4ce90d5091a6f5004fd608f9f`.
+- Production deployment: https://usa-mirokuwebsite-2do776kn0-website-1824s-projects.vercel.app
+- Deployment ID: `dpl_F8rQPkQ35CPnwstzYKc4QEJnCjC3`.
+- Vercel inspect confirmed Ready, production target, and both worldmessianic.org
+  and www.worldmessianic.org aliases.
+- Node 22 lint/build and all nine standard/overflow form PDF checks passed.
+  Chromium/WebKit navigation checks passed in 84 viewport/language combinations.
+  EN/PT/ES form browser checks passed; native share and clipboard were mocked.
+- Release script completed validation but its Node 22 Vercel invocation exited
+  without confirmation. Direct deployment with the installed CLI under Node 24
+  succeeded; deployment inspected and this record completed manually.
