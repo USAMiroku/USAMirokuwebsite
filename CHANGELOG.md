@@ -70,3 +70,25 @@ updated workflow; the release record identifies the deployed source commit.
   results and the production release are recorded through the release workflow.
 - Existing unrelated lint warning and bundle-size warning remain. Native Safari
   UI zoom settings were not automated; WebKit viewport reflow was tested.
+
+## 2026-10-19 — Update books catalogue and temporarily hide Kindle links
+
+- Hide all Kindle purchase links, availability counts and per-book placeholders.
+  Show one notice that Kindle editions are temporarily unavailable. Preserve
+  existing URLs in data for later review; `kindleStoreEnabled` in
+  `src/data/books.ts` controls their display. Verify Amazon URLs before enabling.
+- Add Reminiscences About Meishu-sama Volume 2 and Light from the East Volume 1
+  in print and ebook sections using the supplied, format-specific cover images.
+  Print listings without URLs show PURCHASE LINK COMING SOON.
+- Add ebook-only Fragments from the Teachings of Meishu-sama and Daily Inspirations.
+- Apply all seven supplied Apple Books URLs, including updates to Reminiscences
+  Volume 1 and Our Daily Bread Volumes 1 and 2. Normalize existing Apple URLs to HTTPS.
+- Retain all existing books and print purchase links. Render full covers without
+  cropping and count digital titles accurately (14 ebooks; 12 print listings).
+- Validation: build and nine form PDF/overflow checks passed. Lint has only the
+  existing unrelated LearningAdminCenterActivities warning. Chrome and WebKit
+  checks passed at 375, 768 and 1440px: cover loading, no horizontal overflow,
+  correct counts, all seven supplied URLs, no Amazon links, print placeholders.
+  Representative phone/desktop book cards inspected visually. Supplied Apple
+  pages resolved through browser retrieval or direct HTTP title checks.
+- Production source commit and deployment URL are recorded in DEPLOYMENTS.md.

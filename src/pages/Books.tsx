@@ -1,13 +1,13 @@
-import { books } from '../data/books'
+import { books, kindleStoreEnabled } from '../data/books'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 const featuredBook = books.find((book) => book.status === 'available') ?? books[0]
 const printBooks = books.filter((book) => book.printEdition !== false)
-const ebookBooks = books.filter((book) => book.ebookLinks?.kindle || book.ebookLinks?.appleBooks)
+const ebookBooks = books.filter((book) => (kindleStoreEnabled && book.ebookLinks?.kindle) || book.ebookLinks?.appleBooks)
 const ebookKindleCount = ebookBooks.filter((book) => book.ebookLinks?.kindle).length
 const ebookAppleCount = ebookBooks.filter((book) => book.ebookLinks?.appleBooks).length
 
-function PurchaseAction({ purchaseUrl, volume }: { purchaseUrl?: string; volume: number }) {
+function PurchaseAction({ purchaseUrl, volume }: { purchaseUrl?: string; volume?: number }) {
   if (purchaseUrl) {
     return (
       <a
@@ -16,7 +16,7 @@ function PurchaseAction({ purchaseUrl, volume }: { purchaseUrl?: string; volume:
         rel="noreferrer"
         className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-[#ad7b22] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-colors hover:bg-[#946615] sm:w-auto"
       >
-        Buy Volume {volume}
+        {volume ? `Buy Volume ${volume}` : 'Buy print book'}
       </a>
     )
   }
@@ -57,6 +57,8 @@ function EbookStoreAction({
   href?: string
   store: 'kindle' | 'appleBooks'
 }) {
+  if (store === 'kindle' && !kindleStoreEnabled) return null
+
   const label = store === 'kindle' ? 'Kindle' : 'Apple Books'
   const logo =
     store === 'kindle' ? (
@@ -135,7 +137,7 @@ export default function Books() {
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8d6b26]">Print editions</p>
-            <h2 className="mt-3 text-3xl font-serif leading-tight text-slate-950 md:text-5xl">Teachings of Meishu-sama volumes</h2>
+            <h2 className="mt-3 text-3xl font-serif leading-tight text-slate-950 md:text-5xl">Books for study and reflection</h2>
             <p className="mt-4 text-base leading-7 text-slate-600 md:text-lg md:leading-8">
               Browse the print collection. Available volumes can be purchased through IngramSpark.
             </p>
@@ -148,7 +150,7 @@ export default function Books() {
                   <img
                     src={book.coverImage}
                     alt={`${book.title}, ${book.subtitle} cover`}
-                    className="aspect-[0.62] w-full rounded-lg object-cover shadow-[0_18px_34px_-26px_rgba(15,23,42,0.55)]"
+                    className="aspect-[0.62] w-full rounded-lg object-contain shadow-[0_18px_34px_-26px_rgba(15,23,42,0.55)]"
                   />
                   <div className="min-w-0 py-1">
                     <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8d6b26]">
@@ -174,27 +176,34 @@ export default function Books() {
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8d6b26]">Digital editions</p>
               <h2 className="mt-3 text-3xl font-serif leading-tight text-slate-950 md:text-5xl">Ebook editions</h2>
               <p className="mt-4 text-base leading-7 text-slate-600 md:text-lg md:leading-8">
-                Choose a volume below and purchase the digital edition through Amazon Kindle or Apple Books. Kindle editions for Volumes 6 and 7 are still being revised by Amazon and will be added when available.
+                Choose a title below and purchase the digital edition through Apple Books.
               </p>
+              {!kindleStoreEnabled && (
+                <p className="mt-3 text-sm leading-6 text-slate-500">
+                  Kindle editions are temporarily unavailable. Links will return when availability is confirmed.
+                </p>
+              )}
             </div>
 
             <div className="rounded-xl border border-[rgba(15,23,42,0.08)] bg-[#fbf7ef] p-4 md:p-5">
               <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8d6b26]">Available now</p>
-              <div className="mt-4 grid gap-3 min-[460px]:grid-cols-2 lg:grid-cols-1">
+              <div className="mt-4 grid gap-3 grid-cols-1">
                 <div className="flex min-h-16 items-center gap-3 rounded-lg bg-white p-3">
                   <AppleBooksLogo />
                   <div>
-                    <p className="text-base font-serif leading-5 text-slate-950">{ebookAppleCount} volumes</p>
+                    <p className="text-base font-serif leading-5 text-slate-950">{ebookAppleCount} titles</p>
                     <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">On Apple Books</p>
                   </div>
                 </div>
-                <div className="flex min-h-16 items-center gap-3 rounded-lg bg-white p-3">
-                  <KindleLogo />
-                  <div>
-                    <p className="text-base font-serif leading-5 text-slate-950">{ebookKindleCount} volumes</p>
-                    <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">On Kindle now</p>
+                {kindleStoreEnabled && (
+                  <div className="flex min-h-16 items-center gap-3 rounded-lg bg-white p-3">
+                    <KindleLogo />
+                    <div>
+                      <p className="text-base font-serif leading-5 text-slate-950">{ebookKindleCount} volumes</p>
+                      <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">On Kindle now</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
@@ -206,14 +215,14 @@ export default function Books() {
                   <img
                     src={book.ebookCoverImage ?? book.coverImage}
                     alt={`${book.title}, ${book.subtitle} ebook cover`}
-                    className="aspect-[0.625] w-full rounded-lg object-cover shadow-[0_18px_34px_-26px_rgba(15,23,42,0.55)]"
+                    className="aspect-[0.625] w-full rounded-lg object-contain shadow-[0_18px_34px_-26px_rgba(15,23,42,0.55)]"
                     loading="lazy"
                   />
                   <div className="min-w-0 py-1">
                     <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8d6b26]">Ebook edition</p>
                     <h3 className="mt-2 text-2xl font-serif leading-7 text-slate-950">{book.subtitle}</h3>
                     <p className="mt-3 text-sm leading-6 text-slate-600">{book.title}</p>
-                    {book.appleOnly ? (
+                    {book.appleOnly || !kindleStoreEnabled ? (
                       <div className="mt-4">
                         <EbookStoreAction href={book.ebookLinks?.appleBooks} store="appleBooks" />
                       </div>

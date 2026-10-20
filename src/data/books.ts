@@ -2,7 +2,7 @@ export type BookStatus = 'available' | 'coming-soon'
 
 export type Book = {
   id: string
-  volume: number
+  volume?: number
   title: string
   subtitle: string
   description: string
@@ -19,6 +19,9 @@ export type Book = {
   }
 }
 
+// Restore only after checking the saved Amazon URLs. This controls links and counts.
+export const kindleStoreEnabled = false
+
 export const books: Book[] = [
   {
     id: 'teachings-meishu-sama-volume-1',
@@ -34,7 +37,7 @@ export const books: Book[] = [
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-1.jpeg',
     ebookLinks: {
       kindle: 'https://www.amazon.com/dp/B0H859XVMY',
-      appleBooks: 'http://books.apple.com/us/book/id6788813522',
+      appleBooks: 'https://books.apple.com/us/book/id6788813522',
     },
   },
   {
@@ -50,7 +53,7 @@ export const books: Book[] = [
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-2.jpeg',
     ebookLinks: {
       kindle: 'https://www.amazon.com/Teachings-Meishu-sama-2-Meishu-sama-ebook/dp/B0H84PPHXM?ref_=saga_dp_bnx_dsk_dp',
-      appleBooks: 'http://books.apple.com/us/book/id6788922281',
+      appleBooks: 'https://books.apple.com/us/book/id6788922281',
     },
   },
   {
@@ -66,7 +69,7 @@ export const books: Book[] = [
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-3.jpeg',
     ebookLinks: {
       kindle: 'https://www.amazon.com/Teachings-Meishu-sama-Meishu-sama-ebook/dp/B0H852ZCZP?ref_=saga_dp_bnx_dsk_dp',
-      appleBooks: 'http://books.apple.com/us/book/id6788917385',
+      appleBooks: 'https://books.apple.com/us/book/id6788917385',
     },
   },
   {
@@ -82,7 +85,7 @@ export const books: Book[] = [
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-4.jpeg',
     ebookLinks: {
       kindle: 'https://www.amazon.com/Teachings-Meishu-sama-4-Meishu-sama-ebook/dp/B0H85GZLB9?ref_=saga_dp_bnx_dsk_dp',
-      appleBooks: 'http://books.apple.com/us/book/id6788923778',
+      appleBooks: 'https://books.apple.com/us/book/id6788923778',
     },
   },
   {
@@ -98,7 +101,7 @@ export const books: Book[] = [
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-5.jpeg',
     ebookLinks: {
       kindle: 'https://www.amazon.com/Teachings-Meishu-sama-5-Meishu-sama-ebook/dp/B0H85FL8QV?ref_=saga_dp_bnx_dsk_dp',
-      appleBooks: 'http://books.apple.com/us/book/id6788931867',
+      appleBooks: 'https://books.apple.com/us/book/id6788931867',
     },
   },
   {
@@ -113,7 +116,7 @@ export const books: Book[] = [
     purchaseUrl: 'https://shop.ingramspark.com/b/084?params=pq8qjjwZks3sLja4TZjKk2z9W6fzavMmI5b7adTgFIw',
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-6.jpeg',
     ebookLinks: {
-      appleBooks: 'http://books.apple.com/us/book/id6788937669',
+      appleBooks: 'https://books.apple.com/us/book/id6788937669',
     },
   },
   {
@@ -128,7 +131,7 @@ export const books: Book[] = [
     purchaseUrl: 'https://shop.ingramspark.com/b/084?params=364hk9rcAspFNcRWrDXIPBzPjYlsLHIlYwU4tSW8G5s',
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-7.jpeg',
     ebookLinks: {
-      appleBooks: 'http://books.apple.com/us/book/id6789254257',
+      appleBooks: 'https://books.apple.com/us/book/id6789254257',
     },
   },
   {
@@ -143,7 +146,7 @@ export const books: Book[] = [
     ebookCoverImage: '/images/books/ebooks/our-daily-bread-ebook-volume-1.jpeg',
     appleOnly: true,
     ebookLinks: {
-      appleBooks: 'http://books.apple.com/us/book/id6795384289',
+      appleBooks: 'https://books.apple.com/us/book/our-daily-bread-volume-1/id6795384289',
     },
   },
   {
@@ -158,7 +161,7 @@ export const books: Book[] = [
     ebookCoverImage: '/images/books/ebooks/our-daily-bread-ebook-volume-2.jpeg',
     appleOnly: true,
     ebookLinks: {
-      appleBooks: 'http://books.apple.com/us/book/id6795395962',
+      appleBooks: 'https://books.apple.com/us/book/our-daily-bread-volume-2/id6795395962',
     },
   },
   {
@@ -173,7 +176,65 @@ export const books: Book[] = [
     ebookCoverImage: '/images/books/ebooks/reminiscences-about-meishu-sama-ebook-volume-1.jpeg',
     appleOnly: true,
     ebookLinks: {
-      appleBooks: 'http://books.apple.com/us/book/id6795423026',
+      appleBooks: 'https://books.apple.com/us/book/reminiscences-about-meishu-sama-volume-1/id6795423026',
+    },
+  },
+  {
+    id: 'reminiscences-about-meishu-sama-volume-2',
+    volume: 2,
+    title: 'Teachings of Meishu-sama',
+    subtitle: 'Reminiscences About Meishu-sama — Volume 2',
+    description: 'Personal recollections and accounts of Meishu-sama, offered for reflection and the deepening of faith.',
+    coverImage: '/images/books/reminiscences-about-meishu-sama-volume-2.jpg',
+    status: 'coming-soon',
+    ebookCoverImage: '/images/books/ebooks/reminiscences-about-meishu-sama-volume-2.jpg',
+    appleOnly: true,
+    printEdition: true,
+    ebookLinks: {
+      appleBooks: 'https://books.apple.com/us/book/reminiscences-about-meishu-sama-volume-2/id6824059375',
+    },
+  },
+  {
+    id: 'light-from-the-east-volume-1',
+    volume: 1,
+    title: 'Teachings of Meishu-sama',
+    subtitle: 'Light from the East — Volume 1',
+    description: 'The first volume of Light from the East, for study and reflection.',
+    coverImage: '/images/books/light-from-the-east-volume-1.jpg',
+    status: 'coming-soon',
+    ebookCoverImage: '/images/books/ebooks/light-from-the-east-volume-1.jpg',
+    appleOnly: true,
+    printEdition: true,
+    ebookLinks: {
+      appleBooks: 'https://books.apple.com/us/book/light-from-the-east-volume-1/id6824209113',
+    },
+  },
+  {
+    id: 'fragments-from-the-teachings-of-meishu-sama',
+    title: 'Teachings of Meishu-sama',
+    subtitle: 'Fragments from the Teachings of Meishu-sama',
+    description: 'Selected teachings of Meishu-sama for study and reflection.',
+    coverImage: '/images/books/ebooks/fragments-from-the-teachings-of-meishu-sama.jpg',
+    status: 'coming-soon',
+    ebookCoverImage: '/images/books/ebooks/fragments-from-the-teachings-of-meishu-sama.jpg',
+    appleOnly: true,
+    printEdition: false,
+    ebookLinks: {
+      appleBooks: 'https://books.apple.com/us/book/fragments-from-the-teachings-of-meishu-sama/id1512020318',
+    },
+  },
+  {
+    id: 'daily-inspirations',
+    title: 'Teachings of Meishu-sama',
+    subtitle: 'Daily Inspirations',
+    description: 'Readings from the teachings of Meishu-sama for daily reflection.',
+    coverImage: '/images/books/ebooks/daily-inspirations.jpg',
+    status: 'coming-soon',
+    ebookCoverImage: '/images/books/ebooks/daily-inspirations.jpg',
+    appleOnly: true,
+    printEdition: false,
+    ebookLinks: {
+      appleBooks: 'https://books.apple.com/us/book/daily-inspirations/id1512620974',
     },
   },
 ]
