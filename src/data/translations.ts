@@ -581,19 +581,19 @@ export const translations: Record<string, TranslationContent> = {
           {
             name: 'Boston Johrei Center',
             address: '389 Boston Post Rd Ste 4, Sudbury, MA 01776',
-            phone: '+1 (305) 308-8830',
+            phone: '+1 (617) 618-0365',
             email: 'info@miroku.us',
           },
           {
             name: 'Los Angeles Johrei Center',
-            address: '2730 W 8th Street, Suite 100, Los Angeles, CA 90005',
-            phone: '+1 (305) 308-8830',
+            address: '10801 National Blvd, Suite 403, Los Angeles, CA 90064',
+            phone: '+1 (954) 604-7544',
             email: 'info@miroku.us',
           },
           {
             name: 'Miami Johrei Center',
-            address: '14180 SW 88th Street, Suite 201, Miami, FL 33186',
-            phone: '+1 (305) 308-8830',
+            address: '6151 Miramar Parkway, Suite 305, Miramar, FL 33023',
+            phone: '+1 (954) 604-4603',
             email: 'info@miroku.us',
           },
           {
@@ -1047,19 +1047,19 @@ export const translations: Record<string, TranslationContent> = {
           {
             name: 'Centro Johrei de Boston',
             address: '389 Boston Post Rd Ste 4, Sudbury, MA 01776',
-            phone: '+1 (305) 308-8830',
+            phone: '+1 (617) 618-0365',
             email: 'info@miroku.us',
           },
           {
             name: 'Centro Johrei de Los Angeles',
-            address: '2730 W 8th Street, Suite 100, Los Angeles, CA 90005',
-            phone: '+1 (305) 308-8830',
+            address: '10801 National Blvd, Suite 403, Los Angeles, CA 90064',
+            phone: '+1 (954) 604-7544',
             email: 'info@miroku.us',
           },
           {
             name: 'Centro Johrei de Miami',
-            address: '14180 SW 88th Street, Suite 201, Miami, FL 33186',
-            phone: '+1 (305) 308-8830',
+            address: '6151 Miramar Parkway, Suite 305, Miramar, FL 33023',
+            phone: '+1 (954) 604-4603',
             email: 'info@miroku.us',
           },
           {
@@ -1511,19 +1511,19 @@ export const translations: Record<string, TranslationContent> = {
           {
             name: 'Centro Johrei de Boston',
             address: '389 Boston Post Rd Ste 4, Sudbury, MA 01776',
-            phone: '+1 (305) 308-8830',
+            phone: '+1 (617) 618-0365',
             email: 'info@miroku.us',
           },
           {
             name: 'Centro Johrei de Los Angeles',
-            address: '2730 W 8th Street, Suite 100, Los Angeles, CA 90005',
-            phone: '+1 (305) 308-8830',
+            address: '10801 National Blvd, Suite 403, Los Angeles, CA 90064',
+            phone: '+1 (954) 604-7544',
             email: 'info@miroku.us',
           },
           {
             name: 'Centro Johrei de Miami',
-            address: '14180 SW 88th Street, Suite 201, Miami, FL 33186',
-            phone: '+1 (305) 308-8830',
+            address: '6151 Miramar Parkway, Suite 305, Miramar, FL 33023',
+            phone: '+1 (954) 604-4603',
             email: 'info@miroku.us',
           },
           {
