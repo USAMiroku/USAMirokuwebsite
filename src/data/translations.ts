@@ -580,7 +580,7 @@ export const translations: Record<string, TranslationContent> = {
         units: [
           {
             name: 'Boston Johrei Center',
-            address: '230 Congress Street, 5th Floor, Boston, MA 02110',
+            address: '389 Boston Post Rd Ste 4, Sudbury, MA 01776',
             phone: '+1 (305) 308-8830',
             email: 'info@miroku.us',
           },
@@ -1046,7 +1046,7 @@ export const translations: Record<string, TranslationContent> = {
         units: [
           {
             name: 'Centro Johrei de Boston',
-            address: '230 Congress Street, 5th Floor, Boston, MA 02110',
+            address: '389 Boston Post Rd Ste 4, Sudbury, MA 01776',
             phone: '+1 (305) 308-8830',
             email: 'info@miroku.us',
           },
@@ -1510,7 +1510,7 @@ export const translations: Record<string, TranslationContent> = {
         units: [
           {
             name: 'Centro Johrei de Boston',
-            address: '230 Congress Street, 5th Floor, Boston, MA 02110',
+            address: '389 Boston Post Rd Ste 4, Sudbury, MA 01776',
             phone: '+1 (305) 308-8830',
             email: 'info@miroku.us',
           },

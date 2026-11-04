@@ -41,12 +41,13 @@ export const siteConfig = {
     {
       id: 'boston-johrei-center',
       name: 'Boston Johrei Center',
-      city: 'Boston',
+      city: 'Sudbury',
       state: 'Massachusetts',
-      address: '230 Congress Street, 5th Floor, Boston, MA 02110',
-      phone: '+1 (305) 308-8830',
+      address: '389 Boston Post Rd Ste 4, Sudbury, MA 01776',
+      phone: '+1 (617) 618-0365',
       email: 'info@miroku.us',
-      schedule: 'By appointment.',
+      schedule:
+        'Tuesday–Friday: 10:00 AM–7:00 PM (by appointment). Saturday: 10:00 AM–6:00 PM. 2nd & 4th Sundays: 10:00 AM–1:00 PM.',
     },
     {
       id: 'los-angeles-johrei-center',
