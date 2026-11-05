@@ -11,6 +11,7 @@ type LearningAuthContextValue = {
   managedCenterId: string | null
   isAuthLoading: boolean
   signIn: (email: string, password: string) => Promise<void>
+  signInWithGoogle: (redirectTo?: string) => Promise<void>
   signOut: () => Promise<void>
   isAdmin: boolean
   isInstructor: boolean
@@ -148,6 +149,19 @@ export function LearningAuthProvider({ children }: { children: React.ReactNode }
       async signIn(email: string, password: string) {
         const client = assertSupabaseConfigured()
         const { error } = await client.auth.signInWithPassword({ email, password })
+        if (error) throw error
+      },
+      async signInWithGoogle(redirectTo?: string) {
+        const client = assertSupabaseConfigured()
+        // Supabase sends the browser to Google and back to `redirectTo`, which must
+        // be listed under Authentication > URL Configuration in the Supabase project.
+        const { error } = await client.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: redirectTo || `${window.location.origin}/admin`,
+            queryParams: { prompt: 'select_account' },
+          },
+        })
         if (error) throw error
       },
       async signOut() {
