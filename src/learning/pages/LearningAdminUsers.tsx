@@ -3,6 +3,7 @@ import { Section } from '../../components/Section'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { LearningAdminToolbar } from '../components/LearningAdminToolbar'
 import { RequireSuperAdmin } from '../components/LearningRouteGuards'
+import { AdminAccessAllowlist } from '../components/AdminAccessAllowlist'
 import { supabase } from '../lib/supabaseClient'
 import { useLearningAuth } from '../context/LearningAuthContext'
 import { useManagedCenters } from '../../organization/centers'
@@ -245,6 +246,10 @@ function LearningAdminUsersInner() {
       </section>
 
       <Section className="bg-white">
+        <div className="max-w-6xl mx-auto px-6 pb-8">
+          <AdminAccessAllowlist />
+        </div>
+
         <div className="max-w-6xl mx-auto px-6 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="space-y-6">
             <LearningAdminToolbar current="users" />
