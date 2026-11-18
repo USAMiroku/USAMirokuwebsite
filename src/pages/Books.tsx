@@ -176,7 +176,7 @@ export default function Books() {
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8d6b26]">Digital editions</p>
               <h2 className="mt-3 text-3xl font-serif leading-tight text-slate-950 md:text-5xl">Ebook editions</h2>
               <p className="mt-4 text-base leading-7 text-slate-600 md:text-lg md:leading-8">
-                Choose a title below and purchase the digital edition through Apple Books.
+                Choose a title below and purchase the digital edition through Kindle or Apple Books.
               </p>
               {!kindleStoreEnabled && (
                 <p className="mt-3 text-sm leading-6 text-slate-500">
@@ -199,7 +199,7 @@ export default function Books() {
                   <div className="flex min-h-16 items-center gap-3 rounded-lg bg-white p-3">
                     <KindleLogo />
                     <div>
-                      <p className="text-base font-serif leading-5 text-slate-950">{ebookKindleCount} volumes</p>
+                      <p className="text-base font-serif leading-5 text-slate-950">{ebookKindleCount} titles</p>
                       <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">On Kindle now</p>
                     </div>
                   </div>
