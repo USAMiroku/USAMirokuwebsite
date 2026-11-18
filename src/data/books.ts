@@ -19,8 +19,8 @@ export type Book = {
   }
 }
 
-// Restore only after checking the saved Amazon URLs. This controls links and counts.
-export const kindleStoreEnabled = false
+// Kindle links restored 2026-11-18 after the Amazon account was reinstated. This controls links and counts.
+export const kindleStoreEnabled = true
 
 export const books: Book[] = [
   {
@@ -116,6 +116,7 @@ export const books: Book[] = [
     purchaseUrl: 'https://shop.ingramspark.com/b/084?params=pq8qjjwZks3sLja4TZjKk2z9W6fzavMmI5b7adTgFIw',
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-6.jpeg',
     ebookLinks: {
+      kindle: 'https://www.amazon.com/dp/B0H93WBK2V',
       appleBooks: 'https://books.apple.com/us/book/id6788937669',
     },
   },
@@ -131,6 +132,7 @@ export const books: Book[] = [
     purchaseUrl: 'https://shop.ingramspark.com/b/084?params=364hk9rcAspFNcRWrDXIPBzPjYlsLHIlYwU4tSW8G5s',
     ebookCoverImage: '/images/books/ebooks/teachings-meishu-sama-ebook-volume-7.jpeg',
     ebookLinks: {
+      kindle: 'https://www.amazon.com/dp/B0H8ZRQ7W5',
       appleBooks: 'https://books.apple.com/us/book/id6789254257',
     },
   },
@@ -217,9 +219,9 @@ export const books: Book[] = [
     coverImage: '/images/books/ebooks/fragments-from-the-teachings-of-meishu-sama.jpg',
     status: 'coming-soon',
     ebookCoverImage: '/images/books/ebooks/fragments-from-the-teachings-of-meishu-sama.jpg',
-    appleOnly: true,
     printEdition: false,
     ebookLinks: {
+      kindle: 'https://www.amazon.com/dp/B088PZRS1T',
       appleBooks: 'https://books.apple.com/us/book/fragments-from-the-teachings-of-meishu-sama/id1512020318',
     },
   },
@@ -231,9 +233,9 @@ export const books: Book[] = [
     coverImage: '/images/books/ebooks/daily-inspirations.jpg',
     status: 'coming-soon',
     ebookCoverImage: '/images/books/ebooks/daily-inspirations.jpg',
-    appleOnly: true,
     printEdition: false,
     ebookLinks: {
+      kindle: 'https://www.amazon.com/dp/B088DQY9VS',
       appleBooks: 'https://books.apple.com/us/book/daily-inspirations/id1512620974',
     },
   },
