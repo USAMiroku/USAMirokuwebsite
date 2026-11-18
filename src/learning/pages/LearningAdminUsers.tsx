@@ -246,14 +246,15 @@ function LearningAdminUsersInner() {
       </section>
 
       <Section className="bg-white">
-        <div className="max-w-6xl mx-auto px-6 pb-8">
+        {/* The section navigation stays first, as on every other admin page, so the
+            way back to the other sections is never below a panel. */}
+        <div className="max-w-6xl mx-auto px-6 pb-8 space-y-8">
+          <LearningAdminToolbar current="users" />
           <AdminAccessAllowlist />
         </div>
 
         <div className="max-w-6xl mx-auto px-6 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="space-y-6">
-            <LearningAdminToolbar current="users" />
-
             {error ? <div className="rounded-2xl border border-rose-200 bg-rose-50 px-6 py-5 text-rose-900">{error}</div> : null}
             {message ? <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-5 text-emerald-900">{message}</div> : null}
 
